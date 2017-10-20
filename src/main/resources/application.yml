@@ -31,6 +31,13 @@ spring:
     content-type: text/html
     cache: false
 
+  http:
+    encoding:
+      mapping: UTF-8
+      charset: UTF-8
+      enabled: true
+      force: true
+
 logging:
   file: /logs/csalog.log
   path: /logs
