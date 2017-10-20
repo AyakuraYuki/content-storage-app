@@ -1,0 +1,36 @@
+server:
+  display-name: contentStorage
+  port: 8888
+
+spring:
+  datasource:
+    type: org.apache.commons.dbcp.BasicDataSource
+    # MySQL
+    url: jdbc:mysql://localhost:3306/content_storage?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+
+    # SQLite
+#    driver-class-name: org.sqlite.JDBC
+#    url: jdbc:sqlite:/db.db
+#    username:
+#    password:
+#  jpa:
+#    database-platform: cc.ayakurayuki.contentstorage.dialect.SQLiteDialect
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: false
+
+  thymeleaf:
+    enabled: true
+    encoding: UTF-8
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    content-type: text/html
+    cache: false
+
+logging:
+  file: /logs/csalog.log
+  path: /logs

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.ayakurayuki.contentstorage.dao.SettingsDao">
+
+    <sql id="columns">
+        a.id as "id",
+        a.`key` as "key",
+        a.value as "value"
+    </sql>
+
+    <resultMap id="settingsResultMap" type="cc.ayakurayuki.contentstorage.entity.Settings">
+        <id property="id" column="id"/>
+        <result property="key" column="key"/>
+        <result property="value" column="value"/>
+    </resultMap>
+
+    <select id="get" parameterType="java.lang.String" resultMap="settingsResultMap">
+        select
+        <include refid="columns"/>
+        from settings a
+        where a.id = #{id}
+    </select>
+
+    <select id="list" resultMap="settingsResultMap">
+        select
+        <include refid="columns"/>
+        from settings a
+    </select>
+
+    <!-- MySQL -->
+    <select id="search" parameterType="cc.ayakurayuki.contentstorage.entity.Settings" resultMap="settingsResultMap">
+        select
+        <include refid="columns"/>
+        from settings a
+        where a.`key` like concat('%', #{key}, '%')
+    </select>
+
+    <!-- SQLite -->
+    <!--<select id="search" parameterType="cc.ayakurayuki.contentstorage.entity.Settings" resultMap="settingsResultMap">-->
+        <!--select-->
+        <!--<include refid="columns"/>-->
+        <!--from settings a-->
+        <!--where a.`key` like '%' || #{key} || '%'-->
+    <!--</select>-->
+
+    <insert id="insert" parameterType="cc.ayakurayuki.contentstorage.entity.Settings">
+        insert into settings (id, `key`, value)
+        values (#{id}, #{key}, #{value})
+    </insert>
+
+    <update id="update" parameterType="cc.ayakurayuki.contentstorage.entity.Settings">
+        update settings set
+        `key` = #{key},
+        value = #{value}
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="cc.ayakurayuki.contentstorage.entity.Settings">
+        delete from settings
+        where id = #{id}
+    </delete>
+
+</mapper>
