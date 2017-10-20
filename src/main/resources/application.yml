@@ -38,5 +38,5 @@ spring:
       force: true
 
 logging:
-  file: /logs/csalog.log
-  path: /logs
+  file: logs/csalog.log
+  path: logs
