@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
+    <meta charset="utf-8"/>
     <title>Editor</title>
     <link rel="stylesheet" th:href="@{css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{css/application.css}"/>
@@ -39,8 +39,8 @@
             <input th:type="hidden" th:id="json_data" th:name="json_data" th:value="${content.json_data}"/>
             <div id="items" style="margin-top: 20px;">
                 <ul style="margin: 0; padding: 0; list-style-type: none;">
-                    <li>
-                        <div class="row" style="margin: 5px;" th:each="item:${list}">
+                    <li th:each="item:${list}">
+                        <div class="row" style="margin: 5px;">
                             <div class="col-md-6">
                                 <div class="input-group">
                                     <span class="input-group-addon">Key</span>
