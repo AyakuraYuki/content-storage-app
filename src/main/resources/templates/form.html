@@ -8,7 +8,7 @@
 </head>
 <!--/*@thymesVar id="content" type="cc.ayakurayuki.contentstorage.entity.Content"*/-->
 <!--/*@thymesVar id="list" type="java.util.List<java.util.Map<java.lang.String, java.lang.String>>"*/-->
-<body>
+<body style="background-color: #222222;">
 <div class="container">
     <nav class="navbar navbar-default">
         <div class="container">
@@ -37,23 +37,29 @@
                        th:value="${content.item}" required="required"/>
             </div>
             <input th:type="hidden" th:id="json_data" th:name="json_data" th:value="${content.json_data}"/>
-            <div id="items">
-                <div class="row" style="margin: 5px;" th:each="item:${list}">
-                    <div class="col-md-6">
-                        <div class="input-group">
-                            <span class="input-group-addon">Key</span>
-                            <input type="text" class="form-control" id="key" name="key" th:value="${item.get('key')}"
-                                   aria-describedby="basic-addon1" required="required"/>
+            <div id="items" style="margin-top: 20px;">
+                <ul style="margin: 0; padding: 0; list-style-type: none;">
+                    <li>
+                        <div class="row" style="margin: 5px;" th:each="item:${list}">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Key</span>
+                                    <input type="text" class="form-control" id="key" name="key"
+                                           th:value="${item.get('key')}"
+                                           aria-describedby="basic-addon1" required="required"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Value</span>
+                                    <input type="text" class="form-control" id="value" name="value"
+                                           th:value="${item.get('value')}" aria-describedby="basic-addon1"
+                                           required="required"/>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="input-group">
-                            <span class="input-group-addon">Value</span>
-                            <input type="text" class="form-control" id="value" name="value"
-                                   th:value="${item.get('value')}" aria-describedby="basic-addon1" required="required"/>
-                        </div>
-                    </div>
-                </div>
+                    </li>
+                </ul>
             </div>
             <div id="itemButtonDiv" class="input-group" align="center" style="margin: 20px auto;">
                 <div class="row">
@@ -75,13 +81,30 @@
 
 <script type="text/javascript" th:src="@{js/jquery-3.2.1.min.js}"></script>
 <script type="text/javascript" th:src="@{js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{js/ddsort.js}"></script>
 <script type="text/javascript">
+    $('#items').DDSort({
+        target: 'li',
+        cloneStyle: {
+            'background-color': '#222222'
+        },
+        floatStyle: {
+            'box-shadow': '10px 10px 20px 5px #383838',
+            'background-color': '#222222',
+            'filter': 'blur(1px)',
+            'webkitTransform': 'rotate(2deg)',
+            'mozTransform': 'rotate(2deg)',
+            'msTransform': 'rotate(2deg)',
+            'transform': 'rotate(2deg)'
+        }
+    });
+
     function addInputGroup() {
         $('#itemButtonDiv').fadeIn(200, function () {
             $(this).slideDown(200);
         });
-        $('#items').append(
-            '<div class="row" style="margin: 5px;">' +
+        $('#items ul').append(
+            '<li><div class="row" style="margin: 5px;">' +
             '   <div class="col-md-6">' +
             '       <div class="input-group">' +
             '           <span class="input-group-addon">Key</span>' +
@@ -91,7 +114,7 @@
             '       <div class="input-group">' +
             '           <span class="input-group-addon">Value</span>' +
             '           <input type="text" class="form-control" id="value" name="value" required="required" aria-describedby="basic-addon1"/>' +
-            '       </div></div></div>'
+            '       </div></div></div></li>'
         );
     }
 
