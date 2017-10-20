@@ -127,6 +127,7 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>**/*.*</include>
+                    <include>LICENSE</include>
                 </includes>
             </resource>
         </resources>
