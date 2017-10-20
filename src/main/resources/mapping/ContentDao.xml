@@ -30,7 +30,6 @@
         from content a
         order by convert(a.item using gbk) asc
     </select>
-
     <select id="search" parameterType="cc.ayakurayuki.contentstorage.entity.Content" resultMap="accountResultMap">
         select
         <include refid="columns"/>
