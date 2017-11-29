@@ -1,4 +1,4 @@
-package cc.ayakurayuki.contentstorage.utils
+package cc.ayakurayuki.contentstorage.common.util
 
 import java.security.SecureRandom
 

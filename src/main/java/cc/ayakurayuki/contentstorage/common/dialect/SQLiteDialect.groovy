@@ -1,4 +1,4 @@
-package cc.ayakurayuki.contentstorage.dialect
+package cc.ayakurayuki.contentstorage.common.dialect
 
 import org.hibernate.dialect.Dialect
 import org.hibernate.dialect.function.SQLFunctionTemplate

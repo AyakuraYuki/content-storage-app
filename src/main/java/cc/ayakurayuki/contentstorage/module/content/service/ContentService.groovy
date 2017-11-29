@@ -1,16 +1,16 @@
-package cc.ayakurayuki.contentstorage.service
+package cc.ayakurayuki.contentstorage.module.content.service
 
-import cc.ayakurayuki.contentstorage.dao.ContentDao
-import cc.ayakurayuki.contentstorage.entity.Content
-import cc.ayakurayuki.contentstorage.utils.DESUtils
-import cc.ayakurayuki.contentstorage.utils.IDUtils
+import cc.ayakurayuki.contentstorage.module.content.dao.ContentDao
+import cc.ayakurayuki.contentstorage.module.content.entity.Content
+import cc.ayakurayuki.contentstorage.common.util.DESUtils
+import cc.ayakurayuki.contentstorage.common.util.IDUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 /**
  * Created by Ayakura Yuki on 2017/9/30.
  */
-@Service("contentService")
+@Service("ContentService")
 class ContentService {
 
     @Autowired

@@ -1,4 +1,4 @@
-package cc.ayakurayuki.contentstorage.entity
+package cc.ayakurayuki.contentstorage.module.content.entity
 
 /**
  * Created by Ayakura Yuki on 2017/9/30.

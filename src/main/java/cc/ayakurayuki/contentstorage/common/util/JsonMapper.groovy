@@ -1,4 +1,4 @@
-package cc.ayakurayuki.contentstorage.utils
+package cc.ayakurayuki.contentstorage.common.util
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.JsonGenerator

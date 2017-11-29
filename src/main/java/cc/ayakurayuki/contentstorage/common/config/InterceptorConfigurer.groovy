@@ -1,7 +1,7 @@
-package cc.ayakurayuki.contentstorage.config
+package cc.ayakurayuki.contentstorage.common.config
 
-import cc.ayakurayuki.contentstorage.interceptor.AuthenticateInterceptor
-import cc.ayakurayuki.contentstorage.interceptor.DeniedResetTwoStepInterceptor
+import cc.ayakurayuki.contentstorage.common.interceptor.AuthenticateInterceptor
+import cc.ayakurayuki.contentstorage.common.interceptor.DeniedResetTwoStepInterceptor
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter

@@ -15,7 +15,7 @@ import org.springframework.transaction.PlatformTransactionManager
 import javax.sql.DataSource
 
 @SpringBootApplication
-@MapperScan("cc.ayakurayuki.contentstorage.dao")
+@MapperScan("cc.ayakurayuki.contentstorage.module.*.dao")
 class BootApplication {
 
     @Bean
@@ -29,7 +29,7 @@ class BootApplication {
         def sqlSessionFactory = new SqlSessionFactoryBean()
         def resolver = new PathMatchingResourcePatternResolver()
         sqlSessionFactory.dataSource = getDataSource()
-        sqlSessionFactory.mapperLocations = resolver.getResources("/mapping/*.xml")
+        sqlSessionFactory.mapperLocations = resolver.getResources("/mapping/**/*.xml")
         sqlSessionFactory.getObject()
     }
 

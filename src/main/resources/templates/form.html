@@ -8,7 +8,7 @@
     <link rel="stylesheet" th:href="@{css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{css/application.css}"/>
 </head>
-<!--/*@thymesVar id="content" type="cc.ayakurayuki.contentstorage.entity.Content"*/-->
+<!--/*@thymesVar id="content" type="cc.ayakurayuki.contentstorage.module.content.entity.Content"*/-->
 <!--/*@thymesVar id="list" type="java.util.List<java.util.Map<java.lang.String, java.lang.String>>"*/-->
 <body style="background-color: #222222;">
 <div class="container">
@@ -30,7 +30,7 @@
     <div class="jumbotron">
         <h3>Edit record</h3>
     </div>
-    <div id="form-div" style="margin-left: 200px;margin-right: 200px;">
+    <div id="form-div">
         <form id="form" th:action="@{/save}" method="post" class="form-group">
             <input th:type="hidden" th:id="id" th:name="id" th:value="${content.id}"/>
             <div class="input-group">

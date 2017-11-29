@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cc.ayakurayuki.contentstorage.dao.SettingsDao">
+<mapper namespace="cc.ayakurayuki.contentstorage.module.settings.dao.SettingsDao">
 
     <sql id="columns">
         a.id as "id",
@@ -10,7 +10,7 @@
         a.value as "value"
     </sql>
 
-    <resultMap id="settingsResultMap" type="cc.ayakurayuki.contentstorage.entity.Settings">
+    <resultMap id="settingsResultMap" type="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
         <id property="id" column="id"/>
         <result property="key" column="key"/>
         <result property="value" column="value"/>
@@ -30,7 +30,7 @@
     </select>
 
     <!-- MySQL -->
-    <select id="search" parameterType="cc.ayakurayuki.contentstorage.entity.Settings" resultMap="settingsResultMap">
+    <select id="search" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings" resultMap="settingsResultMap">
         select
         <include refid="columns"/>
         from settings a
@@ -38,26 +38,26 @@
     </select>
 
     <!-- SQLite -->
-    <!--<select id="search" parameterType="cc.ayakurayuki.contentstorage.entity.Settings" resultMap="settingsResultMap">-->
+    <!--<select id="search" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings" resultMap="settingsResultMap">-->
         <!--select-->
         <!--<include refid="columns"/>-->
         <!--from settings a-->
         <!--where a.`key` like '%' || #{key} || '%'-->
     <!--</select>-->
 
-    <insert id="insert" parameterType="cc.ayakurayuki.contentstorage.entity.Settings">
+    <insert id="insert" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
         insert into settings (id, `key`, value)
         values (#{id}, #{key}, #{value})
     </insert>
 
-    <update id="update" parameterType="cc.ayakurayuki.contentstorage.entity.Settings">
+    <update id="update" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
         update settings set
         `key` = #{key},
         value = #{value}
         where id = #{id}
     </update>
 
-    <delete id="delete" parameterType="cc.ayakurayuki.contentstorage.entity.Settings">
+    <delete id="delete" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
         delete from settings
         where id = #{id}
     </delete>

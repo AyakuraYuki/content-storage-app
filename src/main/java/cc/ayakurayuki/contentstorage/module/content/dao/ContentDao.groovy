@@ -1,12 +1,12 @@
-package cc.ayakurayuki.contentstorage.dao
+package cc.ayakurayuki.contentstorage.module.content.dao
 
-import cc.ayakurayuki.contentstorage.entity.Content
+import cc.ayakurayuki.contentstorage.module.content.entity.Content
 import org.springframework.stereotype.Repository
 
 /**
  * Created by Ayakura Yuki on 2017/9/30.
  */
-@Repository("AccountDao")
+@Repository("ContentDao")
 interface ContentDao {
 
     Content get(String id)

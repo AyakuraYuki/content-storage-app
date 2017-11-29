@@ -1,6 +1,6 @@
-package cc.ayakurayuki.contentstorage.dao
+package cc.ayakurayuki.contentstorage.module.settings.dao
 
-import cc.ayakurayuki.contentstorage.entity.Settings
+import cc.ayakurayuki.contentstorage.module.settings.entity.Settings
 import org.springframework.stereotype.Repository
 
 /**

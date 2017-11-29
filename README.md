@@ -59,9 +59,7 @@ password: <your_password>
 # password:
 # Hibernate-SQLite support
 # jpa:
-#   database-platform: cc.ayakurayuki.contentstorage.dialect.SQLiteDialect
-#   hibernate:
-#     ddl-auto: update
+cc.ayakurayuki.contentscc.ayakurayuki.contentstorage.common.dialect#     ddl-auto: update
 #   show-sql: false
 ```
 

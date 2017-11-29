@@ -1,4 +1,4 @@
-package cc.ayakurayuki.contentstorage.utils
+package cc.ayakurayuki.contentstorage.common.util
 
 import org.apache.commons.codec.DecoderException
 import org.apache.commons.codec.binary.Base64

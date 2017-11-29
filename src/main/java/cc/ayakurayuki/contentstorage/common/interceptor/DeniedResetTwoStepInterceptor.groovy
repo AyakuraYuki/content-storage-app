@@ -1,4 +1,4 @@
-package cc.ayakurayuki.contentstorage.interceptor
+package cc.ayakurayuki.contentstorage.common.interceptor
 
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.ModelAndView

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cc.ayakurayuki.contentstorage.dao.ContentDao">
+<mapper namespace="cc.ayakurayuki.contentstorage.module.content.dao.ContentDao">
 
     <sql id="columns">
         a.id as "id",
@@ -10,7 +10,7 @@
         a.json_data as "json_data"
     </sql>
 
-    <resultMap id="accountResultMap" type="cc.ayakurayuki.contentstorage.entity.Content">
+    <resultMap id="accountResultMap" type="cc.ayakurayuki.contentstorage.module.content.entity.Content">
         <id property="id" column="id"/>
         <result property="item" column="item"/>
         <result property="json_data" column="json_data"/>
@@ -30,7 +30,7 @@
         from content a
         order by convert(a.item using gbk) asc
     </select>
-    <select id="search" parameterType="cc.ayakurayuki.contentstorage.entity.Content" resultMap="accountResultMap">
+    <select id="search" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content" resultMap="accountResultMap">
         select
         <include refid="columns"/>
         from content a
@@ -45,7 +45,7 @@
         <!--from content a-->
         <!--order by a.item asc-->
     <!--</select>-->
-    <!--<select id="search" parameterType="cc.ayakurayuki.contentstorage.entity.Content" resultMap="accountResultMap">-->
+    <!--<select id="search" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content" resultMap="accountResultMap">-->
         <!--select-->
         <!--<include refid="columns"/>-->
         <!--from content a-->
@@ -53,19 +53,19 @@
         <!--order by a.item asc-->
     <!--</select>-->
 
-    <insert id="insert" parameterType="cc.ayakurayuki.contentstorage.entity.Content">
+    <insert id="insert" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
         insert into content (id, item, json_data)
         values (#{id}, #{item}, #{json_data})
     </insert>
 
-    <update id="update" parameterType="cc.ayakurayuki.contentstorage.entity.Content">
+    <update id="update" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
         update content set
         item = #{item},
         json_data = #{json_data}
         where id = #{id}
     </update>
 
-    <delete id="delete" parameterType="cc.ayakurayuki.contentstorage.entity.Content">
+    <delete id="delete" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
         delete from content
         where id = #{id}
     </delete>

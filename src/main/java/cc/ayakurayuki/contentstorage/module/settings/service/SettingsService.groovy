@@ -1,9 +1,9 @@
-package cc.ayakurayuki.contentstorage.service
+package cc.ayakurayuki.contentstorage.module.settings.service
 
-import cc.ayakurayuki.contentstorage.dao.SettingsDao
-import cc.ayakurayuki.contentstorage.entity.Settings
-import cc.ayakurayuki.contentstorage.utils.GoogleAuthenticator
-import cc.ayakurayuki.contentstorage.utils.IDUtils
+import cc.ayakurayuki.contentstorage.module.settings.dao.SettingsDao
+import cc.ayakurayuki.contentstorage.module.settings.entity.Settings
+import cc.ayakurayuki.contentstorage.common.util.GoogleAuthenticator
+import cc.ayakurayuki.contentstorage.common.util.IDUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 

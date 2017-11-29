@@ -1,11 +1,11 @@
-package cc.ayakurayuki.contentstorage.web
+package cc.ayakurayuki.contentstorage.module.content.web
 
-import cc.ayakurayuki.contentstorage.entity.Content
-import cc.ayakurayuki.contentstorage.entity.Settings
-import cc.ayakurayuki.contentstorage.service.ContentService
-import cc.ayakurayuki.contentstorage.service.SettingsService
-import cc.ayakurayuki.contentstorage.utils.GoogleAuthenticator
-import cc.ayakurayuki.contentstorage.utils.JsonMapper
+import cc.ayakurayuki.contentstorage.module.content.entity.Content
+import cc.ayakurayuki.contentstorage.module.settings.entity.Settings
+import cc.ayakurayuki.contentstorage.module.content.service.ContentService
+import cc.ayakurayuki.contentstorage.module.settings.service.SettingsService
+import cc.ayakurayuki.contentstorage.common.util.GoogleAuthenticator
+import cc.ayakurayuki.contentstorage.common.util.JsonMapper
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import org.apache.commons.lang3.StringUtils
