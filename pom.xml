@@ -9,13 +9,13 @@
     <packaging>jar</packaging>
 
     <name>content-storage-app</name>
-    <description></description>
+    <description/>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.7.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>1.5.9.RELEASE</version>
+        <relativePath/>
     </parent>
 
     <properties>

@@ -13,7 +13,7 @@ spring:
 
     # SQLite
 #    driver-class-name: org.sqlite.JDBC
-#    url: jdbc:sqlite:/db.db
+#    url: jdbc:sqlite:db/storage.db
 #    username:
 #    password:
 #  jpa:
@@ -38,5 +38,5 @@ spring:
       force: true
 
 logging:
-  file: logs/csalog.log
+  file: logs/csa.log
   path: logs
