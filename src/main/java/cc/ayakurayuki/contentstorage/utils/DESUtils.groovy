@@ -1,8 +1,7 @@
 package cc.ayakurayuki.contentstorage.utils
 
+import org.apache.commons.codec.binary.Base64
 import org.apache.commons.lang3.StringUtils
-import sun.misc.BASE64Decoder
-import sun.misc.BASE64Encoder
 
 import javax.crypto.Cipher
 import javax.crypto.SecretKeyFactory
@@ -51,8 +50,8 @@ class DESUtils {
             StringUtils.EMPTY
         }
         try {
-            byte[] bytes = encryptByte(data.getBytes(), KEY.getBytes())
-            BASE64Encoder.class.newInstance().encode(bytes)
+            byte[] bytes = encryptByte(data.bytes, KEY.bytes)
+            new String(new Base64().encode(bytes))
         }
         catch (Exception e) {
             e.getMessage()
@@ -69,8 +68,8 @@ class DESUtils {
             StringUtils.EMPTY
         }
         try {
-            byte[] dataBuf = BASE64Decoder.class.newInstance().decodeBuffer(data)
-            byte[] bytes = decryptByte(dataBuf, KEY.getBytes())
+            byte[] dataBuf = new Base64().decode(data.bytes)
+            byte[] bytes = decryptByte(dataBuf, KEY.bytes)
             new String(bytes)
         }
         catch (Exception e) {
