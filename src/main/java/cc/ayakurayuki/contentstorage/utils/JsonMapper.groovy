@@ -109,7 +109,7 @@ class JsonMapper extends ObjectMapper {
     }
 
     /**
-     * 反序列化复杂Collection如List<Bean>, 先使用函數createCollectionType构造类型,然后调用本函数.
+     * 反序列化复杂的Collection, 如List<Bean>, 先使用createCollectionType()构造类型, 然后调用该方法
      *
      * @see #createCollectionType(Class, Class ...)
      */
@@ -127,16 +127,16 @@ class JsonMapper extends ObjectMapper {
     }
 
     /**
-     * 構造泛型的Collection Type如: ArrayList<MyBean>,
-     * 则调用constructCollectionType(ArrayList.class,MyBean.class) HashMap<String,MyBean>,
-     * 则调用(HashMap.class,String.class, MyBean.class)
+     * 构造泛型的Collection Type, 如:
+     * ArrayList<MyBean>, 则调用constructCollectionType(ArrayList.class,MyBean.class)
+     * HashMap<String,MyBean>, 则调用(HashMap.class,String.class, MyBean.class)
      */
     JavaType createCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {
         return this.getTypeFactory().constructParametricType(collectionClass, elementClasses)
     }
 
     /**
-     * 當JSON裡只含有Bean的部分屬性時，更新一個已存在Bean，只覆蓋該部分的屬性.
+     * 当JSON里只含有Bean的部分属性时, 更新一个已存在的Bean, 只覆盖该部分的属性
      */
     @SuppressWarnings("unchecked")
     <T> T update(String jsonString, T object) {
@@ -151,15 +151,15 @@ class JsonMapper extends ObjectMapper {
     }
 
     /**
-     * 輸出JSONP格式數據.
+     * 输出JsonP格式的数据
      */
     String toJsonP(String functionName, Object object) {
         return toJson(new JSONPObject(functionName, object))
     }
 
     /**
-     * 設定是否使用Enum的toString函數來讀寫Enum, 為False時時使用Enum的name()函數來讀寫Enum, 默認為False. 注意本函數一定要在Mapper創建後,
-     * 所有的讀寫動作之前調用.
+     * 设定是否使用Enum的toString()来读写Enum, false时使用Enum的name()来读写Enum, 默认false
+     * 注意：该方法一定要在Mapper创建后, 所有的读写动作之前调用
      */
     JsonMapper enableEnumUseToString() {
         this.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
@@ -168,7 +168,7 @@ class JsonMapper extends ObjectMapper {
     }
 
     /**
-     * 允许单引号 允许不带引号的字段名称
+     * 允许单引号 允许不带单引号的字段名称
      */
     JsonMapper enableSimple() {
         this.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
@@ -177,7 +177,7 @@ class JsonMapper extends ObjectMapper {
     }
 
     /**
-     * 取出Mapper做进一步的设置或使用其他序列化API.
+     * 取出Mapper做进一步的设置或使用其他序列化API
      */
     ObjectMapper getMapper() {
         return this

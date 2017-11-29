@@ -14,15 +14,16 @@ import java.security.SecureRandom
  */
 class GoogleAuthenticator {
 
-    // 生成的key长度( Generate secret key length)
+    // 生成的key长度 (Generate secret key length)
     public static final int SECRET_SIZE = 10
-
+    // 随机密钥种子 (The seed of random secret key generator)
     public static final String SEED = "g8GjEvTbW5oVSV7avL47357438reyhreyuryetredLDVKs2m0QN7vxRs2im5MDaNCWGmcD2rvcZx"
-    // Java实现随机数算法
+    // Java实现随机数算法 (Random number algorithm, implement by Java)
     public static final String RANDOM_NUMBER_ALGORITHM = "SHA1PRNG"
-    // 最多可偏移的时间
+    // 最多可偏移的时间 (Max window size)
+    // default: 3
+    // max: 17
     int window_size = 3
-    // default 3 - max 17
 
     /**
      * set the windows size. This is an integer value representing the number of
@@ -75,8 +76,7 @@ class GoogleAuthenticator {
      * @return the URL for the QR code to scan
      */
     static String getQRBarcodeURL(String user, String host, String secret) {
-        String format = "http://www.google.com/chart?chs=200x200&chld=M%%7C0&cht=qr&chl=otpauth://totp/%s@%s?secret=%s"
-        return String.format(format, user, host, secret)
+        return "http://www.google.com/chart?chs=200x200&chld=M%%7C0&cht=qr&chl=otpauth://totp/$user@$host?secret=$secret"
     }
 
     /**
@@ -89,8 +89,7 @@ class GoogleAuthenticator {
      * @return
      */
     static String getQRBarcode(String user, String secret) {
-        String format = "otpauth://totp/%s?secret=%s"
-        return String.format(format, user, secret)
+        return "otpauth://totp/$user?secret=$secret"
     }
 
     /**
@@ -155,4 +154,5 @@ class GoogleAuthenticator {
         truncatedHash %= 1000000
         return (int) truncatedHash
     }
+
 }
