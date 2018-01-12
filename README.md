@@ -19,7 +19,6 @@
 * I18N
 
 ## 使用：用户
-> 请注意，普通用户版本将关闭MySQL支持，使用SQLite3存储内容
 
 如果您是普通用户，建议您从[Release](https://github.com/AyakuraYuki/content-storage-app/releases)下载使用。
 
@@ -41,26 +40,15 @@ git clone https://github.com/AyakuraYuki/content-storage-app.git
 
 选择导入maven项目即可
 
-### 初始化MySQL
+### 初始化SQL
 执行SQL代码文件，位置：sql/initialization.sql
 
 ### 修改配置文件
-将配置文件中的MySQL连接信息修改为您的MySQL/SQLite连接信息，可修改属性如下：
+将配置文件中的MySQL连接信息修改为您的SQLite连接信息，可修改属性如下：
 ```yaml
-# MySQL
-url: jdbc:mysql://<host:port>/content_storage?useUnicode=true&characterEncoding=UTF-8
-username: <your_username>
-password: <your_password>
-
-# SQLite：需要注释MySQL的四条属性，并取消以下属性的配置
-# driver-class-name: org.sqlite.JDBC
-# url: jdbc:sqlite:<your_db_file_path>
-# username:
-# password:
-# Hibernate-SQLite support
-# jpa:
-cc.ayakurayuki.contentscc.ayakurayuki.contentstorage.common.dialect#     ddl-auto: update
-#   show-sql: false
+url: jdbc:sqlite:<your_db_file_path>
+username:
+password:
 ```
 
 ### 执行程序
