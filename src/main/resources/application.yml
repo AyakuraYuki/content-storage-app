@@ -5,22 +5,15 @@ server:
 spring:
   datasource:
     type: org.apache.commons.dbcp.BasicDataSource
-    # MySQL
-    url: jdbc:mysql://localhost:3306/content_storage?useUnicode=true&characterEncoding=UTF-8
-    username: root
-    password: root
-    driver-class-name: com.mysql.jdbc.Driver
-
-    # SQLite
-#    driver-class-name: org.sqlite.JDBC
-#    url: jdbc:sqlite:db/storage.db
-#    username:
-#    password:
-#  jpa:
-#    database-platform: cc.ayakurayuki.contentstorage.common.dialect.SQLiteDialect
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: false
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:db/storage.db
+    username:
+    password:
+  jpa:
+    database-platform: cc.ayakurayuki.contentstorage.common.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
 
   thymeleaf:
     enabled: true

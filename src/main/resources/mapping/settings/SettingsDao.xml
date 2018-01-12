@@ -28,22 +28,13 @@
         <include refid="columns"/>
         from settings a
     </select>
-
-    <!-- MySQL -->
+    
     <select id="search" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings" resultMap="settingsResultMap">
         select
         <include refid="columns"/>
         from settings a
-        where a.`key` like concat('%', #{key}, '%')
+        where a.`key` like '%' || #{key} || '%'
     </select>
-
-    <!-- SQLite -->
-    <!--<select id="search" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings" resultMap="settingsResultMap">-->
-        <!--select-->
-        <!--<include refid="columns"/>-->
-        <!--from settings a-->
-        <!--where a.`key` like '%' || #{key} || '%'-->
-    <!--</select>-->
 
     <insert id="insert" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
         insert into settings (id, `key`, value)

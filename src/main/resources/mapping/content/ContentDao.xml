@@ -23,35 +23,21 @@
         where id = #{id}
     </select>
 
-    <!-- MySQL -->
     <select id="codexList" resultMap="accountResultMap">
         select
         <include refid="columns"/>
         from content a
-        order by convert(a.item using gbk) asc
+        order by a.item asc
     </select>
-    <select id="search" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content" resultMap="accountResultMap">
+
+    <select id="search" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content"
+            resultMap="accountResultMap">
         select
         <include refid="columns"/>
         from content a
-        where a.item like concat('%', #{item}, '%')
-        order by convert(a.item using gbk) asc
+        where a.item like '%' || #{item} || '%'
+        order by a.item asc
     </select>
-
-    <!-- SQLite -->
-    <!--<select id="codexList" resultMap="accountResultMap">-->
-        <!--select-->
-        <!--<include refid="columns"/>-->
-        <!--from content a-->
-        <!--order by a.item asc-->
-    <!--</select>-->
-    <!--<select id="search" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content" resultMap="accountResultMap">-->
-        <!--select-->
-        <!--<include refid="columns"/>-->
-        <!--from content a-->
-        <!--where a.item like '%' || #{item} || '%'-->
-        <!--order by a.item asc-->
-    <!--</select>-->
 
     <insert id="insert" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
         insert into content (id, item, json_data)

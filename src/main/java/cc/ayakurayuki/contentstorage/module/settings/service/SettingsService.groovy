@@ -1,16 +1,18 @@
 package cc.ayakurayuki.contentstorage.module.settings.service
 
-import cc.ayakurayuki.contentstorage.module.settings.dao.SettingsDao
-import cc.ayakurayuki.contentstorage.module.settings.entity.Settings
 import cc.ayakurayuki.contentstorage.common.util.GoogleAuthenticator
 import cc.ayakurayuki.contentstorage.common.util.IDUtils
+import cc.ayakurayuki.contentstorage.module.settings.dao.SettingsDao
+import cc.ayakurayuki.contentstorage.module.settings.entity.Settings
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * Created by Ayakura Yuki on 2017/10/19.
  */
 @Service("SettingsService")
+@Transactional(readOnly = true)
 class SettingsService {
 
     @Autowired
@@ -43,12 +45,12 @@ class SettingsService {
     Settings getSecretSetting() {
         Settings forSearching = new Settings()
         forSearching.key = "secret"
-        List<Settings> list = settingsDao.search(forSearching)
+        def list = settingsDao.search(forSearching)
         list.size() == 0 ? null : list.get(0)
     }
 
     String getSecretKeyFromDatabase() {
-        Settings settings = getSecretSetting()
+        def settings = secretSetting
         if (settings == null) {
             settings = new Settings()
             settings.id = IDUtils.UUID()

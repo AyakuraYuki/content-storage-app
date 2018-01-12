@@ -1,11 +1,11 @@
 package cc.ayakurayuki.contentstorage.module.content.web
 
-import cc.ayakurayuki.contentstorage.module.content.entity.Content
-import cc.ayakurayuki.contentstorage.module.settings.entity.Settings
-import cc.ayakurayuki.contentstorage.module.content.service.ContentService
-import cc.ayakurayuki.contentstorage.module.settings.service.SettingsService
 import cc.ayakurayuki.contentstorage.common.util.GoogleAuthenticator
 import cc.ayakurayuki.contentstorage.common.util.JsonMapper
+import cc.ayakurayuki.contentstorage.module.content.entity.Content
+import cc.ayakurayuki.contentstorage.module.content.service.ContentService
+import cc.ayakurayuki.contentstorage.module.settings.entity.Settings
+import cc.ayakurayuki.contentstorage.module.settings.service.SettingsService
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import org.apache.commons.lang3.StringUtils
@@ -49,7 +49,7 @@ class ContentController {
 
     @RequestMapping("/")
     def home(Model model) {
-        model.addAttribute("codexList", contentService.codexList())
+        model.addAttribute "codexList", contentService.codexList()
         "index"
     }
 
@@ -58,43 +58,43 @@ class ContentController {
         def content = new Content()
         content.item = item
         def list = contentService.search(content)
-        model.addAttribute("codexList", list)
+        model.addAttribute "codexList", list
         "index"
     }
 
     @RequestMapping("/form")
     def form(Content content, Model model) {
-        List<Map<String, String>> list = JsonMapper.fromJsonString(content.json_data, List.class)
+        def list = JsonMapper.fromJsonString(content.json_data, List.class)
         model.addAttribute("list", list)
         model.addAttribute("content", content)
         "form"
     }
 
     @RequestMapping("/save")
-    def save(Content content, String[] key, String[] value, Model model) {
-        List<Map<String, String>> list = Lists.newArrayList()
+    def save(Content content, String[] key, String[] value) {
+        def list = Lists.newArrayList()
         for (def i = 0; i < key.length; i++) {
-            Map<String, String> map = Maps.newHashMap()
-            map.put("key", key[i])
-            map.put("value", value[i])
+            def map = Maps.newHashMap()
+            map['key'] = key[i]
+            map['value'] = value[i]
             list.add(map)
         }
         content.json_data = JsonMapper.toJsonString(list)
         if (StringUtils.isBlank(content.id)) {
-            contentService.insert(content.item, content.json_data)
+            contentService.insert content.item, content.json_data
         } else if (StringUtils.isNotBlank(content.id) && contentService.get(content.id) == null) {
-            contentService.insert(content.item, content.json_data)
+            contentService.insert content.item, content.json_data
         } else {
-            contentService.update(content.id, content.item, content.json_data)
+            contentService.update content.id, content.item, content.json_data
         }
         "redirect:/"
     }
 
     @RequestMapping("/detail")
     def detail(Content content, Model model) {
-        List<Map<String, String>> list = JsonMapper.fromJsonString(content.json_data, List.class)
-        model.addAttribute("list", list)
-        model.addAttribute("content", content)
+        def list = JsonMapper.fromJsonString(content.json_data, List.class)
+        model.addAttribute "list", list
+        model.addAttribute "content", content
         "detail"
     }
 
@@ -114,10 +114,10 @@ class ContentController {
         long code = Long.parseLong(authCode)
         long time = System.currentTimeMillis()
         GoogleAuthenticator googleAuthenticator = new GoogleAuthenticator()
-        googleAuthenticator.setWindowSize(5)
-        Settings settings = settingsService.getSecretSetting()
+        googleAuthenticator.windowSize = 5
+        Settings settings = settingsService.secretSetting
         boolean authentic = googleAuthenticator.check_code(settings.value, code, time)
-        request.getSession().setAttribute("authentic", authentic)
+        request.session.setAttribute "authentic", authentic
         "redirect:/"
     }
 
@@ -132,7 +132,7 @@ class ContentController {
                 "QRCode",
                 GoogleAuthenticator.getQRBarcode(
                         conditionCode,
-                        settingsService.getSecretKeyFromDatabase()
+                        settingsService.secretKeyFromDatabase
                 )
         )
         "register-result"
