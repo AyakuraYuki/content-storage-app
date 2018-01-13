@@ -1,6 +1,6 @@
 package cc.ayakurayuki.contentstorage.module.content.service
 
-import cc.ayakurayuki.contentstorage.common.util.DESUtils
+import cc.ayakurayuki.contentstorage.common.util.EncodeUtils
 import cc.ayakurayuki.contentstorage.common.util.IDUtils
 import cc.ayakurayuki.contentstorage.module.content.dao.ContentDao
 import cc.ayakurayuki.contentstorage.module.content.entity.Content
@@ -25,7 +25,7 @@ class ContentService {
     List<Content> codexList() {
         def list = contentDao.codexList()
         for (def item : list) {
-            item.json_data = DESUtils.decrypt(item.json_data)
+            item.json_data = EncodeUtils.decodeBase64String(item.json_data)
         }
         return list
     }
@@ -38,7 +38,7 @@ class ContentService {
     List<Content> search(Content content) {
         def list = contentDao.search(content)
         for (def item : list) {
-            item.json_data = DESUtils.decrypt(item.json_data)
+            item.json_data = EncodeUtils.decodeBase64String(item.json_data)
         }
         return list
     }
@@ -50,7 +50,7 @@ class ContentService {
      */
     Content get(String id) {
         def content = contentDao.get(id)
-        content.json_data = DESUtils.decrypt(content.json_data)
+        content.json_data = EncodeUtils.decodeBase64String(content.json_data)
         return content
     }
 
@@ -64,7 +64,7 @@ class ContentService {
         def content = new Content()
         content.id = IDUtils.UUID()
         content.item = item
-        content.json_data = DESUtils.encrypt(json_data)
+        content.json_data = EncodeUtils.encodeBase64(json_data)
         contentDao.insert(content)
     }
 
@@ -79,7 +79,7 @@ class ContentService {
         def content = new Content()
         content.id = id
         content.item = item
-        content.json_data = DESUtils.encrypt(json_data)
+        content.json_data = EncodeUtils.encodeBase64(json_data)
         contentDao.update(content)
     }
 
