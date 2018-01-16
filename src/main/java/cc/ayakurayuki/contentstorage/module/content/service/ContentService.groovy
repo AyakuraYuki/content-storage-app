@@ -2,7 +2,7 @@ package cc.ayakurayuki.contentstorage.module.content.service
 
 import cc.ayakurayuki.contentstorage.common.util.EncodeUtils
 import cc.ayakurayuki.contentstorage.common.util.IDUtils
-import cc.ayakurayuki.contentstorage.module.content.dao.ContentDao
+import cc.ayakurayuki.contentstorage.module.content.dao.ContentDAO
 import cc.ayakurayuki.contentstorage.module.content.entity.Content
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -16,16 +16,16 @@ import org.springframework.transaction.annotation.Transactional
 class ContentService {
 
     @Autowired
-    ContentDao contentDao
+    ContentDAO dao
 
     /**
      * 获取全部信息
      * @return 全体信息列表
      */
-    List<Content> codexList() {
-        def list = contentDao.codexList()
-        for (def item : list) {
-            item.json_data = EncodeUtils.decodeBase64String(item.json_data)
+    List<Content> list() {
+        def list = dao.list()
+        list.each {
+            it.json_data = EncodeUtils.decodeBase64String(it.json_data)
         }
         return list
     }
@@ -36,9 +36,9 @@ class ContentService {
      * @return 查询结果
      */
     List<Content> search(Content content) {
-        def list = contentDao.search(content)
-        for (def item : list) {
-            item.json_data = EncodeUtils.decodeBase64String(item.json_data)
+        def list = dao.search(content)
+        list.each {
+            it.json_data = EncodeUtils.decodeBase64String(it.json_data)
         }
         return list
     }
@@ -49,7 +49,7 @@ class ContentService {
      * @return 结果对象
      */
     Content get(String id) {
-        def content = contentDao.get(id)
+        def content = dao.get(id)
         content.json_data = EncodeUtils.decodeBase64String(content.json_data)
         return content
     }
@@ -65,7 +65,7 @@ class ContentService {
         content.id = IDUtils.UUID()
         content.item = item
         content.json_data = EncodeUtils.encodeBase64(json_data)
-        contentDao.insert(content)
+        dao.insert(content)
     }
 
     /**
@@ -80,7 +80,7 @@ class ContentService {
         content.id = id
         content.item = item
         content.json_data = EncodeUtils.encodeBase64(json_data)
-        contentDao.update(content)
+        dao.update(content)
     }
 
     /**
@@ -89,7 +89,7 @@ class ContentService {
      * @return
      */
     int delete(String id) {
-        contentDao.delete(get(id))
+        dao.delete(get(id))
     }
 
 }

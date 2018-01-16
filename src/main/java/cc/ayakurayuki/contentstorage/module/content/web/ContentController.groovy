@@ -49,7 +49,7 @@ class ContentController {
 
     @RequestMapping("/")
     def home(Model model) {
-        model.addAttribute "codexList", contentService.codexList()
+        model.addAttribute "list", contentService.list()
         "index"
     }
 
@@ -58,7 +58,7 @@ class ContentController {
         def content = new Content()
         content.item = item
         def list = contentService.search(content)
-        model.addAttribute "codexList", list
+        model.addAttribute "list", list
         "index"
     }
 

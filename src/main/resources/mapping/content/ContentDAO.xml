@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cc.ayakurayuki.contentstorage.module.content.dao.ContentDao">
+<mapper namespace="cc.ayakurayuki.contentstorage.module.content.dao.ContentDAO">
 
     <sql id="columns">
         a.id as "id",
@@ -23,7 +23,7 @@
         where id = #{id}
     </select>
 
-    <select id="codexList" resultMap="accountResultMap">
+    <select id="list" resultMap="accountResultMap">
         select
         <include refid="columns"/>
         from content a

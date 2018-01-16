@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<!--/*@thymesVar id="codexList" type="java.util.List<cc.ayakurayuki.contentstorage.module.content.entity.Content>"*/-->
+<!--/*@thymesVar id="list" type="java.util.List<cc.ayakurayuki.contentstorage.module.content.entity.Content>"*/-->
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
@@ -69,12 +69,12 @@
             </tr>
             </thead>
             <tbody>
-            <tr align="center" th:each="content : ${codexList}">
-                <td th:text="*{content.item}" style="font-size: 17px;line-height: 35px;"></td>
+            <tr align="center" th:each="item:${list}">
+                <td th:text="*{item.item}" style="font-size: 17px;line-height: 35px;"></td>
                 <td>
-                    <a th:href="@{'/detail?id='+${content.id}}" class="btn btn-sm btn-info">Detail</a>
-                    <a th:href="@{'/form?id='+${content.id}}" class="btn btn-sm btn-info">Edit</a>
-                    <button th:onclick="'javascript:deleteConfirm(\''+*{content.id}+'\')'"
+                    <a th:href="@{'/detail?id='+${item.id}}" class="btn btn-sm btn-info">Detail</a>
+                    <a th:href="@{'/form?id='+${item.id}}" class="btn btn-sm btn-info">Edit</a>
+                    <button th:onclick="'javascript:deleteConfirm(\''+*{item.id}+'\')'"
                             type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#delete">
                         Delete
                     </button>
