@@ -4,7 +4,6 @@ import cc.ayakurayuki.contentstorage.common.util.GoogleAuthenticator
 import cc.ayakurayuki.contentstorage.common.util.JsonMapper
 import cc.ayakurayuki.contentstorage.module.content.entity.Content
 import cc.ayakurayuki.contentstorage.module.content.service.ContentService
-import cc.ayakurayuki.contentstorage.module.settings.entity.Settings
 import cc.ayakurayuki.contentstorage.module.settings.service.SettingsService
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
@@ -39,8 +38,8 @@ class ContentController {
             content = new Content()
             List<Map<String, String>> list = Lists.newArrayList()
             Map<String, String> map = Maps.newHashMap()
-            map.put("key", "")
-            map.put("value", "")
+            map['key'] = ""
+            map['value'] = ""
             list.add(map)
             content.json_data = JsonMapper.toJsonString(list)
         }
@@ -65,8 +64,8 @@ class ContentController {
     @RequestMapping("/form")
     def form(Content content, Model model) {
         def list = JsonMapper.fromJsonString(content.json_data, List.class)
-        model.addAttribute("list", list)
-        model.addAttribute("content", content)
+        model.addAttribute "list", list
+        model.addAttribute "content", content
         "form"
     }
 
@@ -111,12 +110,12 @@ class ContentController {
 
     @RequestMapping("/two-step-auth")
     def twoStepAuth(String authCode, HttpServletRequest request) {
-        long code = Long.parseLong(authCode)
-        long time = System.currentTimeMillis()
-        GoogleAuthenticator googleAuthenticator = new GoogleAuthenticator()
+        def code = Long.parseLong(authCode)
+        def time = System.currentTimeMillis()
+        def googleAuthenticator = new GoogleAuthenticator()
         googleAuthenticator.windowSize = 5
-        Settings settings = settingsService.secretSetting
-        boolean authentic = googleAuthenticator.check_code(settings.value, code, time)
+        def settings = settingsService.secretSetting
+        def authentic = googleAuthenticator.check_code(settings.value, code, time)
         request.session.setAttribute "authentic", authentic
         "redirect:/"
     }

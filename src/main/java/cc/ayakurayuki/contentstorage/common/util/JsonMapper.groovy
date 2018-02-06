@@ -29,30 +29,28 @@ class JsonMapper extends ObjectMapper {
     JsonMapper(JsonInclude.Include include) {
         // 设置输出时包含属性的风格
         if (include != null) {
-            this.setSerializationInclusion(include)
+            this.serializationInclusion = include
         }
         // 允许单引号、允许不带引号的字段名称
         this.enableSimple()
         // 设置输入时忽略在JSON字符串中存在但Java对象实际没有的属性
         this.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
         // 空值处理为空串
-        this.getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>() {
+        this.serializerProvider.nullValueSerializer = new JsonSerializer<Object>() {
             @Override
-            void serialize(Object value, JsonGenerator jgen, SerializerProvider provider)
-                    throws IOException, JsonProcessingException {
-                jgen.writeString("")
+            void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
+                gen.writeString(StringUtils.EMPTY)
             }
-        })
+        }
         // 进行HTML解码。
         this.registerModule(new SimpleModule().addSerializer(String.class, new JsonSerializer<String>() {
             @Override
-            void serialize(String value, JsonGenerator jgen, SerializerProvider provider)
-                    throws IOException, JsonProcessingException {
-                jgen.writeString(StringEscapeUtils.unescapeHtml4(value))
+            void serialize(String value, JsonGenerator jsonGenerator, SerializerProvider provider) throws IOException, JsonProcessingException {
+                jsonGenerator.writeString(StringEscapeUtils.unescapeHtml4(value))
             }
         }))
         // 设置时区
-        this.setTimeZone(TimeZone.getDefault()) // GMT+8:00
+        this.timeZone = TimeZone.default // GMT+8:00
     }
 
     /**
@@ -82,7 +80,7 @@ class JsonMapper extends ObjectMapper {
         try {
             return this.writeValueAsString(object)
         } catch (IOException e) {
-            logger.warn("write to json string error:" + object, e)
+            logger.warn "Write to json string error: ${object}", e
             return null
         }
     }
@@ -103,7 +101,7 @@ class JsonMapper extends ObjectMapper {
         try {
             return this.readValue(jsonString, clazz)
         } catch (IOException e) {
-            logger.warn("parse json string error:" + jsonString, e)
+            logger.warn "Parse json string error: ${jsonString}", e
             return null
         }
     }
@@ -121,7 +119,7 @@ class JsonMapper extends ObjectMapper {
         try {
             return (T) this.readValue(jsonString, javaType)
         } catch (IOException e) {
-            logger.warn("parse json string error:" + jsonString, e)
+            logger.warn "Parse json string error: ${jsonString}", e
             return null
         }
     }
@@ -132,7 +130,7 @@ class JsonMapper extends ObjectMapper {
      * HashMap<String,MyBean>, 则调用(HashMap.class,String.class, MyBean.class)
      */
     JavaType createCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {
-        return this.getTypeFactory().constructParametricType(collectionClass, elementClasses)
+        return this.typeFactory.constructParametricType(collectionClass, elementClasses)
     }
 
     /**
@@ -143,9 +141,9 @@ class JsonMapper extends ObjectMapper {
         try {
             return (T) this.readerForUpdating(object).readValue(jsonString)
         } catch (JsonProcessingException e) {
-            logger.warn("update json string:" + jsonString + " to object:" + object + " error.", e)
+            logger.warn "Update json string: ${jsonString} to object: ${object} error.", e
         } catch (IOException e) {
-            logger.warn("update json string:" + jsonString + " to object:" + object + " error.", e)
+            logger.warn "Update json string: ${jsonString} to object: ${object} error.", e
         }
         return null
     }
@@ -190,7 +188,7 @@ class JsonMapper extends ObjectMapper {
      * @return
      */
     static String toJsonString(Object object) {
-        return getInstance().toJson(object)
+        return instance.toJson(object)
     }
 
     /**
@@ -201,7 +199,7 @@ class JsonMapper extends ObjectMapper {
      * @return
      */
     static Object fromJsonString(String jsonString, Class<?> clazz) {
-        return getInstance().fromJson(jsonString, clazz)
+        return instance.fromJson(jsonString, clazz)
     }
 
 }

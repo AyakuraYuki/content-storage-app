@@ -13,21 +13,21 @@ import javax.servlet.http.HttpServletResponse
 class AuthenticateInterceptor implements HandlerInterceptor {
 
     @Override
-    boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        if (httpServletRequest.getSession().getAttribute("authentic").toString() == "true") {
+    boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
+        if (Boolean.valueOf(request.session.getAttribute('authentic').toString())) {
             return true
         }
-        httpServletResponse.sendRedirect("two-step")
+        response.sendRedirect("two-step")
         return false
     }
 
     @Override
-    void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
+    void postHandle(HttpServletRequest request, HttpServletResponse response, Object o, ModelAndView modelAndView) throws Exception {
 
     }
 
     @Override
-    void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+    void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object o, Exception e) throws Exception {
 
     }
 }

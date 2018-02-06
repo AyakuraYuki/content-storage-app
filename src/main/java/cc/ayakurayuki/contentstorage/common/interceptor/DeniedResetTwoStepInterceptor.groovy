@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse
 class DeniedResetTwoStepInterceptor implements HandlerInterceptor {
     @Override
     boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if (request.getSession().getAttribute("authentic").toString() == "true") {
+        if (Boolean.valueOf(request.session.getAttribute('authentic').toString())) {
             response.sendRedirect("redirect:/")
             return false
         }

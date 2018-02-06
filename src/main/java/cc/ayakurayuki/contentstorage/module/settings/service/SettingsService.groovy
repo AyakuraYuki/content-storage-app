@@ -43,7 +43,7 @@ class SettingsService {
     }
 
     Settings getSecretSetting() {
-        Settings forSearching = new Settings()
+        def forSearching = new Settings()
         forSearching.key = "secret"
         def list = dao.search(forSearching)
         list.size() == 0 ? null : list.get(0)

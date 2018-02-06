@@ -48,15 +48,14 @@ class GoogleAuthenticator {
      */
     static String generateSecretKey() {
         try {
-            SecureRandom sr = SecureRandom.getInstance(RANDOM_NUMBER_ALGORITHM)
-            sr.setSeed(Base64.decodeBase64(SEED))
-            byte[] buffer = sr.generateSeed(SECRET_SIZE)
-            Base32 codec = new Base32()
-            byte[] bEncodedKey = codec.encode(buffer)
-            String encodedKey = new String(bEncodedKey)
+            def secureRandom = SecureRandom.getInstance(RANDOM_NUMBER_ALGORITHM)
+            secureRandom.setSeed(Base64.decodeBase64(SEED))
+            def buffer = secureRandom.generateSeed(SECRET_SIZE)
+            def codec = new Base32()
+            def bEncodedKey = codec.encode(buffer)
+            def encodedKey = new String(bEncodedKey)
             return encodedKey
         } catch (NoSuchAlgorithmException ignored) {
-            // should never occur... configuration error
         }
         return null
     }
@@ -104,23 +103,23 @@ class GoogleAuthenticator {
      * @return
      */
     boolean check_code(String secret, long code, long timeMsec) {
-        Base32 codec = new Base32()
-        byte[] decodedKey = codec.decode(secret)
+        def codec = new Base32()
+        def decodedKey = codec.decode(secret)
         // convert unix msec time into a 30 second "window"
         // this is per the TOTP spec (see the RFC for details)
-        long t = (timeMsec / 1000L) / 30L
+        def t = (timeMsec / 1000L) / 30L
         // Window is used to check codes generated in the near past.
         // You can use this value to tune how far you're willing to go.
         for (int i = -window_size; i <= window_size; ++i) {
             long hash
             try {
-                hash = verify_code(decodedKey, t + i)
+                hash = verify_code(decodedKey, t.toLong() + i)
             } catch (Exception e) {
                 // Yes, this is bad form - but
                 // the exceptions thrown would be rare and a static
                 // configuration problem
                 e.printStackTrace()
-                throw new RuntimeException(e.getMessage())
+                throw new RuntimeException(e.message)
                 // return false;
             }
             if (hash == code) {
@@ -132,15 +131,15 @@ class GoogleAuthenticator {
     }
 
     private static int verify_code(byte[] key, long t) throws NoSuchAlgorithmException, InvalidKeyException {
-        byte[] data = new byte[8]
-        long value = t
+        def data = new byte[8]
+        def value = t
         for (int i = 8; i-- > 0; value >>>= 8) {
             data[i] = (byte) value
         }
-        SecretKeySpec signKey = new SecretKeySpec(key, "HmacSHA1")
-        Mac mac = Mac.getInstance("HmacSHA1")
+        def signKey = new SecretKeySpec(key, "HmacSHA1")
+        def mac = Mac.getInstance("HmacSHA1")
         mac.init(signKey)
-        byte[] hash = mac.doFinal(data)
+        def hash = mac.doFinal(data)
         int offset = hash[20 - 1] & 0xF
         // We're using a long because Java hasn't got unsigned int.
         long truncatedHash = 0
