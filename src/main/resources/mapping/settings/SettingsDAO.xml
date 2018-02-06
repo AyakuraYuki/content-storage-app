@@ -28,8 +28,9 @@
         <include refid="columns"/>
         from settings a
     </select>
-    
-    <select id="search" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings" resultMap="settingsResultMap">
+
+    <select id="search" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings"
+            resultMap="settingsResultMap">
         select
         <include refid="columns"/>
         from settings a

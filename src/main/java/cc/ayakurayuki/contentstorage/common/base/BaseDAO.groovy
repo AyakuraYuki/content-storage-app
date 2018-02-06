@@ -5,7 +5,7 @@ package cc.ayakurayuki.contentstorage.common.base
  * Package: cc.ayakurayuki.contentstorage.common.base <br/>
  */
 interface BaseDAO<T> {
-    
+
     T get(String id)
 
     List<T> list()
