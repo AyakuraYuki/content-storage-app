@@ -5,4 +5,8 @@ package cc.ayakurayuki.contentstorage.common.base
  * Package: cc.ayakurayuki.contentstorage.common.base <br/>
  */
 class BaseBean {
+
+    final static String SECRET = "secret"
+    final static String EMERGENCY = "emergency"
+
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <!--/*@thymesVar id="QRCode" type="java.lang.String"*/-->
+<!--/*@thymesVar id="emergency" type="java.util.List<cc.ayakurayuki.contentstorage.module.settings.entity.EmergencyKey>"*/-->
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
@@ -25,6 +26,14 @@
                 <div id="QRCode-image" style="background-color: #b0b0b0;padding: 20px; border-radius: 5px"></div>
                 <br/>
                 <a th:href="@{/}" class="btn btn-info">Return to Auth</a>
+                <br/>
+                <div align="center">
+                    These codes will allow you to enter this app if you lose your Google Authenticator. <br/>
+                    <strong>Each code can only be used once! Any previously codes no longer work!</strong>
+                </div>
+                <ul>
+                    <li th:each="item:${emergency}" th:text="${item.getKey()}"></li>
+                </ul>
             </div>
         </div>
         <div class="col-md-2"></div>

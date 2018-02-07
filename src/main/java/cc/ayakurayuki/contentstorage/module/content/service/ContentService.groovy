@@ -1,5 +1,6 @@
 package cc.ayakurayuki.contentstorage.module.content.service
 
+import cc.ayakurayuki.contentstorage.common.base.BaseBean
 import cc.ayakurayuki.contentstorage.common.util.EncodeUtils
 import cc.ayakurayuki.contentstorage.common.util.IDUtils
 import cc.ayakurayuki.contentstorage.module.content.dao.ContentDAO
@@ -13,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Service("ContentService")
 @Transactional(readOnly = true)
-class ContentService {
+class ContentService extends BaseBean {
 
     @Autowired
     ContentDAO dao

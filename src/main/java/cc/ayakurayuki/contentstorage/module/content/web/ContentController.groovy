@@ -1,10 +1,9 @@
 package cc.ayakurayuki.contentstorage.module.content.web
 
-import cc.ayakurayuki.contentstorage.common.util.GoogleAuthenticator
+import cc.ayakurayuki.contentstorage.common.base.BaseBean
 import cc.ayakurayuki.contentstorage.common.util.JsonMapper
 import cc.ayakurayuki.contentstorage.module.content.entity.Content
 import cc.ayakurayuki.contentstorage.module.content.service.ContentService
-import cc.ayakurayuki.contentstorage.module.settings.service.SettingsService
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import org.apache.commons.lang3.StringUtils
@@ -15,18 +14,14 @@ import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 
-import javax.servlet.http.HttpServletRequest
-
 /**
  * Created by Ayakura Yuki on 2017/9/30.
  */
 @Controller
-class ContentController {
+class ContentController extends BaseBean {
 
     @Autowired
     ContentService contentService
-    @Autowired
-    SettingsService settingsService
 
     @ModelAttribute
     Content get(@RequestParam(required = false) String id) {
@@ -36,10 +31,10 @@ class ContentController {
         }
         if (content == null) {
             content = new Content()
-            List<Map<String, String>> list = Lists.newArrayList()
-            Map<String, String> map = Maps.newHashMap()
-            map['key'] = ""
-            map['value'] = ""
+            List<HashMap<String, String>> list = Lists.newArrayList()
+            HashMap<String, String> map = Maps.newHashMap()
+            map['key'] = ''
+            map['value'] = ''
             list.add(map)
             content.json_data = JsonMapper.toJsonString(list)
         }
@@ -101,40 +96,6 @@ class ContentController {
     def delete(Content content) {
         contentService.delete(content.id)
         "redirect:/"
-    }
-
-    @RequestMapping("/two-step")
-    def twoStep() {
-        "two-step"
-    }
-
-    @RequestMapping("/two-step-auth")
-    def twoStepAuth(String authCode, HttpServletRequest request) {
-        def code = Long.parseLong(authCode)
-        def time = System.currentTimeMillis()
-        def googleAuthenticator = new GoogleAuthenticator()
-        googleAuthenticator.windowSize = 5
-        def settings = settingsService.secretSetting
-        def authentic = googleAuthenticator.check_code(settings.value, code, time)
-        request.session.setAttribute "authentic", authentic
-        "redirect:/"
-    }
-
-    @RequestMapping("/register-two-step")
-    def registerTwoStep() {
-        "register-two-step"
-    }
-
-    @RequestMapping("/do-register-two-step")
-    def doRegisterTwoStep(String conditionCode, Model model) {
-        model.addAttribute(
-                "QRCode",
-                GoogleAuthenticator.getQRBarcode(
-                        conditionCode,
-                        settingsService.secretKeyFromDatabase
-                )
-        )
-        "register-result"
     }
 
 }
