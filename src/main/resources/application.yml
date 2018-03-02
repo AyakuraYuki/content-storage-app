@@ -6,7 +6,7 @@ spring:
   datasource:
     type: org.apache.commons.dbcp.BasicDataSource
     driver-class-name: org.sqlite.JDBC
-    url: jdbc:sqlite:db/storage.db
+    url: jdbc:sqlite::resource:db/storage.db
     username:
     password:
   jpa:

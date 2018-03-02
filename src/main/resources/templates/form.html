@@ -1,135 +1,111 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Editor</title>
-    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}"/>
-    <link rel="stylesheet" th:href="@{css/application.css}"/>
-</head>
 <!--/*@thymesVar id="content" type="cc.ayakurayuki.contentstorage.module.content.entity.Content"*/-->
 <!--/*@thymesVar id="list" type="java.util.List<java.util.HashMap<java.lang.String, java.lang.String>>"*/-->
+<head th:include="common/head::head('Editor')"></head>
 <body style="background-color: #222222;">
+<th:block th:include="common/navbar::navbar"/>
+
 <div class="container">
-    <nav class="navbar navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Personal codex dashboard</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a th:href="@{/}"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp;Back to Homepage</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</div>
-<div class="container">
-    <div class="jumbotron">
-        <h3>Edit record</h3>
-    </div>
-    <div id="form-div">
-        <form id="form" th:action="@{/save}" method="post" class="form-group">
-            <input th:type="hidden" th:id="id" th:name="id" th:value="${content.id}"/>
-            <input th:type="hidden" th:id="json_data" th:name="json_data" th:value="${content.json_data}"/>
-            <div class="input-group">
-                <span class="input-group-addon">Item</span>
-                <input type="text" class="form-control" placeholder="Name of Item" th:id="item" th:name="item"
-                       th:value="${content.item}" required="required"/>
-            </div>
-            <div id="items" style="margin-top: 20px;">
-                <ul style="margin: 0; padding: 0; list-style-type: none;">
-                    <li th:each="item:${list}">
-                        <div class="row" style="margin: 5px;">
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon">Key</span>
-                                    <input type="text" class="form-control" id="key" name="key"
-                                           th:value="${item.get('key')}" aria-describedby="basic-addon1"
-                                           required="required"/>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon">Value</span>
-                                    <input type="text" class="form-control" id="value" name="value"
-                                           th:value="${item.get('value')}" aria-describedby="basic-addon1"
-                                           required="required"/>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div id="itemButtonDiv" class="input-group" align="center" style="margin: 20px auto;">
-                <div class="row">
-                    <div class="col-md-5" align="right">
-                        <a class="btn btn-default" onclick="addInputGroup()">Add item</a>
-                    </div>
-                    <div class="col-md-2"></div>
-                    <div class="col-md-5" align="left">
-                        <a class="btn btn-warning" onclick="removeInputGroup()">Remove item</a>
-                    </div>
+  <div class="jumbotron">
+    <h3>Edit record</h3>
+  </div>
+  <div id="form-div">
+    <form id="form" th:action="@{/save}" method="post" class="form-group">
+      <input th:type="hidden" th:id="id" th:name="id" th:value="${content.id}"/>
+      <input th:type="hidden" th:id="json_data" th:name="json_data" th:value="${content.json_data}"/>
+      <div class="input-group">
+        <span class="input-group-addon">Item</span>
+        <input type="text" class="form-control" placeholder="Name of Item" th:id="item" th:name="item"
+               th:value="${content.item}" required="required"/>
+      </div>
+      <div id="items" style="margin-top: 20px;">
+        <ul style="margin: 0; padding: 0; list-style-type: none;">
+          <li th:each="item:${list}">
+            <div class="row" style="margin: 5px;">
+              <div class="col-md-6">
+                <div class="input-group">
+                  <span class="input-group-addon">Key</span>
+                  <input type="text" class="form-control" id="key" name="key" th:value="${item.get('key')}"
+                         aria-describedby="basic-addon1" required="required"/>
                 </div>
+              </div>
+              <div class="col-md-6">
+                <div class="input-group">
+                  <span class="input-group-addon">Value</span>
+                  <input type="text" class="form-control" id="value" name="value" th:value="${item.get('value')}"
+                         aria-describedby="basic-addon1" required="required"/>
+                </div>
+              </div>
             </div>
-            <div align="center" class="input-group" style="margin: 20px auto;">
-                <input type="submit" class="btn btn-primary" value="Submit"/>
-            </div>
-        </form>
-    </div>
+          </li>
+        </ul>
+      </div>
+      <div id="itemButtonDiv" class="input-group" align="center" style="margin: 20px auto;">
+        <div class="row">
+          <div class="col-md-5" align="right">
+            <a class="btn btn-default" onclick="addInputGroup()">Add item</a>
+          </div>
+          <div class="col-md-2"></div>
+          <div class="col-md-5" align="left">
+            <a class="btn btn-warning" onclick="removeInputGroup()">Remove item</a>
+          </div>
+        </div>
+      </div>
+      <div align="center" class="input-group" style="margin: 20px auto;">
+        <input type="submit" class="btn btn-primary" value="Submit"/>
+      </div>
+    </form>
+  </div>
 </div>
 
-<script type="text/javascript" th:src="@{js/jquery-3.2.1.min.js}"></script>
-<script type="text/javascript" th:src="@{js/bootstrap.min.js}"></script>
-<script type="text/javascript" th:src="@{js/ddsort.js}"></script>
+<th:block th:include="common/script::script"/>
 <script type="text/javascript">
-    $('#items').DDSort({
-        target: 'li',
-        cloneStyle: {
-            'background-color': '#222222'
-        },
-        floatStyle: {
-            'box-shadow': '10px 10px 20px 5px #383838',
-            'background-color': '#222222',
-            'filter': 'blur(1px)',
-            'webkitTransform': 'rotate(2deg)',
-            'mozTransform': 'rotate(2deg)',
-            'msTransform': 'rotate(2deg)',
-            'transform': 'rotate(2deg)'
-        }
+  $('#items').DDSort({
+    target: 'li',
+    cloneStyle: {
+      'background-color': '#222222'
+    },
+    floatStyle: {
+      'box-shadow': '10px 10px 20px 5px #383838',
+      'background-color': '#222222',
+      'filter': 'blur(1px)',
+      'webkitTransform': 'rotate(2deg)',
+      'mozTransform': 'rotate(2deg)',
+      'msTransform': 'rotate(2deg)',
+      'transform': 'rotate(2deg)'
+    }
+  });
+
+  function addInputGroup() {
+    $('#itemButtonDiv').fadeIn(200, function () {
+      $(this).slideDown(200);
     });
+    $('#items').find('ul').append(
+      '<li><div class="row" style="margin: 5px;">' +
+      '   <div class="col-md-6">' +
+      '       <div class="input-group">' +
+      '           <span class="input-group-addon">Key</span>' +
+      '           <input type="text" class="form-control" id="key" name="key" required="required" aria-describedby="basic-addon1"/>' +
+      '       </div></div>' +
+      '   <div class="col-md-6">' +
+      '       <div class="input-group">' +
+      '           <span class="input-group-addon">Value</span>' +
+      '           <input type="text" class="form-control" id="value" name="value" required="required" aria-describedby="basic-addon1"/>' +
+      '       </div></div></div></li>'
+    );
+  }
 
-    function addInputGroup() {
-        $('#itemButtonDiv').fadeIn(200, function () {
-            $(this).slideDown(200);
-        });
-        $('#items').find('ul').append(
-            '<li><div class="row" style="margin: 5px;">' +
-            '   <div class="col-md-6">' +
-            '       <div class="input-group">' +
-            '           <span class="input-group-addon">Key</span>' +
-            '           <input type="text" class="form-control" id="key" name="key" required="required" aria-describedby="basic-addon1"/>' +
-            '       </div></div>' +
-            '   <div class="col-md-6">' +
-            '       <div class="input-group">' +
-            '           <span class="input-group-addon">Value</span>' +
-            '           <input type="text" class="form-control" id="value" name="value" required="required" aria-describedby="basic-addon1"/>' +
-            '       </div></div></div></li>'
-        );
+  function removeInputGroup() {
+    var rows = $('div#items .row');
+    if (rows.length !== 1) {
+      rows.eq(-1).fadeTo(200, 0.01, function () {
+        $(this).slideUp(200, function () {
+          $(this).remove();
+        })
+      })
     }
-
-    function removeInputGroup() {
-        var rows = $('div#items .row');
-        if (rows.length !== 1) {
-            rows.eq(-1).fadeTo(200, 0.01, function () {
-                $(this).slideUp(200, function () {
-                    $(this).remove();
-                })
-            })
-        }
-    }
+  }
 </script>
 </body>
 </html>

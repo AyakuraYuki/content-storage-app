@@ -20,14 +20,14 @@
         select
         <include refid="columns"/>
         from content a
-        where id = #{id}
+        where id = #{id};
     </select>
 
     <select id="list" resultMap="accountResultMap">
         select
         <include refid="columns"/>
         from content a
-        order by a.item asc
+        order by a.item asc;
     </select>
 
     <select id="search" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content"
@@ -36,24 +36,24 @@
         <include refid="columns"/>
         from content a
         where a.item like '%' || #{item} || '%'
-        order by a.item asc
+        order by a.item asc;
     </select>
 
     <insert id="insert" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
         insert into content (id, item, json_data)
-        values (#{id}, #{item}, #{json_data})
+        values (#{id}, #{item}, #{json_data});
     </insert>
 
     <update id="update" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
         update content set
         item = #{item},
         json_data = #{json_data}
-        where id = #{id}
+        where id = #{id};
     </update>
 
     <delete id="delete" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
         delete from content
-        where id = #{id}
+        where id = #{id};
     </delete>
 
 </mapper>

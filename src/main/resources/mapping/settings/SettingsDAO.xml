@@ -20,13 +20,13 @@
         select
         <include refid="columns"/>
         from settings a
-        where a.id = #{id}
+        where a.id = #{id};
     </select>
 
     <select id="list" resultMap="settingsResultMap">
         select
         <include refid="columns"/>
-        from settings a
+        from settings a;
     </select>
 
     <select id="search" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings"
@@ -34,24 +34,24 @@
         select
         <include refid="columns"/>
         from settings a
-        where a.`key` like '%' || #{key} || '%'
+        where a.`key` like '%' || #{key} || '%';
     </select>
 
     <insert id="insert" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
         insert into settings (id, `key`, value)
-        values (#{id}, #{key}, #{value})
+        values (#{id}, #{key}, #{value});
     </insert>
 
     <update id="update" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
         update settings set
         `key` = #{key},
         value = #{value}
-        where id = #{id}
+        where id = #{id};
     </update>
 
     <delete id="delete" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
         delete from settings
-        where id = #{id}
+        where id = #{id};
     </delete>
 
 </mapper>
