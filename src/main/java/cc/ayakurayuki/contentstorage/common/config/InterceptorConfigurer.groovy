@@ -18,19 +18,21 @@ class InterceptorConfigurer extends WebMvcConfigurerAdapter {
                 .addPathPatterns("/**")
                 .excludePathPatterns(
                 "/error",
-                "/two-step",
-                "/two-step-auth",
-                "/register-two-step",
-                "/do-register-two-step",
+                "/2FA",
+                "/do2FA",
+                "/register2FA",
+                "/doRegister2FA",
+                "/doReset2FA",
                 "/css/**",
                 "/js/**",
                 "/font/**")
         registry.addInterceptor(new DeniedResetTwoStepInterceptor())
                 .addPathPatterns(
-                "/two-step",
-                "/two-step-auth",
-                "/register-two-step",
-                "/do-register-two-step")
+                "/2FA",
+                "/do2FA",
+                "/register2FA",
+                "/doRegister2FA",
+                "/doReset2FA",)
         super.addInterceptors(registry)
     }
 

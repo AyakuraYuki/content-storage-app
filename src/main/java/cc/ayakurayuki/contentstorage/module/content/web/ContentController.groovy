@@ -41,13 +41,13 @@ class ContentController extends BaseBean {
         return content
     }
 
-    @RequestMapping("/")
+    @RequestMapping(['/', '/index'])
     def home(Model model) {
         model.addAttribute "list", contentService.list()
         "index"
     }
 
-    @RequestMapping("/search")
+    @RequestMapping('/search')
     def search(String item, Model model) {
         def content = new Content()
         content.item = item
@@ -56,7 +56,7 @@ class ContentController extends BaseBean {
         "index"
     }
 
-    @RequestMapping("/form")
+    @RequestMapping('/form')
     def form(Content content, Model model) {
         def list = JsonMapper.fromJsonString(content.json_data, List.class)
         model.addAttribute "list", list
@@ -64,7 +64,7 @@ class ContentController extends BaseBean {
         "form"
     }
 
-    @RequestMapping("/save")
+    @RequestMapping('/save')
     def save(Content content, String[] key, String[] value) {
         def list = Lists.newArrayList()
         for (def i = 0; i < key.length; i++) {
@@ -84,7 +84,7 @@ class ContentController extends BaseBean {
         "redirect:/"
     }
 
-    @RequestMapping("/detail")
+    @RequestMapping('/detail')
     def detail(Content content, Model model) {
         def list = JsonMapper.fromJsonString(content.json_data, List.class)
         model.addAttribute "list", list
@@ -92,7 +92,7 @@ class ContentController extends BaseBean {
         "detail"
     }
 
-    @RequestMapping("/delete")
+    @RequestMapping('/delete')
     def delete(Content content) {
         contentService.delete(content.id)
         "redirect:/"

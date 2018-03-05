@@ -20,13 +20,13 @@ class SettingsController extends BaseBean {
     @Autowired
     SettingsService settingsService
 
-    @RequestMapping("/two-step")
+    @RequestMapping("/2FA")
     def twoStep() {
-        "twoFA"
+        "2FA"
     }
 
-    @RequestMapping("/two-step-auth")
-    def twoStepAuth(String authCode, HttpServletRequest request) {
+    @RequestMapping("/do2FA")
+    def do2FA(String authCode, HttpServletRequest request) {
         def code = Long.parseLong(authCode)
         def time = System.currentTimeMillis()
         def googleAuthenticator = new GoogleAuthenticator()
@@ -37,13 +37,13 @@ class SettingsController extends BaseBean {
         "redirect:/"
     }
 
-    @RequestMapping("/register-two-step")
-    def registerTwoStep() {
-        "register-two-step"
+    @RequestMapping("/register2FA")
+    def register2FA() {
+        "register2FA"
     }
 
-    @RequestMapping("/do-register-two-step")
-    def doRegisterTwoStep(String conditionCode, Model model) {
+    @RequestMapping("/doRegister2FA")
+    def doRegister2FA(String conditionCode, Model model) {
         model.addAttribute(EMERGENCY, settingsService.generateEmergencyCode())
         model.addAttribute(
                 "QRCode",
@@ -52,7 +52,12 @@ class SettingsController extends BaseBean {
                         settingsService.secretKeyFromDatabase
                 )
         )
-        "register-result"
+        "registerResult"
+    }
+
+    @RequestMapping("/doReset2FA")
+    def doReset2FA(String recoveryCode, Model model) {
+
     }
 
 }
