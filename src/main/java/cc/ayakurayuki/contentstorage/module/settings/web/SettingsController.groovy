@@ -22,7 +22,7 @@ class SettingsController extends BaseBean {
 
     @RequestMapping("/two-step")
     def twoStep() {
-        "two-step"
+        "twoFA"
     }
 
     @RequestMapping("/two-step-auth")

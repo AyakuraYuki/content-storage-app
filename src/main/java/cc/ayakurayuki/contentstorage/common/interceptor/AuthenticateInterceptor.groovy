@@ -17,7 +17,7 @@ class AuthenticateInterceptor implements HandlerInterceptor {
         if (Boolean.valueOf(request.session.getAttribute('authentic').toString())) {
             return true
         }
-        response.sendRedirect("two-step")
+        response.sendRedirect("/two-step")
         return false
     }
 
