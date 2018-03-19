@@ -28,11 +28,10 @@ class SettingsController extends BaseBean {
     @RequestMapping("/do2FA")
     def do2FA(String authCode, HttpServletRequest request) {
         def code = Long.parseLong(authCode)
-        def time = System.currentTimeMillis()
         def googleAuthenticator = new GoogleAuthenticator()
         googleAuthenticator.windowSize = 5
         def settings = settingsService.secretSetting
-        def authentic = googleAuthenticator.check_code(settings.value, code, time)
+        def authentic = googleAuthenticator.checkCode(settings.value, code)
         request.session.setAttribute "authentic", authentic
         "redirect:/"
     }
