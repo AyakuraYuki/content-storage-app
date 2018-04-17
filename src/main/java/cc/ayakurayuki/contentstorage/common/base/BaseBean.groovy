@@ -9,4 +9,9 @@ class BaseBean {
     final static String SECRET = "secret"
     final static String EMERGENCY = "emergency"
 
+    /* ====================================== */
+    /* =============== Redis ================ */
+    /* ====================================== */
+    final static String ACCOUNT_2FA_EMERGENCY_CODES_KEY = "account:{0}:2fa:emergency:codes"
+
 }

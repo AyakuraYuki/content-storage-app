@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional
 class SettingsService extends BaseBean {
 
     @Autowired
-    SettingsDAO dao
+    private SettingsDAO dao
 
     Settings get(String id) {
         dao.get(id)
