@@ -19,28 +19,28 @@ import javax.sql.DataSource
 @MapperScan(basePackages = 'cc.ayakurayuki.contentstorage', annotationClass = Repository.class)
 class BootApplication {
 
-    @Bean
-    @ConfigurationProperties("spring.datasource")
-    DataSource getDataSource() {
-        new BasicDataSource()
-    }
+  @Bean
+  @ConfigurationProperties("spring.datasource")
+  DataSource getDataSource() {
+    new BasicDataSource()
+  }
 
-    @Bean
-    SqlSessionFactory getSqlSessionFactory() {
-        def sqlSessionFactory = new SqlSessionFactoryBean()
-        def resolver = new PathMatchingResourcePatternResolver()
-        sqlSessionFactory.dataSource = dataSource
-        sqlSessionFactory.mapperLocations = resolver.getResources("/mapping/**/*.xml")
-        sqlSessionFactory.getObject()
-    }
+  @Bean
+  SqlSessionFactory getSqlSessionFactory() {
+    def sqlSessionFactory = new SqlSessionFactoryBean()
+    def resolver = new PathMatchingResourcePatternResolver()
+    sqlSessionFactory.dataSource = dataSource
+    sqlSessionFactory.mapperLocations = resolver.getResources("/mapping/**/*.xml")
+    sqlSessionFactory.getObject()
+  }
 
-    @Bean
-    PlatformTransactionManager getTransactionManager() {
-        new DataSourceTransactionManager(dataSource)
-    }
+  @Bean
+  PlatformTransactionManager getTransactionManager() {
+    new DataSourceTransactionManager(dataSource)
+  }
 
-    static main(args) {
-        SpringApplication.run BootApplication.class, args
-    }
+  static main(args) {
+    SpringApplication.run BootApplication.class as Object[], args
+  }
 
 }

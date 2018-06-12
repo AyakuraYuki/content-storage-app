@@ -16,16 +16,6 @@ spring:
       ddl-auto: update
     show-sql: false
 
-  redis:
-    database: 0
-    host: localhost
-    port: 6379
-    timeout: 5000
-    pool:
-      max-active: 8
-      min-idle: 0
-      max-wait: -1
-
   thymeleaf:
     enabled: true
     encoding: UTF-8

@@ -17,46 +17,46 @@ import javax.servlet.http.HttpServletRequest
 @Controller
 class SettingsController extends BaseBean {
 
-    @Autowired
-    SettingsService settingsService
+  @Autowired
+  SettingsService settingsService
 
-    @RequestMapping("/2FA")
-    def twoStep() {
-        "2FA"
-    }
+  @RequestMapping("/2FA")
+  def twoStep() {
+    "2FA"
+  }
 
-    @RequestMapping("/do2FA")
-    def do2FA(String authCode, HttpServletRequest request) {
-        def code = Long.parseLong(authCode)
-        def googleAuthenticator = new GoogleAuthenticator()
-        googleAuthenticator.windowSize = 5
-        def settings = settingsService.secretSetting
-        def authentic = googleAuthenticator.checkCode(settings.value, code)
-        request.session.setAttribute "authentic", authentic
-        "redirect:/"
-    }
+  @RequestMapping("/do2FA")
+  def do2FA(String authCode, HttpServletRequest request) {
+    def code = Long.parseLong(authCode)
+    def googleAuthenticator = new GoogleAuthenticator()
+    googleAuthenticator.windowSize = 5
+    def settings = settingsService.secretSetting
+    def authentic = googleAuthenticator.checkCode(settings.value, code)
+    request.session.setAttribute "authentic", authentic
+    "redirect:/"
+  }
 
-    @RequestMapping("/register2FA")
-    def register2FA() {
-        "register2FA"
-    }
+  @RequestMapping("/register2FA")
+  def register2FA() {
+    "register2FA"
+  }
 
-    @RequestMapping("/doRegister2FA")
-    def doRegister2FA(String conditionCode, Model model) {
-        model.addAttribute(EMERGENCY, settingsService.generateEmergencyCode())
-        model.addAttribute(
-                "QRCode",
-                GoogleAuthenticator.getQRBarcode(
-                        conditionCode,
-                        settingsService.secretKeyFromDatabase
-                )
+  @RequestMapping("/doRegister2FA")
+  def doRegister2FA(String conditionCode, Model model) {
+    model.addAttribute(EMERGENCY, settingsService.generateEmergencyCode())
+    model.addAttribute(
+        "QRCode",
+        GoogleAuthenticator.getQRBarcode(
+            conditionCode,
+            settingsService.secretKeyFromDatabase
         )
-        "registerResult"
-    }
+    )
+    "registerResult"
+  }
 
-    @RequestMapping("/doReset2FA")
-    def doReset2FA(String recoveryCode, Model model) {
+  @RequestMapping("/doReset2FA")
+  def doReset2FA(String recoveryCode, Model model) {
 
-    }
+  }
 
 }
