@@ -7,6 +7,6 @@ class Content {
 
     String id
     String item
-    String json_data
+    String jsonData
 
 }

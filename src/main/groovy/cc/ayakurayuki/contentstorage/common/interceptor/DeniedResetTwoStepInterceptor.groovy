@@ -1,5 +1,6 @@
 package cc.ayakurayuki.contentstorage.common.interceptor
 
+import cc.ayakurayuki.contentstorage.common.base.BaseBean
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.ModelAndView
 
@@ -12,7 +13,7 @@ import javax.servlet.http.HttpServletResponse
 class DeniedResetTwoStepInterceptor implements HandlerInterceptor {
   @Override
   boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-    if (Boolean.valueOf(request.session.getAttribute('authentic').toString())) {
+    if (Boolean.valueOf(request.session.getAttribute(BaseBean.AUTHENTIC).toString())) {
       response.sendRedirect("/")
       return false
     }

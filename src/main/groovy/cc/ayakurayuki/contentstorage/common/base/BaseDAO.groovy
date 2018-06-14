@@ -6,16 +6,16 @@ package cc.ayakurayuki.contentstorage.common.base
  */
 interface BaseDAO<T> {
 
-    T get(String id)
+  T get(String id)
 
-    List<T> list()
+  List<T> list()
 
-    List<T> search(T t)
+  List<T> search(T t)
 
-    int insert(T t)
+  int insert(T t)
 
-    int update(T t)
+  int update(T t)
 
-    int delete(T t)
+  int delete(T t)
 
 }

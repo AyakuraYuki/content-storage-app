@@ -1,7 +1,6 @@
 package cc.ayakurayuki.contentstorage.module.content.service
 
 import cc.ayakurayuki.contentstorage.common.base.BaseBean
-import cc.ayakurayuki.contentstorage.common.util.EncodeUtils
 import cc.ayakurayuki.contentstorage.common.util.IDUtils
 import cc.ayakurayuki.contentstorage.module.content.dao.ContentDAO
 import cc.ayakurayuki.contentstorage.module.content.entity.Content
@@ -26,7 +25,7 @@ class ContentService extends BaseBean {
   List<Content> list() {
     def list = dao.list()
     list.each {
-      it.json_data = EncodeUtils.decodeBase64String(it.json_data)
+      it.jsonData = decodeBase64(it.jsonData)
     }
     return list
   }
@@ -39,7 +38,7 @@ class ContentService extends BaseBean {
   List<Content> search(Content content) {
     def list = dao.search(content)
     list.each {
-      it.json_data = EncodeUtils.decodeBase64String(it.json_data)
+      it.jsonData = decodeBase64(it.jsonData)
     }
     return list
   }
@@ -51,7 +50,7 @@ class ContentService extends BaseBean {
    */
   Content get(String id) {
     def content = dao.get(id)
-    content.json_data = EncodeUtils.decodeBase64String(content.json_data)
+    content.jsonData = decodeBase64(content.jsonData)
     return content
   }
 
@@ -65,7 +64,7 @@ class ContentService extends BaseBean {
     def content = new Content()
     content.id = IDUtils.UUID()
     content.item = item
-    content.json_data = EncodeUtils.encodeBase64(json_data)
+    content.jsonData = encodeBase64(json_data)
     dao.insert(content)
   }
 
@@ -80,7 +79,7 @@ class ContentService extends BaseBean {
     def content = new Content()
     content.id = id
     content.item = item
-    content.json_data = EncodeUtils.encodeBase64(json_data)
+    content.jsonData = encodeBase64(json_data)
     dao.update(content)
   }
 

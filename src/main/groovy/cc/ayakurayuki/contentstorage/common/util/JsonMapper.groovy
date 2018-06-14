@@ -13,7 +13,10 @@ import org.apache.commons.text.StringEscapeUtils
 
 /**
  * Created by Ayakura Yuki on 2017/9/30.
+ *
+ * @deprecated Using FastJSON
  */
+@Deprecated
 class JsonMapper extends ObjectMapper {
 
   def logger = LogFactory.getLog(JsonMapper.class)
@@ -196,7 +199,7 @@ class JsonMapper extends ObjectMapper {
    * @param clazz
    * @return
    */
-  static Object fromJsonString(String jsonString, Class<?> clazz) {
+  static Object parseObject(String jsonString, Class<?> clazz) {
     return instance.fromJson(jsonString, clazz)
   }
 

@@ -29,10 +29,10 @@
 
   <insert id="insert" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
     INSERT INTO content (
-      id, item, json_data
+      id, item, jsonData
     )
     VALUES (
-      #{id}, #{item}, #{json_data}
+      #{id}, #{item}, #{jsonData}
     );
   </insert>
 
@@ -43,7 +43,7 @@
         item = #{item},
       </if>
       <if test="json_data != null">
-        json_data = #{json_data}
+        jsonData = #{jsonData}
       </if>
     </set>
     WHERE id = #{id};

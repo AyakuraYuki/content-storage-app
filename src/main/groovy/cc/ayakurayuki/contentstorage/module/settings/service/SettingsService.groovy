@@ -3,11 +3,11 @@ package cc.ayakurayuki.contentstorage.module.settings.service
 import cc.ayakurayuki.contentstorage.common.base.BaseBean
 import cc.ayakurayuki.contentstorage.common.util.GoogleAuthenticator
 import cc.ayakurayuki.contentstorage.common.util.IDUtils
-import cc.ayakurayuki.contentstorage.common.util.JsonMapper
-import cc.ayakurayuki.contentstorage.common.util.RandomKeyUtils
+import cc.ayakurayuki.contentstorage.common.util.RandomUtils
 import cc.ayakurayuki.contentstorage.module.settings.dao.SettingsDAO
 import cc.ayakurayuki.contentstorage.module.settings.entity.EmergencyKey
 import cc.ayakurayuki.contentstorage.module.settings.entity.Settings
+import com.alibaba.fastjson.JSON
 import com.google.common.collect.Lists
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -62,7 +62,7 @@ class SettingsService extends BaseBean {
    * 获取特征码
    * @return 特征码字符串
    */
-  String getSecretKeyFromDatabase() {
+  private String getSecretKeyFromDatabase() {
     def settings = secretSetting
     if (settings == null) {
       settings = new Settings()
@@ -81,7 +81,7 @@ class SettingsService extends BaseBean {
    * 获取应急码Settings对象
    * @return
    */
-  Settings getEmergencySetting() {
+  private Settings getEmergencySetting() {
     def by = new Settings()
     by.key = EMERGENCY
     def list = dao.search(by)
@@ -96,7 +96,7 @@ class SettingsService extends BaseBean {
     List<EmergencyKey> list = Lists.newArrayList()
     for (i in 1..10) {
       def key = new EmergencyKey()
-      key.key = RandomKeyUtils.emergencyKey
+      key.key = RandomUtils.emergencyKey
       key.effective = true
       list.add(key)
     }
@@ -105,13 +105,17 @@ class SettingsService extends BaseBean {
       settings = new Settings()
       settings.id = IDUtils.UUID()
       settings.key = EMERGENCY
-      settings.value = JsonMapper.toJsonString(list)
+      settings.value = JSON.toJSONString(list)
       insert(settings)
     } else {
-      settings.value = JsonMapper.toJsonString(list)
+      settings.value = JSON.toJSONString(list)
       update(settings)
     }
     return list
+  }
+
+  String getQRBarcode(String conditionCode){
+    GoogleAuthenticator.getQRBarcode(conditionCode, secretKeyFromDatabase)
   }
 
 }

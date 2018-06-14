@@ -32,12 +32,13 @@ class SettingsController extends BaseBean {
     googleAuthenticator.windowSize = 5
     def settings = settingsService.secretSetting
     def authentic = googleAuthenticator.checkCode(settings.value, code)
-    request.session.setAttribute "authentic", authentic
+    request.session.setAttribute AUTHENTIC, authentic
     "redirect:/"
   }
 
   @RequestMapping("/register2FA")
   def register2FA() {
+
     "register2FA"
   }
 
@@ -46,17 +47,14 @@ class SettingsController extends BaseBean {
     model.addAttribute(EMERGENCY, settingsService.generateEmergencyCode())
     model.addAttribute(
         "QRCode",
-        GoogleAuthenticator.getQRBarcode(
-            conditionCode,
-            settingsService.secretKeyFromDatabase
-        )
+        settingsService.getQRBarcode(conditionCode)
     )
     "registerResult"
   }
 
   @RequestMapping("/doReset2FA")
   def doReset2FA(String recoveryCode, Model model) {
-    
+
   }
 
 }

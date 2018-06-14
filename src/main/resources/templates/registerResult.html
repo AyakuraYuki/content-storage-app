@@ -5,43 +5,43 @@
 <head th:include="common/head::head('Your QRCode')"></head>
 <body>
 <div class="container">
-    <div class="page-header" align="center">
-        <h1>Setup Google Authenticator on your phone
-            <br/>
-            <small>Use your Google Authenticator to scan the QRCode.</small>
-        </h1>
-    </div>
-    <div id="QRCode-div" class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <div align="center">
-                <div id="QRCode-image" style="background-color: #b0b0b0;padding: 20px; border-radius: 5px"></div>
-                <br/>
-                <a th:href="@{/}" class="btn btn-info">Return to Auth</a>
-                <br/>
-                <div align="center">
-                    These codes will allow you to enter this app if you lose your Google Authenticator. <br/>
-                    <strong>Each code can only be used once! Any previously codes no longer work!</strong>
-                </div>
-                <ul>
-                    <li th:each="item:${emergency}" th:text="${item.getKey()}"></li>
-                </ul>
-            </div>
+  <div class="page-header" align="center">
+    <h1>Setup Google Authenticator on your phone
+      <br/>
+      <small>Use your Google Authenticator to scan the QRCode.</small>
+    </h1>
+  </div>
+  <div id="QRCode-div" class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <div align="center">
+        <div id="QRCode-image" style="background-color: #b0b0b0;padding: 20px; border-radius: 5px"></div>
+        <br/>
+        <a th:href="@{/}" class="btn btn-info">Return to Auth</a>
+        <br/>
+        <div align="center">
+          These codes will allow you to enter this app if you lose your Google Authenticator. <br/>
+          <strong>Each code can only be used once! Any previously codes no longer work!</strong>
         </div>
-        <div class="col-md-2"></div>
+        <th:block th:each="item, itemStat:${emergency}">
+          <span th:text="${item.key} + ' ' + ${itemStat.index}"></span><br/>
+        </th:block>
+      </div>
     </div>
+    <div class="col-md-2"></div>
+  </div>
 </div>
 
 <th:block th:include="common/script::script"/>
 <script th:inline="javascript">
-    $('#QRCode-image').qrcode({
-        render: 'canvas',
-        minVersion: 10,
-        size: 280,
-        fill: '#000000',
-        background: '#b0b0b0',
-        text: [[${QRCode}]]
-    })
+  $('#QRCode-image').qrcode({
+    render: 'canvas',
+    minVersion: 10,
+    size: 280,
+    fill: '#000000',
+    background: '#b0b0b0',
+    text: [[${QRCode}]]
+  })
 </script>
 </body>
 </html>

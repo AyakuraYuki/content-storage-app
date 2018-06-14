@@ -1,11 +1,13 @@
-create table content (
-  id        text primary key,
-  item      text not null,
-  json_data text
+DROP TABLE IF EXISTS content;
+CREATE TABLE content (
+  id       TEXT PRIMARY KEY,
+  item     TEXT NOT NULL,
+  jsonData TEXT
 );
 
-create table `settings` (
-  id    text primary key,
-  key   text not null,
-  value text
+DROP TABLE IF EXISTS `settings`;
+CREATE TABLE `settings` (
+  id    TEXT PRIMARY KEY,
+  key   TEXT NOT NULL,
+  value TEXT
 );
