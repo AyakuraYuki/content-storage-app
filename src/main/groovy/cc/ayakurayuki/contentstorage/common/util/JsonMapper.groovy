@@ -7,16 +7,14 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.*
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.util.JSONPObject
-import org.apache.commons.lang3.StringEscapeUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.logging.LogFactory
+import org.apache.commons.text.StringEscapeUtils
 
 /**
  * Created by Ayakura Yuki on 2017/9/30.
  */
 class JsonMapper extends ObjectMapper {
-
-  private static final long serialVersionUID = 1L
 
   def logger = LogFactory.getLog(JsonMapper.class)
 

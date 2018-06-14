@@ -1,15 +1,18 @@
 server:
-  display-name: contentStorage
   port: 8888
+  servlet:
+    application-display-name: contentStorage
 
 
 spring:
   datasource:
-    type: org.apache.commons.dbcp.BasicDataSource
+    type: org.apache.commons.dbcp2.BasicDataSource
     driver-class-name: org.sqlite.JDBC
-    url: jdbc:sqlite::resource:db/storage.db
-    username:
-    password:
+    url: jdbc:sqlite:data/storage.db
+    dbcp2:
+      max-idle: 50
+      max-total: 2000
+      min-idle: 10
 
   jpa:
     database-platform: cc.ayakurayuki.contentstorage.common.dialect.SQLiteDialect
@@ -23,8 +26,9 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
     mode: HTML5
-    content-type: text/html
     cache: false
+    servlet:
+      content-type: text/html
 
   http:
     encoding:
@@ -36,4 +40,3 @@ spring:
 logging:
   file: logs/csa.log
   path: logs
-
