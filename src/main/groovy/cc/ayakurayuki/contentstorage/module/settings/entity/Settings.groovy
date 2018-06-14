@@ -1,12 +1,13 @@
 package cc.ayakurayuki.contentstorage.module.settings.entity
 
 /**
- * Created by Ayakura Yuki on 2017/10/19.
+ * @author ayakurayuki
+ * @date 2017/10/19
  */
 class Settings {
 
-    String id
-    String key
-    String value
+  String id
+  String key
+  String value
 
 }

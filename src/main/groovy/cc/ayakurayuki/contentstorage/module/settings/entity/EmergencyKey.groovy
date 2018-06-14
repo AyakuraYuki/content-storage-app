@@ -1,12 +1,12 @@
 package cc.ayakurayuki.contentstorage.module.settings.entity
 
 /**
- * Created by ayakurayuki on 2018/2/7-14:44. <br/>
- * Package: cc.ayakurayuki.contentstorage.module.settings.entity <br/>
+ * @author ayakurayuki
+ * @date 2018/2/7-14:44
  */
 class EmergencyKey {
 
-    String key
-    boolean effective
+  String key
+  boolean effective
 
 }

@@ -43,8 +43,8 @@ class ContentController extends BaseBean {
 
   @RequestMapping(['/', '/index'])
   def home(Model model) {
-    model.addAttribute "list", contentService.list()
-    "index"
+    model.addAttribute 'list', contentService.list()
+    'index'
   }
 
   @RequestMapping('/search')
@@ -52,16 +52,16 @@ class ContentController extends BaseBean {
     def content = new Content()
     content.item = item
     def list = contentService.search(content)
-    model.addAttribute "list", list
-    "index"
+    model.addAttribute 'list', list
+    'index'
   }
 
   @RequestMapping('/form')
   def form(Content content, Model model) {
     def list = JSON.parseObject(content.jsonData, List.class)
-    model.addAttribute "list", list
-    model.addAttribute "content", content
-    "form"
+    model.addAttribute 'list', list
+    model.addAttribute 'content', content
+    'form'
   }
 
   @RequestMapping('/save')
@@ -81,21 +81,21 @@ class ContentController extends BaseBean {
     } else {
       contentService.update content.id, content.item, content.jsonData
     }
-    "redirect:/"
+    ROOT_PATH
   }
 
   @RequestMapping('/detail')
   def detail(Content content, Model model) {
     def list = JSON.parseObject(content.jsonData, List.class)
-    model.addAttribute "list", list
-    model.addAttribute "content", content
-    "detail"
+    model.addAttribute 'list', list
+    model.addAttribute 'content', content
+    'detail'
   }
 
   @RequestMapping('/delete')
   def delete(Content content) {
     contentService.delete(content.id)
-    "redirect:/"
+    ROOT_PATH
   }
 
 }

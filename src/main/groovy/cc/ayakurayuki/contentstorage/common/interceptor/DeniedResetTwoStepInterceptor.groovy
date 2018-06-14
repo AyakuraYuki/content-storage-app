@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 /**
- * Created by Ayakura Yuki on 2017/10/19.
+ * @author ayakurayuki
+ * @date 2017/10/19
  */
 class DeniedResetTwoStepInterceptor implements HandlerInterceptor {
   @Override

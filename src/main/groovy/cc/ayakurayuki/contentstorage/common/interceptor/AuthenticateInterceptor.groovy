@@ -8,9 +8,11 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 /**
- * Created by Ayakura Yuki on 2017/10/19.
+ * User authenticate interceptor
+ *
+ * @author ayakurayuki
+ * @date 2017/10/19
  */
-
 class AuthenticateInterceptor implements HandlerInterceptor {
 
   @Override
@@ -31,4 +33,5 @@ class AuthenticateInterceptor implements HandlerInterceptor {
   void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object o, Exception e) throws Exception {
 
   }
+
 }

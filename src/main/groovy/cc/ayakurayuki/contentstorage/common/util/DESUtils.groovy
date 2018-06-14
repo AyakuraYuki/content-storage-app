@@ -50,7 +50,7 @@ class DESUtils {
       StringUtils.EMPTY
     }
     try {
-      byte[] bytes = encryptByte(data.bytes, KEY.bytes)
+      byte[] bytes = encryptByte(data.getBytes('UTF-8'), KEY.bytes)
       new String(new Base64().encode(bytes))
     }
     catch (Exception e) {
@@ -70,7 +70,7 @@ class DESUtils {
     try {
       byte[] dataBuf = new Base64().decode(data.bytes)
       byte[] bytes = decryptByte(dataBuf, KEY.bytes)
-      new String(bytes)
+      new String(bytes, 'UTF-8')
     }
     catch (Exception e) {
       e.getMessage()

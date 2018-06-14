@@ -33,7 +33,7 @@ class SettingsController extends BaseBean {
     def settings = settingsService.secretSetting
     def authentic = googleAuthenticator.checkCode(settings.value, code)
     request.session.setAttribute AUTHENTIC, authentic
-    "redirect:/"
+    ROOT_PATH
   }
 
   @RequestMapping("/register2FA")

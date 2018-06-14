@@ -57,14 +57,14 @@ class ContentService extends BaseBean {
   /**
    * 插入新信息
    * @param item
-   * @param json_data
+   * @param jsonData
    * @return
    */
-  int insert(String item, String json_data) {
+  int insert(String item, String jsonData) {
     def content = new Content()
     content.id = IDUtils.UUID()
     content.item = item
-    content.jsonData = encodeBase64(json_data)
+    content.jsonData = encodeBase64(jsonData)
     dao.insert(content)
   }
 
@@ -72,14 +72,14 @@ class ContentService extends BaseBean {
    * 更新信息
    * @param id
    * @param item
-   * @param json_data
+   * @param jsonData
    * @return
    */
-  int update(String id, String item, String json_data) {
+  int update(String id, String item, String jsonData) {
     def content = new Content()
     content.id = id
     content.item = item
-    content.jsonData = encodeBase64(json_data)
+    content.jsonData = encodeBase64(jsonData)
     dao.update(content)
   }
 

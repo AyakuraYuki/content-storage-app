@@ -42,7 +42,7 @@
       <if test="item != null">
         item = #{item},
       </if>
-      <if test="json_data != null">
+      <if test="jsonData != null">
         jsonData = #{jsonData}
       </if>
     </set>

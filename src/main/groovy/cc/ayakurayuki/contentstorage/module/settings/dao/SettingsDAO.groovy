@@ -5,7 +5,8 @@ import cc.ayakurayuki.contentstorage.module.settings.entity.Settings
 import org.springframework.stereotype.Repository
 
 /**
- * Created by Ayakura Yuki on 2017/10/19.
+ * @author ayakurayuki
+ * @date 2017/10/19
  */
 @Repository("SettingsDAO")
 interface SettingsDAO extends BaseDAO<Settings> {
