@@ -1,59 +1,59 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.ayakurayuki.contentstorage.module.content.dao.ContentDAO">
 
-    <sql id="columns">
-        a.id as "id",
-        a.item as "item",
-        a.json_data as "json_data"
-    </sql>
+  <select id="get"
+          parameterType="java.lang.String"
+          resultType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
+    SELECT *
+    FROM content a
+    WHERE id = #{id};
+  </select>
 
-    <resultMap id="accountResultMap" type="cc.ayakurayuki.contentstorage.module.content.entity.Content">
-        <id property="id" column="id"/>
-        <result property="item" column="item"/>
-        <result property="json_data" column="json_data"/>
-    </resultMap>
+  <select id="list" resultType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
+    SELECT *
+    FROM content a
+    ORDER BY a.item
+      ASC;
+  </select>
 
-    <select id="get" parameterType="java.lang.String" resultMap="accountResultMap">
-        select
-        <include refid="columns"/>
-        from content a
-        where id = #{id};
-    </select>
+  <select id="search"
+          parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content"
+          resultType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
+    SELECT *
+    FROM content a
+    WHERE a.item LIKE '%' || #{item} || '%'
+    ORDER BY a.item
+      ASC;
+  </select>
 
-    <select id="list" resultMap="accountResultMap">
-        select
-        <include refid="columns"/>
-        from content a
-        order by a.item asc;
-    </select>
+  <insert id="insert" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
+    INSERT INTO content (
+      id, item, json_data
+    )
+    VALUES (
+      #{id}, #{item}, #{json_data}
+    );
+  </insert>
 
-    <select id="search" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content"
-            resultMap="accountResultMap">
-        select
-        <include refid="columns"/>
-        from content a
-        where a.item like '%' || #{item} || '%'
-        order by a.item asc;
-    </select>
-
-    <insert id="insert" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
-        insert into content (id, item, json_data)
-        values (#{id}, #{item}, #{json_data});
-    </insert>
-
-    <update id="update" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
-        update content set
+  <update id="update" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
+    UPDATE content
+    <set>
+      <if test="item != null">
         item = #{item},
+      </if>
+      <if test="json_data != null">
         json_data = #{json_data}
-        where id = #{id};
-    </update>
+      </if>
+    </set>
+    WHERE id = #{id};
+  </update>
 
-    <delete id="delete" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
-        delete from content
-        where id = #{id};
-    </delete>
+  <delete id="delete" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
+    DELETE FROM content
+    WHERE id = #{id};
+  </delete>
 
 </mapper>

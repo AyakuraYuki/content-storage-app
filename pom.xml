@@ -23,6 +23,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>10</java.version>
+    <groovy.version>2.5.0</groovy.version>
   </properties>
 
   <dependencies>
@@ -33,10 +34,6 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-redis</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -57,7 +54,8 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy</artifactId>
+      <artifactId>groovy-all</artifactId>
+      <version>${groovy.version}</version>
     </dependency>
 
     <dependency>
@@ -141,15 +139,17 @@
         </includes>
       </resource>
     </resources>
-    <sourceDirectory>src/main/java</sourceDirectory>
+    <sourceDirectory>src/main/groovy</sourceDirectory>
+    <testSourceDirectory>src/test/groovy</testSourceDirectory>
     <outputDirectory>target/classes</outputDirectory>
-    <testSourceDirectory>src/test/java</testSourceDirectory>
-    <testOutputDirectory>target/test-classes</testOutputDirectory>
+    <testOutputDirectory>target/test/classes</testOutputDirectory>
+
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
+
       <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
@@ -157,17 +157,18 @@
         <executions>
           <execution>
             <goals>
-              <goal>addSources</goal>
-              <goal>addTestSources</goal>
-              <goal>generateStubs</goal>
+              <goal>execute</goal>
               <goal>compile</goal>
-              <goal>testGenerateStubs</goal>
-              <goal>testCompile</goal>
-              <goal>removeStubs</goal>
-              <goal>removeTestStubs</goal>
             </goals>
           </execution>
         </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>${groovy.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>

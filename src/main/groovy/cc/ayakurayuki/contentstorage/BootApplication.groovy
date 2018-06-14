@@ -40,7 +40,7 @@ class BootApplication {
   }
 
   static main(args) {
-    SpringApplication.run BootApplication.class as Object[], args
+    SpringApplication.run BootApplication.class, args
   }
 
 }

@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * Created by Ayakura Yuki on 2017/10/19.
  */
 @Configuration
-class InterceptorConfigurer extends WebMvcConfigurerAdapter {
+class InterceptorConfig extends WebMvcConfigurerAdapter {
 
     @Override
     void addInterceptors(InterceptorRegistry registry) {

@@ -56,7 +56,7 @@ class SettingsController extends BaseBean {
 
   @RequestMapping("/doReset2FA")
   def doReset2FA(String recoveryCode, Model model) {
-
+    
   }
 
 }
