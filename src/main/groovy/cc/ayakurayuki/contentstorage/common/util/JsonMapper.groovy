@@ -16,190 +16,190 @@ import org.apache.commons.logging.LogFactory
  */
 class JsonMapper extends ObjectMapper {
 
-    private static final long serialVersionUID = 1L
+  private static final long serialVersionUID = 1L
 
-    def logger = LogFactory.getLog(JsonMapper.class)
+  def logger = LogFactory.getLog(JsonMapper.class)
 
-    private static JsonMapper mapper
+  private static JsonMapper mapper
 
-    JsonMapper() {
-        this(JsonInclude.Include.NON_EMPTY)
+  JsonMapper() {
+    this(JsonInclude.Include.NON_EMPTY)
+  }
+
+  JsonMapper(JsonInclude.Include include) {
+    // 设置输出时包含属性的风格
+    if (include != null) {
+      this.serializationInclusion = include
     }
-
-    JsonMapper(JsonInclude.Include include) {
-        // 设置输出时包含属性的风格
-        if (include != null) {
-            this.serializationInclusion = include
-        }
-        // 允许单引号、允许不带引号的字段名称
-        this.enableSimple()
-        // 设置输入时忽略在JSON字符串中存在但Java对象实际没有的属性
-        this.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-        // 空值处理为空串
-        this.serializerProvider.nullValueSerializer = new JsonSerializer<Object>() {
-            @Override
-            void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
-                gen.writeString(StringUtils.EMPTY)
-            }
-        }
-        // 进行HTML解码。
-        this.registerModule(new SimpleModule().addSerializer(String.class, new JsonSerializer<String>() {
-            @Override
-            void serialize(String value, JsonGenerator jsonGenerator, SerializerProvider provider) throws IOException, JsonProcessingException {
-                jsonGenerator.writeString(StringEscapeUtils.unescapeHtml4(value))
-            }
-        }))
-        // 设置时区
-        this.timeZone = TimeZone.default // GMT+8:00
+    // 允许单引号、允许不带引号的字段名称
+    this.enableSimple()
+    // 设置输入时忽略在JSON字符串中存在但Java对象实际没有的属性
+    this.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+    // 空值处理为空串
+    this.serializerProvider.nullValueSerializer = new JsonSerializer<Object>() {
+      @Override
+      void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
+        gen.writeString(StringUtils.EMPTY)
+      }
     }
+    // 进行HTML解码。
+    this.registerModule(new SimpleModule().addSerializer(String.class, new JsonSerializer<String>() {
+      @Override
+      void serialize(String value, JsonGenerator jsonGenerator, SerializerProvider provider) throws IOException, JsonProcessingException {
+        jsonGenerator.writeString(StringEscapeUtils.unescapeHtml4(value))
+      }
+    }))
+    // 设置时区
+    this.timeZone = TimeZone.default // GMT+8:00
+  }
 
-    /**
-     * 创建只输出非Null且非Empty(如List.isEmpty)的属性到Json字符串的Mapper,建议在外部接口中使用.
-     */
-    static JsonMapper getInstance() {
-        if (mapper == null) {
-            mapper = new JsonMapper().enableSimple()
-        }
-        return mapper
+  /**
+   * 创建只输出非Null且非Empty(如List.isEmpty)的属性到Json字符串的Mapper,建议在外部接口中使用.
+   */
+  static JsonMapper getInstance() {
+    if (mapper == null) {
+      mapper = new JsonMapper().enableSimple()
     }
+    return mapper
+  }
 
-    /**
-     * 创建只输出初始值被改变的属性到Json字符串的Mapper, 最节约的存储方式，建议在内部接口中使用。
-     */
-    static JsonMapper nonDefaultMapper() {
-        if (mapper == null) {
-            mapper = new JsonMapper(JsonInclude.Include.NON_DEFAULT)
-        }
-        return mapper
+  /**
+   * 创建只输出初始值被改变的属性到Json字符串的Mapper, 最节约的存储方式，建议在内部接口中使用。
+   */
+  static JsonMapper nonDefaultMapper() {
+    if (mapper == null) {
+      mapper = new JsonMapper(JsonInclude.Include.NON_DEFAULT)
     }
+    return mapper
+  }
 
-    /**
-     * Object可以是POJO，也可以是Collection或数组。 如果对象为Null, 返回"null". 如果集合为空集合, 返回"[]".
-     */
-    String toJson(Object object) {
-        try {
-            return this.writeValueAsString(object)
-        } catch (IOException e) {
-            logger.warn "Write to json string error: ${object}", e
-            return null
-        }
+  /**
+   * Object可以是POJO，也可以是Collection或数组。 如果对象为Null, 返回"null". 如果集合为空集合, 返回"[]".
+   */
+  String toJson(Object object) {
+    try {
+      return this.writeValueAsString(object)
+    } catch (IOException e) {
+      logger.warn "Write to json string error: ${object}", e
+      return null
     }
+  }
 
-    /**
-     * 反序列化POJO或简单Collection如List<String>.
-     * <p>
-     * 如果JSON字符串为Null或"null"字符串, 返回Null. 如果JSON字符串为"[]", 返回空集合.
-     * <p>
-     * 如需反序列化复杂Collection如List<MyBean>, 请使用fromJson(String,JavaType)
-     *
-     * @see #fromJson(String, com.fasterxml.jackson.databind.JavaType)
-     */
-    def <T> T fromJson(String jsonString, Class<T> clazz) {
-        if (StringUtils.isEmpty(jsonString)) {
-            return null
-        }
-        try {
-            return this.readValue(jsonString, clazz)
-        } catch (IOException e) {
-            logger.warn "Parse json string error: ${jsonString}", e
-            return null
-        }
+  /**
+   * 反序列化POJO或简单Collection如List<String>.
+   * <p>
+   * 如果JSON字符串为Null或"null"字符串, 返回Null. 如果JSON字符串为"[]", 返回空集合.
+   * <p>
+   * 如需反序列化复杂Collection如List<MyBean>, 请使用fromJson(String,JavaType)
+   *
+   * @see #fromJson(String, com.fasterxml.jackson.databind.JavaType)
+   */
+  def <T> T fromJson(String jsonString, Class<T> clazz) {
+    if (StringUtils.isEmpty(jsonString)) {
+      return null
     }
+    try {
+      return this.readValue(jsonString, clazz)
+    } catch (IOException e) {
+      logger.warn "Parse json string error: ${jsonString}", e
+      return null
+    }
+  }
 
-    /**
-     * 反序列化复杂的Collection, 如List<Bean>, 先使用createCollectionType()构造类型, 然后调用该方法
-     *
-     * @see #createCollectionType(Class, Class ...)
-     */
-    @SuppressWarnings("unchecked")
-    <T> T fromJson(String jsonString, JavaType javaType) {
-        if (StringUtils.isEmpty(jsonString)) {
-            return null
-        }
-        try {
-            return (T) this.readValue(jsonString, javaType)
-        } catch (IOException e) {
-            logger.warn "Parse json string error: ${jsonString}", e
-            return null
-        }
+  /**
+   * 反序列化复杂的Collection, 如List<Bean>, 先使用createCollectionType()构造类型, 然后调用该方法
+   *
+   * @see #createCollectionType(Class, Class ...)
+   */
+  @SuppressWarnings("unchecked")
+  <T> T fromJson(String jsonString, JavaType javaType) {
+    if (StringUtils.isEmpty(jsonString)) {
+      return null
     }
+    try {
+      return (T) this.readValue(jsonString, javaType)
+    } catch (IOException e) {
+      logger.warn "Parse json string error: ${jsonString}", e
+      return null
+    }
+  }
 
-    /**
-     * 构造泛型的Collection Type, 如:
-     * ArrayList<MyBean>, 则调用constructCollectionType(ArrayList.class,MyBean.class)
-     * HashMap<String,MyBean>, 则调用(HashMap.class,String.class, MyBean.class)
-     */
-    JavaType createCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {
-        return this.typeFactory.constructParametricType(collectionClass, elementClasses)
-    }
+  /**
+   * 构造泛型的Collection Type, 如:
+   * ArrayList<MyBean>, 则调用constructCollectionType(ArrayList.class,MyBean.class)
+   * HashMap<String,MyBean>, 则调用(HashMap.class,String.class, MyBean.class)
+   */
+  JavaType createCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {
+    return this.typeFactory.constructParametricType(collectionClass, elementClasses)
+  }
 
-    /**
-     * 当JSON里只含有Bean的部分属性时, 更新一个已存在的Bean, 只覆盖该部分的属性
-     */
-    @SuppressWarnings("unchecked")
-    <T> T update(String jsonString, T object) {
-        try {
-            return (T) this.readerForUpdating(object).readValue(jsonString)
-        } catch (JsonProcessingException e) {
-            logger.warn "Update json string: ${jsonString} to object: ${object} error.", e
-        } catch (IOException e) {
-            logger.warn "Update json string: ${jsonString} to object: ${object} error.", e
-        }
-        return null
+  /**
+   * 当JSON里只含有Bean的部分属性时, 更新一个已存在的Bean, 只覆盖该部分的属性
+   */
+  @SuppressWarnings("unchecked")
+  <T> T update(String jsonString, T object) {
+    try {
+      return (T) this.readerForUpdating(object).readValue(jsonString)
+    } catch (JsonProcessingException e) {
+      logger.warn "Update json string: ${jsonString} to object: ${object} error.", e
+    } catch (IOException e) {
+      logger.warn "Update json string: ${jsonString} to object: ${object} error.", e
     }
+    return null
+  }
 
-    /**
-     * 输出JsonP格式的数据
-     */
-    String toJsonP(String functionName, Object object) {
-        return toJson(new JSONPObject(functionName, object))
-    }
+  /**
+   * 输出JsonP格式的数据
+   */
+  String toJsonP(String functionName, Object object) {
+    return toJson(new JSONPObject(functionName, object))
+  }
 
-    /**
-     * 设定是否使用Enum的toString()来读写Enum, false时使用Enum的name()来读写Enum, 默认false
-     * 注意：该方法一定要在Mapper创建后, 所有的读写动作之前调用
-     */
-    JsonMapper enableEnumUseToString() {
-        this.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
-        this.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING)
-        return this
-    }
+  /**
+   * 设定是否使用Enum的toString()来读写Enum, false时使用Enum的name()来读写Enum, 默认false
+   * 注意：该方法一定要在Mapper创建后, 所有的读写动作之前调用
+   */
+  JsonMapper enableEnumUseToString() {
+    this.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
+    this.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING)
+    return this
+  }
 
-    /**
-     * 允许单引号 允许不带单引号的字段名称
-     */
-    JsonMapper enableSimple() {
-        this.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
-        this.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
-        return this
-    }
+  /**
+   * 允许单引号 允许不带单引号的字段名称
+   */
+  JsonMapper enableSimple() {
+    this.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
+    this.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
+    return this
+  }
 
-    /**
-     * 取出Mapper做进一步的设置或使用其他序列化API
-     */
-    ObjectMapper getMapper() {
-        return this
-    }
+  /**
+   * 取出Mapper做进一步的设置或使用其他序列化API
+   */
+  ObjectMapper getMapper() {
+    return this
+  }
 
-    /**
-     * 对象转换为JSON字符串
-     *
-     * @param object
-     * @return
-     */
-    static String toJsonString(Object object) {
-        return instance.toJson(object)
-    }
+  /**
+   * 对象转换为JSON字符串
+   *
+   * @param object
+   * @return
+   */
+  static String toJsonString(Object object) {
+    return instance.toJson(object)
+  }
 
-    /**
-     * JSON字符串转换为对象
-     *
-     * @param jsonString
-     * @param clazz
-     * @return
-     */
-    static Object fromJsonString(String jsonString, Class<?> clazz) {
-        return instance.fromJson(jsonString, clazz)
-    }
+  /**
+   * JSON字符串转换为对象
+   *
+   * @param jsonString
+   * @param clazz
+   * @return
+   */
+  static Object fromJsonString(String jsonString, Class<?> clazz) {
+    return instance.fromJson(jsonString, clazz)
+  }
 
 }

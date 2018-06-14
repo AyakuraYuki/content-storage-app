@@ -7,20 +7,20 @@ import java.security.SecureRandom
  */
 class IDUtils {
 
-    def static random = new SecureRandom()
+  def static random = new SecureRandom()
 
-    def static UUID() {
-        UUID.randomUUID().toString().replaceAll("-", "").toUpperCase()
-    }
+  def static UUID() {
+    UUID.randomUUID().toString().replaceAll("-", "").toUpperCase()
+  }
 
-    def static randomLong() {
-        Math.abs(random.nextLong())
-    }
+  def static randomLong() {
+    Math.abs(random.nextLong())
+  }
 
-    def static randomBase62(int length) {
-        def randomBytes = new byte[length]
-        random.nextBytes(randomBytes)
-        EncodeUtils.encodeBase62(randomBytes)
-    }
+  def static randomBase62(int length) {
+    def randomBytes = new byte[length]
+    random.nextBytes(randomBytes)
+    EncodeUtils.encodeBase62(randomBytes)
+  }
 
 }

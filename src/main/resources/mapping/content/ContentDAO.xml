@@ -4,8 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.ayakurayuki.contentstorage.module.content.dao.ContentDAO">
 
-  <select id="get"
-          parameterType="java.lang.String"
+  <select id="get" parameterType="java.lang.String"
           resultType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
     SELECT *
     FROM content a
@@ -19,8 +18,7 @@
       ASC;
   </select>
 
-  <select id="search"
-          parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content"
+  <select id="search" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content"
           resultType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
     SELECT *
     FROM content a
