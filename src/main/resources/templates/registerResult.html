@@ -5,12 +5,9 @@
 <head th:include="common/head::head('Your QRCode')"></head>
 <body>
 <div class="container">
-  <div class="page-header" align="center">
-    <h1>Setup Google Authenticator on your phone
-      <br/>
-      <small>Use your Google Authenticator to scan the QRCode.</small>
-    </h1>
-  </div>
+  <div th:include="common/page-header::header(
+    'Setup Google Authenticator on your phone',
+    'Use your Google Authenticator to scan the QRCode.')" align="center"></div>
   <div id="QRCode-div" class="row">
     <div class="col-md-2"></div>
     <div class="col-md-8">
@@ -18,14 +15,20 @@
         <div id="QRCode-image" style="background-color: #b0b0b0;padding: 20px; border-radius: 5px"></div>
         <br/>
         <a th:href="@{/}" class="btn btn-info">Return to Auth</a>
-        <br/>
+        <br/><br/><br/>
         <div align="center">
           These codes will allow you to enter this app if you lose your Google Authenticator. <br/>
           <strong>Each code can only be used once! Any previously codes no longer work!</strong>
         </div>
-        <th:block th:each="item, itemStat:${emergency}">
-          <span th:text="${item.key} + ' ' + ${itemStat.index}"></span><br/>
-        </th:block>
+        <br/>
+        <div id="emergencyCodes">
+          <th:block th:each="item, itemStat:${emergency}">
+            <span th:text="${item.key}"></span>
+            <span th:text="' | '"
+                  th:if="${itemStat.index != emergency.size() / 2 - 1 and itemStat.index != emergency.size() - 1}"></span>
+            <br th:if="${itemStat.index == emergency.size() / 2 - 1}"/>
+          </th:block>
+        </div>
       </div>
     </div>
     <div class="col-md-2"></div>

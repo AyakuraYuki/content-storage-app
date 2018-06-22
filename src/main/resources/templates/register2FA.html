@@ -3,12 +3,10 @@
 <head th:include="common/head::head('Google Authenticator Register')"></head>
 <body>
 <div class="container">
-  <div class="page-header" align="center">
-    <h1>Google Authenticator Register
-      <br/>
-      <small>Enter the condition code for your Google Authenticator.</small>
-    </h1>
-  </div>
+  <div th:include="common/page-header::header(
+    'Google Authenticator Register',
+    'Enter the condition code for your Google Authenticator.'
+  )" align="center"></div>
   <div id="key-code-div" class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6">

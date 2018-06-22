@@ -3,15 +3,10 @@
 <head th:include="common/head::head('Two-step Authentication')"></head>
 <body>
 <div class="container">
-  <div class="page-header" align="center">
-    <h1>Content Storage App
-      <br/>
-      <small>
-        I need to confirm your identity before your access.<br/>
-        Please enter the code from Google Authenticator on your phone.
-      </small>
-    </h1>
-  </div>
+  <div th:include="common/page-header::header(
+    'Content Storage App',
+    'I need to confirm your identity before your access.<br/>'
+    + 'Please enter the code from Google Authenticator on your phone.')" align="center"></div>
   <div id="auth-div" class="row">
     <div class="col-md-4"></div>
     <div class="col-md-4">

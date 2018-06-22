@@ -2,16 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:include="common/head::head('Reset 2FA method')"></head>
 <body>
-<div class="page-header" align="center">
-  <h1>Reset your 2FA
-    <br/>
-    <small>
-      I notice that you've already registered 2FA method.<br/><br/>
-      To continue, I request a recovery code, then help you to setup a new 2FA method, <br/>
-      or just let you get into dashboard without any action.
-    </small>
-  </h1>
-</div>
+<div th:include="common/page-header::header(
+    'Reset your 2FA',
+    'I notice that you\'ve already registered 2FA method.<br/><br/>'
+    + 'To continue, I request a recovery code, then help you to setup a new 2FA method, <br/>'
+    + 'or just let you get into dashboard without any action.')" align="center"></div>
 <div id="key-code-div" class="row">
   <div class="col-md-3"></div>
   <div class="col-md-6">
