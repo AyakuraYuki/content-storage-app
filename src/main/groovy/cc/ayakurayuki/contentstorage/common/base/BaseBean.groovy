@@ -8,19 +8,19 @@ import cc.ayakurayuki.contentstorage.common.util.DESUtils
  */
 class BaseBean {
 
-  final static String SECRET = 'secret'
-  final static String EMERGENCY = 'emergency'
-  final static String AUTHENTIC = 'authentic'
+  final static def SECRET = 'secret'
+  final static def EMERGENCY = 'emergency'
+  final static def AUTHENTIC = 'authentic'
 
-  final static String ROOT_PATH = 'redirect:/'
+  final static def ROOT_PATH = 'redirect:/'
 
-  static String decodeBase64(String jsonData) {
-//    EncodeUtils.decodeBase64String(jsonData)
+  static String decodeJSON(String jsonData) {
+    // EncodeUtils.decodeBase64String(jsonData)
     DESUtils.decrypt(jsonData)
   }
 
-  static String encodeBase64(String jsonData) {
-//    EncodeUtils.encodeBase64(jsonData)
+  static String encodeJSON(String jsonData) {
+    // EncodeUtils.encodeBase64(jsonData)
     DESUtils.encrypt(jsonData)
   }
 

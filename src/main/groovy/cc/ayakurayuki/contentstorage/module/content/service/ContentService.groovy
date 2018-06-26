@@ -25,7 +25,7 @@ class ContentService extends BaseBean {
   List<Content> list() {
     def list = dao.list()
     list.each {
-      it.jsonData = decodeBase64(it.jsonData)
+      it.jsonData = decodeJSON(it.jsonData)
     }
     return list
   }
@@ -38,7 +38,7 @@ class ContentService extends BaseBean {
   List<Content> search(Content content) {
     def list = dao.search(content)
     list.each {
-      it.jsonData = decodeBase64(it.jsonData)
+      it.jsonData = decodeJSON(it.jsonData)
     }
     return list
   }
@@ -50,7 +50,7 @@ class ContentService extends BaseBean {
    */
   Content get(String id) {
     def content = dao.get(id)
-    content.jsonData = decodeBase64(content.jsonData)
+    content.jsonData = decodeJSON(content.jsonData)
     return content
   }
 
@@ -64,7 +64,7 @@ class ContentService extends BaseBean {
     def content = new Content()
     content.id = IDUtils.UUID()
     content.item = item
-    content.jsonData = encodeBase64(jsonData)
+    content.jsonData = encodeJSON(jsonData)
     dao.insert(content)
   }
 
@@ -79,7 +79,7 @@ class ContentService extends BaseBean {
     def content = new Content()
     content.id = id
     content.item = item
-    content.jsonData = encodeBase64(jsonData)
+    content.jsonData = encodeJSON(jsonData)
     dao.update(content)
   }
 

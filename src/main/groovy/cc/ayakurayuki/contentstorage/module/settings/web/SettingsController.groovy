@@ -1,7 +1,6 @@
 package cc.ayakurayuki.contentstorage.module.settings.web
 
 import cc.ayakurayuki.contentstorage.common.base.BaseBean
-import cc.ayakurayuki.contentstorage.common.util.GoogleAuthenticator
 import cc.ayakurayuki.contentstorage.module.settings.service.SettingsService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -27,11 +26,7 @@ class SettingsController extends BaseBean {
 
   @RequestMapping("/do2FA")
   def do2FA(String authCode, HttpServletRequest request) {
-    def code = Long.parseLong(authCode)
-    def googleAuthenticator = new GoogleAuthenticator()
-    googleAuthenticator.windowSize = 5
-    def settings = settingsService.secretSetting
-    def authentic = googleAuthenticator.checkCode(settings.value, code)
+    def authentic = settingsService.validateAuthCode(authCode)
     request.session.setAttribute AUTHENTIC, authentic
     ROOT_PATH
   }
@@ -44,11 +39,8 @@ class SettingsController extends BaseBean {
 
   @RequestMapping("/doRegister2FA")
   def doRegister2FA(String conditionCode, Model model) {
-    model.addAttribute(EMERGENCY, settingsService.generateEmergencyCode())
-    model.addAttribute(
-        "QRCode",
-        settingsService.getQRBarcode(conditionCode)
-    )
+    model.addAttribute EMERGENCY, settingsService.generateEmergencyCode()
+    model.addAttribute("QRCode", settingsService.getQRBarcode(conditionCode))
     "registerResult"
   }
 

@@ -35,15 +35,15 @@ class SettingsService extends BaseBean {
     dao.search(settings)
   }
 
-  int insert(Settings settings) {
+  private def insert(Settings settings) {
     dao.insert(settings)
   }
 
-  int update(Settings settings) {
+  def update(Settings settings) {
     dao.update(settings)
   }
 
-  int delete(Settings settings) {
+  def delete(Settings settings) {
     dao.delete(settings)
   }
 
@@ -51,7 +51,7 @@ class SettingsService extends BaseBean {
    * 从数据库获取包含Google Authenticator特征码的Settings对象。
    * @return 数据库中存在的对象，不存在则返回null。
    */
-  Settings getSecretSetting() {
+  private Settings getSecretSetting() {
     def by = new Settings()
     by.key = SECRET
     def list = dao.search(by)
@@ -88,6 +88,14 @@ class SettingsService extends BaseBean {
     list.size() == 0 ? null : list.get(0)
   }
 
+  def validateAuthCode(def authCode) {
+    def code = Long.valueOf(authCode as String)
+    def googleAuthenticator = new GoogleAuthenticator()
+    googleAuthenticator.windowSize = 5
+    def settings = secretSetting
+    googleAuthenticator.checkCode(settings.value, code)
+  }
+
   /**
    * 获取应急码
    * @return
@@ -114,7 +122,7 @@ class SettingsService extends BaseBean {
     return list
   }
 
-  String getQRBarcode(String conditionCode){
+  String getQRBarcode(String conditionCode) {
     GoogleAuthenticator.getQRBarcode(conditionCode, secretKeyFromDatabase)
   }
 

@@ -17,19 +17,36 @@ class GoogleAuthenticator {
   /**
    * 生成的key长度 Generate secret key length
    */
-  public static final int SECRET_SIZE = 10
+  public static final def SECRET_SIZE = 10
+
   /**
    * 随机密钥种子 The seed of random secret key generator
    */
-  public static final String SEED = "g8GjEvTbW5oVSV7avL47357438reyhreyuryetredLDVKs2m0QN7vxRs2im5MDaNCWGmcD2rvcZx"
+  public static final def SEED = 'g8GjEvTbW5oVSV7avL47357438reyhreyuryetredLDVKs2m0QN7vxRs2im5MDaNCWGmcD2rvcZx'
+
   /**
    * Java实现随机数算法 Random number algorithm, implement by Java
    */
-  public static final String RANDOM_NUMBER_ALGORITHM = "SHA1PRNG"
+  public static final def RANDOM_NUMBER_ALGORITHM = 'SHA1PRNG'
+
   /**
    * 最多可偏移的时间 Max window size, default: 3, max: 17
    */
   int windowSize = 3
+
+  /**
+   * Set the windows size. This is an integer value representing the number of
+   * 30 second windows we allow The bigger the window, the more tolerant of
+   * clock skew we are.
+   *
+   * @param s
+   *  window size - must be >=1 and <=17. Other values are ignored
+   */
+  void setWindowSize(int s) {
+    if (s >= 1 && s <= 17) {
+      windowSize = s
+    }
+  }
 
   private static int verifyCode(byte[] key, long t) throws NoSuchAlgorithmException, InvalidKeyException {
     def data = new byte[8]
@@ -56,20 +73,6 @@ class GoogleAuthenticator {
   }
 
   /**
-   * Set the windows size. This is an integer value representing the number of
-   * 30 second windows we allow The bigger the window, the more tolerant of
-   * clock skew we are.
-   *
-   * @param s
-   *  window size - must be >=1 and <=17. Other values are ignored
-   */
-  void setWindowSize(int s) {
-    if (s >= 1 && s <= 17) {
-      windowSize = s
-    }
-  }
-
-  /**
    * Generate a random secret key. This must be saved by the server and
    * associated with the users account to verify the code displayed by Google
    * Authenticator. The user must register this secret on their device.
@@ -78,7 +81,7 @@ class GoogleAuthenticator {
    *
    * @return secret key
    */
-  static String generateSecretKey() {
+  static generateSecretKey() {
     try {
       def secureRandom = SecureRandom.getInstance(RANDOM_NUMBER_ALGORITHM)
       secureRandom.setSeed(Base64.decodeBase64(SEED))
