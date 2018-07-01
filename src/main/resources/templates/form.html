@@ -41,7 +41,7 @@
           </li>
         </ul>
       </div>
-      <div id="itemButtonDiv" class="input-group" align="center" style="margin: 20px auto;">
+      <div id="item-button-div" class="input-group" align="center" style="margin: 20px auto;">
         <div class="row">
           <div class="col-md-5" align="right">
             <a class="btn btn-default" onclick="addInputGroup()">Add item</a>
@@ -78,7 +78,7 @@
   });
 
   function addInputGroup() {
-    $('#itemButtonDiv').fadeIn(200, function () {
+    $('#item-button-div').fadeIn(200, function () {
       $(this).slideDown(200);
     });
     $('#items').find('ul').append(

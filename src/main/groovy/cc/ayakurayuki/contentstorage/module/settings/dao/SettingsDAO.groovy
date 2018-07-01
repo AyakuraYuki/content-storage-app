@@ -1,20 +1,19 @@
 package cc.ayakurayuki.contentstorage.module.settings.dao
 
 import cc.ayakurayuki.contentstorage.module.settings.entity.Settings
+import org.apache.ibatis.annotations.Param
 import org.springframework.stereotype.Repository
 
 /**
  * @author ayakurayuki
  * @date 2017/10/19
  */
-@Repository("SettingsDAO")
+@Repository('SettingsDAO')
 interface SettingsDAO {
 
   Settings get(String id)
 
-  List<Settings> list()
-
-  List<Settings> search(Settings t)
+  Settings getByKey(@Param('key') String key)
 
   int insert(Settings t)
 

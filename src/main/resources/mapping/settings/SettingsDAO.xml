@@ -7,20 +7,14 @@
   <select id="get" parameterType="java.lang.String"
           resultType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
     SELECT *
-    FROM settings a
-    WHERE a.id = #{id};
+    FROM settings
+    WHERE id = #{id};
   </select>
 
-  <select id="list" resultType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
+  <select id="getByKey" resultType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
     SELECT *
-    FROM settings a;
-  </select>
-
-  <select id="search" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings"
-          resultType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
-    SELECT *
-    FROM settings a
-    WHERE a.`key` LIKE '%' || #{key} || '%';
+    FROM settings
+    WHERE key = #{key};
   </select>
 
   <insert id="insert" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
@@ -34,9 +28,14 @@
 
   <update id="update" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
     UPDATE settings
-    SET
-      `key` = #{key},
-      value = #{value}
+    <set>
+      <if test="key != null">
+        `key` = #{key},
+      </if>
+      <if test="value != null">
+        value = #{value}
+      </if>
+    </set>
     WHERE id = #{id};
   </update>
 

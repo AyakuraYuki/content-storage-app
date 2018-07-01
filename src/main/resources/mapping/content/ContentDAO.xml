@@ -7,24 +7,24 @@
   <select id="get" parameterType="java.lang.String"
           resultType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
     SELECT *
-    FROM content a
+    FROM content
     WHERE id = #{id};
   </select>
 
   <select id="list" resultType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
     SELECT *
-    FROM content a
-    ORDER BY a.item
+    FROM content
+    ORDER BY item
       ASC;
   </select>
 
-  <select id="search" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content"
-          resultType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
+  <select id="search" resultType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
     SELECT *
-    FROM content a
-    WHERE a.item LIKE '%' || #{item} || '%'
-    ORDER BY a.item
-      ASC;
+    FROM content
+    <if test="item != null">
+      WHERE item LIKE '%' || #{item} || '%'
+    </if>
+    ORDER BY item ASC;
   </select>
 
   <insert id="insert" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
@@ -49,7 +49,7 @@
     WHERE id = #{id};
   </update>
 
-  <delete id="delete" parameterType="cc.ayakurayuki.contentstorage.module.content.entity.Content">
+  <delete id="delete">
     DELETE FROM content
     WHERE id = #{id};
   </delete>

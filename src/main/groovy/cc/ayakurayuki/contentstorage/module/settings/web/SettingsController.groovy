@@ -40,7 +40,7 @@ class SettingsController extends BaseBean {
   @RequestMapping("/doRegister2FA")
   def doRegister2FA(String conditionCode, Model model) {
     model.addAttribute EMERGENCY, settingsService.generateEmergencyCode()
-    model.addAttribute("QRCode", settingsService.getQRBarcode(conditionCode))
+    model.addAttribute("QRCode", settingsService.getQRCode(conditionCode))
     "registerResult"
   }
 

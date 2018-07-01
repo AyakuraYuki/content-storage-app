@@ -21,30 +21,22 @@ import org.springframework.transaction.annotation.Transactional
 class SettingsService extends BaseBean {
 
   @Autowired
-  SettingsDAO dao
+  SettingsDAO settingsDAO
 
   Settings get(String id) {
-    dao.get(id)
-  }
-
-  List<Settings> list() {
-    dao.list()
-  }
-
-  List<Settings> search(Settings settings) {
-    dao.search(settings)
+    settingsDAO.get(id)
   }
 
   private def insert(Settings settings) {
-    dao.insert(settings)
+    settingsDAO.insert(settings)
   }
 
   def update(Settings settings) {
-    dao.update(settings)
+    settingsDAO.update(settings)
   }
 
   def delete(Settings settings) {
-    dao.delete(settings)
+    settingsDAO.delete(settings)
   }
 
   /**
@@ -52,10 +44,15 @@ class SettingsService extends BaseBean {
    * @return 数据库中存在的对象，不存在则返回null。
    */
   private Settings getSecretSetting() {
-    def by = new Settings()
-    by.key = SECRET
-    def list = dao.search(by)
-    list.size() == 0 ? null : list.get(0)
+    settingsDAO.getByKey(SECRET)
+  }
+
+  /**
+   * 获取应急码Settings对象
+   * @return
+   */
+  private Settings getEmergencySetting() {
+    settingsDAO.getByKey(EMERGENCY)
   }
 
   /**
@@ -64,7 +61,7 @@ class SettingsService extends BaseBean {
    */
   private String getSecretKeyFromDatabase() {
     def settings = secretSetting
-    if (settings == null) {
+    if (null == settings) {
       settings = new Settings()
       settings.id = IDUtils.UUID()
       settings.key = SECRET
@@ -77,23 +74,12 @@ class SettingsService extends BaseBean {
     return settings.value
   }
 
-  /**
-   * 获取应急码Settings对象
-   * @return
-   */
-  private Settings getEmergencySetting() {
-    def by = new Settings()
-    by.key = EMERGENCY
-    def list = dao.search(by)
-    list.size() == 0 ? null : list.get(0)
-  }
-
   def validateAuthCode(def authCode) {
     def code = Long.valueOf(authCode as String)
     def googleAuthenticator = new GoogleAuthenticator()
     googleAuthenticator.windowSize = 5
     def settings = secretSetting
-    googleAuthenticator.checkCode(settings.value, code)
+    return googleAuthenticator.checkCode(settings.value, code)
   }
 
   /**
@@ -109,7 +95,7 @@ class SettingsService extends BaseBean {
       list.add(key)
     }
     def settings = emergencySetting
-    if (settings == null) {
+    if (null == settings) {
       settings = new Settings()
       settings.id = IDUtils.UUID()
       settings.key = EMERGENCY
@@ -122,8 +108,8 @@ class SettingsService extends BaseBean {
     return list
   }
 
-  String getQRBarcode(String conditionCode) {
-    GoogleAuthenticator.getQRBarcode(conditionCode, secretKeyFromDatabase)
+  String getQRCode(String conditionCode) {
+    GoogleAuthenticator.getQRCode(conditionCode, secretKeyFromDatabase)
   }
 
 }

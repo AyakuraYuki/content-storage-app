@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <!--/*@thymesVar id="list" type="java.util.List<cc.ayakurayuki.contentstorage.module.content.entity.Content>"*/-->
+<!--/*@thymesVar id="item" type="java.lang.String"*/-->
 <head th:include="common/head::head('Dashboard')"></head>
 <body>
 <th:block th:include="common/navbar::navbar"/>
@@ -24,8 +25,8 @@
     <div class="col-md-6">
       <form th:action="@{/search}" method="post">
         <div class="input-group">
-          <span class="input-group-addon" id="basic-addon1">Name of Item</span>
-          <input type="text" class="form-control" id="item" name="item"
+          <span class="input-group-addon" id="basic-addon1">Item</span>
+          <input type="text" class="form-control" id="item" name="item" th:value="${item}"
                  placeholder="enter the item's name which you wanna search for..."
                  aria-describedby="basic-addon1"/>
           <span class="input-group-btn">

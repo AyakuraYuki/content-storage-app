@@ -29,12 +29,12 @@ class ContentController extends BaseBean {
     if (StringUtils.isNotBlank(id)) {
       content = contentService.get(id)
     }
-    if (content == null) {
+    if (null == content) {
       content = new Content()
-      List<HashMap<String, String>> list = Lists.newArrayList()
-      HashMap<String, String> map = Maps.newHashMap()
-      map['key'] = ''
-      map['value'] = ''
+      List<Map<String, Object>> list = Lists.newArrayList()
+      Map<String, Object> map = Maps.newHashMap()
+      map['key'] = STRING_EMPTY
+      map['value'] = STRING_EMPTY
       list.add(map)
       content.jsonData = JSON.toJSONString(list)
     }
@@ -43,17 +43,19 @@ class ContentController extends BaseBean {
 
   @RequestMapping(['/', '/index'])
   def home(Model model) {
-    model.addAttribute 'list', contentService.list()
+    model.addAttribute 'list', contentService.search(null)
     'index'
   }
 
   @RequestMapping('/search')
   def search(String item, Model model) {
-    def content = new Content()
-    content.item = item
-    def list = contentService.search(content)
+    if (StringUtils.isEmpty(item)) {
+      return ROOT_PATH
+    }
+    def list = contentService.search(item)
     model.addAttribute 'list', list
-    'index'
+    model.addAttribute 'item', item
+    return 'index'
   }
 
   @RequestMapping('/form')
@@ -74,13 +76,7 @@ class ContentController extends BaseBean {
       list.add(map)
     }
     content.jsonData = JSON.toJSONString(list)
-    if (StringUtils.isBlank(content.id)) {
-      contentService.insert content.item, content.jsonData
-    } else if (StringUtils.isNotBlank(content.id) && contentService.get(content.id) == null) {
-      contentService.insert content.item, content.jsonData
-    } else {
-      contentService.update content.id, content.item, content.jsonData
-    }
+    contentService.save(content.id, content.item, content.jsonData)
     ROOT_PATH
   }
 

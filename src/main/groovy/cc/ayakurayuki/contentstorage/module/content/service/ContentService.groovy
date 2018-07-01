@@ -4,26 +4,31 @@ import cc.ayakurayuki.contentstorage.common.base.BaseBean
 import cc.ayakurayuki.contentstorage.common.util.IDUtils
 import cc.ayakurayuki.contentstorage.module.content.dao.ContentDAO
 import cc.ayakurayuki.contentstorage.module.content.entity.Content
+import org.apache.commons.lang3.StringUtils
+import org.apache.logging.log4j.LogManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 /**
- * Created by Ayakura Yuki on 2017/9/30.
+ * @author Ayakura Yuki
+ * @date 2017/9/30
  */
 @Service("ContentService")
 @Transactional(readOnly = true)
 class ContentService extends BaseBean {
 
+  final static def logger = LogManager.logger
+
   @Autowired
-  ContentDAO dao
+  ContentDAO contentDAO
 
   /**
-   * 获取全部信息
-   * @return 全体信息列表
+   * Search content by item (also called "title")
+   * @param item Key-Word. It will list all contents if this attribute is null.
    */
-  List<Content> list() {
-    def list = dao.list()
+  List<Content> search(String item) {
+    def list = contentDAO.search(item)
     list.each {
       it.jsonData = decodeJSON(it.jsonData)
     }
@@ -31,65 +36,58 @@ class ContentService extends BaseBean {
   }
 
   /**
-   * 查询信息
-   * @param content 查询条件封装对象
-   * @return 查询结果
-   */
-  List<Content> search(Content content) {
-    def list = dao.search(content)
-    list.each {
-      it.jsonData = decodeJSON(it.jsonData)
-    }
-    return list
-  }
-
-  /**
-   * 获取对应ID的信息
-   * @param id ID
-   * @return 结果对象
+   * Get model (also called "detail") by ID.
    */
   Content get(String id) {
-    def content = dao.get(id)
+    def content = contentDAO.get(id)
+    if (null == content) {
+      return null
+    }
     content.jsonData = decodeJSON(content.jsonData)
     return content
   }
 
   /**
-   * 插入新信息
-   * @param item
-   * @param jsonData
-   * @return
+   * Save content, including insert and update.
+   * @param id
+   * @param item item name (also called "title")
+   * @param jsonData json string built before transfer in here.
    */
-  int insert(String item, String jsonData) {
-    def content = new Content()
-    content.id = IDUtils.UUID()
-    content.item = item
-    content.jsonData = encodeJSON(jsonData)
-    dao.insert(content)
+  int save(String id, String item, String jsonData) {
+    def content = get(id)
+    def isInsert = false
+    if (null == content) {
+      content = new Content()
+      content.id = IDUtils.UUID()
+      isInsert = true
+    }
+    if (StringUtils.isNotEmpty(item)) {
+      content.item = item
+    }
+    if (StringUtils.isNotEmpty(jsonData)) {
+      content.jsonData = encodeJSON(jsonData)
+    }
+    if (isInsert) {
+      def result = contentDAO.insert(content)
+      logger.info "Insert a new content [id: ${content.id}] successful. Result: ${result}".toString()
+    } else {
+      def result = contentDAO.update(content)
+      logger.info "Update content [id: ${content.id}] successful. Result: ${result}".toString()
+    }
+    return RESPONSE_RESULT.OK.code
   }
 
   /**
-   * 更新信息
+   * Delete content.
    * @param id
-   * @param item
-   * @param jsonData
-   * @return
-   */
-  int update(String id, String item, String jsonData) {
-    def content = new Content()
-    content.id = id
-    content.item = item
-    content.jsonData = encodeJSON(jsonData)
-    dao.update(content)
-  }
-
-  /**
-   * 删除信息
-   * @param id
-   * @return
    */
   int delete(String id) {
-    dao.delete(get(id))
+    if (null == get(id)) {
+      return RESPONSE_RESULT.NULL.code
+    }
+    def result = contentDAO.delete(id)
+    logger.info "Delete content [id: $id] successful. Result: $result".toString()
+    return RESPONSE_RESULT.OK.code
   }
 
 }
