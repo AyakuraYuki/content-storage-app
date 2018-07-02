@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <!--/*@thymesVar id="content" type="cc.ayakurayuki.contentstorage.module.content.entity.Content"*/-->
 <!--/*@thymesVar id="list" type="java.util.List<java.util.HashMap<java.lang.String, java.lang.String>>"*/-->
-<head th:include="common/head::head('Editor')"></head>
+<head th:include="common/head::head(${content.item==null?'Editor - New content':'Editor - '+content.item})"></head>
 <body style="background-color: #222222;">
 <th:block th:include="common/navbar::navbar"/>
 

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <!--/*@thymesVar id="list" type="java.util.List<cc.ayakurayuki.contentstorage.module.content.entity.Content>"*/-->
+<!--/*@thymesVar id="element" type="cc.ayakurayuki.contentstorage.module.content.entity.Content"*/-->
 <!--/*@thymesVar id="item" type="java.lang.String"*/-->
 <head th:include="common/head::head('Dashboard')"></head>
 <body>
@@ -8,7 +9,6 @@
 
 <!--/* Context */-->
 <div class="container">
-  <!--/* Jumbotron */-->
   <div class="jumbotron">
     <h2>Codex Dashboard</h2>
     <p>To make the manage of your data easily.</p>
@@ -27,8 +27,7 @@
         <div class="input-group">
           <span class="input-group-addon" id="basic-addon1">Item</span>
           <input type="text" class="form-control" id="item" name="item" th:value="${item}"
-                 placeholder="enter the item's name which you wanna search for..."
-                 aria-describedby="basic-addon1"/>
+                 aria-describedby="basic-addon1" placeholder="enter the item's name which you wanna search for..."/>
           <span class="input-group-btn">
             <button class="btn btn-info" type="submit">GoGoGo!!</button>
           </span>
@@ -47,13 +46,13 @@
       </tr>
       </thead>
       <tbody>
-      <tr align="center" th:each="item:${list}">
-        <td th:text="*{item.item}" style="font-size: 17px;line-height: 35px;"></td>
+      <tr align="center" th:each="element:${list}">
+        <td th:text="*{element.item}" style="font-size: 17px;line-height: 35px;"></td>
         <td>
-          <a th:href="@{'/detail?id='+${item.id}}" class="btn btn-sm btn-info">Detail</a>
-          <a th:href="@{'/form?id='+${item.id}}" class="btn btn-sm btn-info">Edit</a>
-          <button th:onclick="'javascript:deleteConfirm(\''+*{item.id}+'\')'"
-                  type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#delete">
+          <a th:href="@{'/detail?id='+${element.id}}" class="btn btn-sm btn-info">Detail</a>
+          <a th:href="@{'/form?id='+${element.id}}" class="btn btn-sm btn-info">Edit</a>
+          <button th:onclick="'javascript:deleteConfirm(\''+*{element.id}+'\')'" type="button" data-toggle="modal"
+                  data-target="#delete" class="btn btn-sm btn-warning">
             Delete
           </button>
         </td>
@@ -74,13 +73,13 @@
         <h4 class="modal-title">Warning!!</h4>
       </div>
       <div class="modal-body">
-        <p>Are you sure you wanna delete this record? Make sure you know what you're doing!</p>
+        <p>Are you going to murder this content? I sure hope you know what you are doing.</p>
         <input type="hidden" id="deleteID"/>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Forget it, I wanna keep this one.
+        <button type="button" class="btn btn-default" data-dismiss="modal">No I decide to keep it.
         </button>
-        <a href="#" class="btn btn-info" onclick="TODODelete()">Yes I sure, just DO IT!</a>
+        <a href="#" class="btn btn-info" onclick="TODODelete()">Yes I sure, just DELETE IT!</a>
       </div>
     </div>
   </div>
