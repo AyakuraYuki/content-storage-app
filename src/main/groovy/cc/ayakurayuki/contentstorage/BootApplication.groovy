@@ -39,7 +39,7 @@ class BootApplication {
     new DataSourceTransactionManager(dataSource)
   }
 
-  static main(String... args) {
+  static void main(String[] args) {
     SpringApplication.run BootApplication.class, args
   }
 

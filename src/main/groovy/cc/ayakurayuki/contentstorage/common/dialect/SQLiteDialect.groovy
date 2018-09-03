@@ -45,85 +45,57 @@ class SQLiteDialect extends Dialect {
     registerFunction('substring', new StandardSQLFunction('substr', StringType.INSTANCE))
   }
 
-  boolean supportsIdentityColumns() {
-    true
-  }
+  boolean supportsIdentityColumns() { true }
 
-  boolean hasDataTypeInIdentityColumn() {
-    // As specify in NHibernate dialect
-    false
-  }
+  // As specify in NHibernate dialect
+  boolean hasDataTypeInIdentityColumn() { false }
 
-  String getIdentityColumnString() {
-    'integer'
-  }
+  String getIdentityColumnString() { 'integer' }
 
-  String getIdentitySelectString() {
-    'select last_insert_rowid()'
-  }
+  String getIdentitySelectString() { 'select last_insert_rowid()' }
 
-  boolean supportsLimit() {
-    true
-  }
+  boolean supportsLimit() { true }
 
   protected String getLimitString(String query, boolean hasOffset) {
     new StringBuffer(query.length() + 20).append(query).append(hasOffset ? ' limit ? offset ?' : ' limit ?').toString()
   }
 
-  boolean supportsTemporaryTables() {
-    true
-  }
+  boolean supportsTemporaryTables() { true }
 
-  String getCreateTemporaryTableString() {
-    'create temporary table if not exists'
-  }
+  String getCreateTemporaryTableString() { 'create temporary table if not exists' }
 
-  boolean dropTemporaryTableAfterUse() {
-    false
-  }
+  boolean dropTemporaryTableAfterUse() { false }
 
-  boolean supportsCurrentTimestampSelection() {
-    true
-  }
+  boolean supportsCurrentTimestampSelection() { true }
 
-  boolean isCurrentTimestampSelectStringCallable() {
-    false
-  }
+  boolean isCurrentTimestampSelectStringCallable() { false }
 
-  String getCurrentTimestampSelectString() {
-    'select current_timestamp'
-  }
+  String getCurrentTimestampSelectString() { 'select current_timestamp' }
 
-  boolean supportsUnionAll() {
-    true
-  }
+  boolean supportsUnionAll() { true }
 
-  boolean hasAlterTable() {
-    false // As specify in NHibernate dialect
-  }
+  // As specify in NHibernate dialect
+  boolean hasAlterTable() { false }
 
-  boolean dropConstraints() {
-    false
-  }
+  boolean dropConstraints() { false }
 
-  String getAddColumnString() {
-    'add column'
-  }
+  String getAddColumnString() { 'add column' }
 
-  String getForUpdateString() {
-    ''
-  }
+  String getForUpdateString() { '' }
 
-  boolean supportsOuterJoinForUpdate() {
-    false
-  }
+  boolean supportsOuterJoinForUpdate() { false }
 
   String getDropForeignKeyString() {
     throw new UnsupportedOperationException('No drop foreign key syntax supported by SQLiteDialect')
   }
 
-  String getAddForeignKeyConstraintString(String constraintName, String[] foreignKey, String referencedTable,
-                                          String[] primaryKey, boolean referencesPrimaryKey) {
+  String getAddForeignKeyConstraintString(
+      String constraintName,
+      String[] foreignKey,
+      String referencedTable,
+      String[] primaryKey,
+      boolean referencesPrimaryKey
+  ) {
     throw new UnsupportedOperationException('No add foreign key syntax supported by SQLiteDialect')
   }
 
@@ -131,12 +103,8 @@ class SQLiteDialect extends Dialect {
     throw new UnsupportedOperationException('No add primary key syntax supported by SQLiteDialect')
   }
 
-  boolean supportsIfExistsBeforeTableName() {
-    true
-  }
+  boolean supportsIfExistsBeforeTableName() { true }
 
-  boolean supportsCascadeDelete() {
-    false
-  }
+  boolean supportsCascadeDelete() { false }
 
 }
