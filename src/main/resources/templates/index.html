@@ -1,149 +1,125 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <!--/*@thymesVar id="list" type="java.util.List<cc.ayakurayuki.contentstorage.module.content.entity.Content>"*/-->
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Codex</title>
-    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}"/>
-    <link rel="stylesheet" th:href="@{css/application.css}"/>
-    <link rel="stylesheet" th:href="@{css/jquery.toast.min.css}"/>
-</head>
+<!--/*@thymesVar id="element" type="cc.ayakurayuki.contentstorage.module.content.entity.Content"*/-->
+<!--/*@thymesVar id="item" type="java.lang.String"*/-->
+<head th:include="common/head::head('Dashboard')"></head>
 <body>
-<!--/* Frame: Navigation Bar */-->
-<div class="container">
-    <nav class="navbar navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Personal codex dashboard</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a th:href="@{/}"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</div>
+<th:block th:include="common/navbar::navbar"/>
 
 <!--/* Context */-->
 <div class="container">
-    <!--/* Jumbotron */-->
-    <div class="jumbotron">
-        <h2>Codex Dashboard</h2>
-        <p>To make the manage of your data easily.</p>
+  <div class="jumbotron">
+    <h2>Codex Dashboard</h2>
+    <p>To make the manage of your data easily.</p>
+  </div>
+  <!--/* add item button(in fact that's an <a> tag) and search bar */-->
+  <div id="search-div" class="row" style="margin: 0 20px 20px 20px;">
+    <div class="col-md-2"></div>
+    <div class="col-md-1">
+      <div class="input-group">
+        <a th:href="@{/form}" class="btn btn-primary">Add item</a>
+      </div>
     </div>
-    <!--/* add item button(in fact that's an <a> tag) and search bar */-->
-    <div id="search-div" class="row" style="margin: 0 20px 20px 20px;">
-        <div class="col-md-2"></div>
-        <div class="col-md-1">
-            <div class="input-group">
-                <a th:href="@{/form}" class="btn btn-primary">Add item</a>
-            </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-6">
+      <form th:action="@{/search}" method="post">
+        <div class="input-group">
+          <span class="input-group-addon" id="basic-addon1">Item</span>
+          <input type="text" class="form-control" id="item" name="item" th:value="${item}"
+                 aria-describedby="basic-addon1" placeholder="enter the item's name which you wanna search for..."/>
+          <span class="input-group-btn">
+            <button class="btn btn-info" type="submit">GoGoGo!!</button>
+          </span>
         </div>
-        <div class="col-md-1"></div>
-        <div class="col-md-6">
-            <form th:action="@{/search}" method="post">
-                <div class="input-group">
-                    <span class="input-group-addon" id="basic-addon1">Name of Item</span>
-                    <input type="text" class="form-control" id="item" name="item"
-                           placeholder="enter the item's name which you wanna search for..."
-                           aria-describedby="basic-addon1"/>
-                    <span class="input-group-btn">
-                        <button class="btn btn-info" type="submit">GoGoGo!!</button>
-                    </span>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-2"></div>
+      </form>
     </div>
-
-    <!--/* table */-->
-    <div id="table-div">
-        <table class="table table-striped table-hover" align="center">
-            <thead>
-            <tr>
-                <th width="50%">Item</th>
-                <th width="50%">Operation</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr align="center" th:each="item:${list}">
-                <td th:text="*{item.item}" style="font-size: 17px;line-height: 35px;"></td>
-                <td>
-                    <a th:href="@{'/detail?id='+${item.id}}" class="btn btn-sm btn-info">Detail</a>
-                    <a th:href="@{'/form?id='+${item.id}}" class="btn btn-sm btn-info">Edit</a>
-                    <button th:onclick="'javascript:deleteConfirm(\''+*{item.id}+'\')'"
-                            type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#delete">
-                        Delete
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <div class="col-md-2"></div>
+  </div>
+  <!--/* table */-->
+  <div id="table-div">
+    <table class="table table-striped table-hover" align="center">
+      <thead>
+      <tr>
+        <th width="50%">Item</th>
+        <th width="50%">Operation</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr align="center" th:each="element:${list}">
+        <td th:text="*{element.item}" style="font-size: 17px;line-height: 35px;"></td>
+        <td>
+          <a th:href="@{'/detail?id='+${element.id}}" class="btn btn-sm btn-info">Detail</a>
+          <a th:href="@{'/form?id='+${element.id}}" class="btn btn-sm btn-info">Edit</a>
+          <button th:onclick="'javascript:deleteConfirm(\''+*{element.id}+'\')'" type="button" data-toggle="modal"
+                  data-target="#delete" class="btn btn-sm btn-warning">
+            Delete
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <!--/* Delete confirm modal */-->
 <div id="delete" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Warning!!</h4>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you wanna delete this record? Make sure you know what you're doing!</p>
-                <input type="hidden" id="deleteID"/>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Forget it, I wanna keep this one.
-                </button>
-                <a href="#" class="btn btn-info" onclick="TODODelete()">Yes I sure, just DO IT!</a>
-            </div>
-        </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Warning!!</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you going to murder this content? I sure hope you know what you are doing.</p>
+        <input type="hidden" id="deleteID"/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No I decide to keep it.
+        </button>
+        <a href="#" class="btn btn-info" onclick="TODODelete()">Yes I sure, just DELETE IT!</a>
+      </div>
     </div>
+  </div>
 </div>
 
-<script type="text/javascript" th:src="@{js/jquery-3.2.1.min.js}"></script>
-<script type="text/javascript" th:src="@{js/bootstrap.min.js}"></script>
-<script type="text/javascript" th:src="@{js/jquery.toast.min.js}"></script>
+<th:block th:include="common/script::script"/>
 <script type="text/javascript">
-    function deleteConfirm(id) {
-        $('#deleteID').val(id);
-    }
+  function deleteConfirm(id) {
+    $('#deleteID').val(id);
+  }
 
-    function TODODelete() {
-        var id = $('#deleteID').val();
-        $.ajax({
-            url: "/delete?id=" + id,
-            type: "GET",
-            success: function () {
-                $('#delete').modal('hide');
-                $.toast({
-                    heading: 'Done!',
-                    text: 'Your record has been deleted, and it just say good bye to you.',
-                    showHideTransition: 'slide',
-                    position: 'bottom-center',
-                    icon: 'success'
-                });
-                window.setTimeout(function () {
-                    window.location.reload()
-                }, 3500);
-            },
-            error: function () {
-                $.toast({
-                    heading: 'Oops!!',
-                    text: 'I can\'t catch it.',
-                    showHideTransition: 'slide',
-                    position: 'bottom-center',
-                    icon: 'error'
-                })
-            }
+  function TODODelete() {
+    var id = $('#deleteID').val();
+    $.ajax({
+      url: "/delete?id=" + id,
+      type: "GET",
+      success: function () {
+        $('#delete').modal('hide');
+        $.toast({
+          heading: 'Done!',
+          text: 'Your record has been deleted, and it just say good bye to you.',
+          showHideTransition: 'slide',
+          position: 'bottom-center',
+          icon: 'success'
+        });
+        window.setTimeout(function () {
+          window.location.reload()
+        }, 3500);
+      },
+      error: function () {
+        $.toast({
+          heading: 'Oops!!',
+          text: 'I can\'t catch it.',
+          showHideTransition: 'slide',
+          position: 'bottom-center',
+          icon: 'error'
         })
-    }
+      }
+    })
+  }
 </script>
 </body>
 </html>

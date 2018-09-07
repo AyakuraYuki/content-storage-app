@@ -2,59 +2,45 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <!--/*@thymesVar id="content" type="cc.ayakurayuki.contentstorage.module.content.entity.Content"*/-->
 <!--/*@thymesVar id="list" type="java.util.List<java.util.Map<java.lang.String, java.lang.String>>"*/-->
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Editor</title>
-    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}"/>
-    <link rel="stylesheet" th:href="@{css/application.css}"/>
-</head>
+<head th:include="common/head::head('Detail - '+${content.item})"></head>
 <body>
+
+<th:block th:include="common/navbar::navbar"/>
+
 <div class="container">
-    <nav class="navbar navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Personal codex dashboard</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a th:href="@{/}"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp;Back to Homepage</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</div>
-<div class="container">
-    <div class="jumbotron">
-        <h2 th:text="${content.item}">account.item</h2>
-        <small th:text="${content.id}">account.id</small>
+  <div class="jumbotron">
+    <h2 th:text="${content.item}">account.item</h2>
+    <small th:text="${content.id}">account.id</small>
+  </div>
+
+  <div id="detail-div" class="container">
+    <div class="row">
+      <div class="col-md-2"></div>
+
+      <div class="col-md-8">
+        <table class="table table-striped table-hover">
+          <thead>
+          <tr>
+            <th width="30%">Key</th>
+            <th width="70%">Value</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr th:each="item:${list}">
+            <td th:text="${item['key']}">item.key</td>
+            <td th:text="${item['value']}">item.value</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-md-2"></div>
     </div>
-    <div id="detail-div" class="container">
-        <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8">
-                <table class="table table-striped table-hover">
-                    <thead>
-                    <tr>
-                        <th width="30%">Key</th>
-                        <th width="70%">Value</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="item:${list}">
-                        <td th:text="${item.get('key')}">item.key</td>
-                        <td th:text="${item.get('value')}">item.value</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-2"></div>
-        </div>
-    </div>
+  </div>
 </div>
-<script type="text/javascript" th:src="@{js/jquery-3.2.1.min.js}"></script>
-<script type="text/javascript" th:src="@{js/bootstrap.min.js}"></script>
+
+<th:block th:include="common/script::script"/>
+
 </body>
 </html>

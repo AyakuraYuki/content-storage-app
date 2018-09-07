@@ -1,57 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.ayakurayuki.contentstorage.module.settings.dao.SettingsDAO">
 
-    <sql id="columns">
-        a.id as "id",
-        a.`key` as "key",
-        a.value as "value"
-    </sql>
+  <select id="get" parameterType="java.lang.String"
+          resultType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
+    SELECT *
+    FROM settings
+    WHERE id = #{id};
+  </select>
 
-    <resultMap id="settingsResultMap" type="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
-        <id property="id" column="id"/>
-        <result property="key" column="key"/>
-        <result property="value" column="value"/>
-    </resultMap>
+  <select id="getByKey" resultType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
+    SELECT *
+    FROM settings
+    WHERE key = #{key};
+  </select>
 
-    <select id="get" parameterType="java.lang.String" resultMap="settingsResultMap">
-        select
-        <include refid="columns"/>
-        from settings a
-        where a.id = #{id}
-    </select>
+  <insert id="insert" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
+    INSERT INTO settings (
+      id, `key`, value
+    )
+    VALUES (
+      #{id}, #{key}, #{value}
+    );
+  </insert>
 
-    <select id="list" resultMap="settingsResultMap">
-        select
-        <include refid="columns"/>
-        from settings a
-    </select>
-
-    <select id="search" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings"
-            resultMap="settingsResultMap">
-        select
-        <include refid="columns"/>
-        from settings a
-        where a.`key` like '%' || #{key} || '%'
-    </select>
-
-    <insert id="insert" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
-        insert into settings (id, `key`, value)
-        values (#{id}, #{key}, #{value})
-    </insert>
-
-    <update id="update" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
-        update settings set
+  <update id="update" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
+    UPDATE settings
+    <set>
+      <if test="key != null">
         `key` = #{key},
+      </if>
+      <if test="value != null">
         value = #{value}
-        where id = #{id}
-    </update>
+      </if>
+    </set>
+    WHERE id = #{id};
+  </update>
 
-    <delete id="delete" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
-        delete from settings
-        where id = #{id}
-    </delete>
+  <delete id="delete" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
+    DELETE FROM settings
+    WHERE id = #{id};
+  </delete>
 
 </mapper>

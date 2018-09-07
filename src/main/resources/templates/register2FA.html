@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="common/head::head('Google Authenticator Register')"></head>
+<body>
+<div class="container">
+  <div th:include="common/page-header::header(
+    'Google Authenticator Register',
+    'Enter the condition code for your Google Authenticator.'
+  )" align="center"></div>
+  <div id="key-code-div" class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <div align="center">
+        <form th:action="@{/doRegister2FA}" method="post">
+          <div class="input-group">
+            <span class="input-group-addon">Condition Code</span>
+            <input type="text" class="form-control" id="conditionCode" name="conditionCode"
+                   aria-describedby="basic-addon1" required="required"/>
+          </div>
+          <br/>
+          <input type="submit" class="btn btn-warning" value="Get QRCode"/>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+</div>
+
+<th:block th:include="common/script::script"/>
+</body>
+</html>
