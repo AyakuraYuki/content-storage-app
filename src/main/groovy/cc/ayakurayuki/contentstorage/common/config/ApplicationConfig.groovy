@@ -32,7 +32,7 @@ class ApplicationConfig implements WebMvcConfigurer {
         "/do2FA",
         "/register2FA",
         "/doRegister2FA",
-        "/doReset2FA",)
+        "/doReset2FA")
   }
 
 }

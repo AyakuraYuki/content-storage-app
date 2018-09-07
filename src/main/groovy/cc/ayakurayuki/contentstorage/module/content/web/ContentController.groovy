@@ -5,7 +5,6 @@ import cc.ayakurayuki.contentstorage.module.content.entity.Content
 import cc.ayakurayuki.contentstorage.module.content.service.ContentService
 import com.alibaba.fastjson.JSON
 import com.google.common.collect.Lists
-import com.google.common.collect.Maps
 import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -31,10 +30,11 @@ class ContentController extends BaseBean {
     }
     if (null == content) {
       content = new Content()
-      List<Map<String, Object>> list = Lists.newArrayList()
-      Map<String, Object> map = Maps.newHashMap()
-      map['key'] = STRING_EMPTY
-      map['value'] = STRING_EMPTY
+      List<Map<String, Object>> list = []
+      Map<String, Object> map = [
+          'key'  : STRING_EMPTY,
+          'value': STRING_EMPTY
+      ]
       list.add(map)
       content.jsonData = JSON.toJSONString(list)
     }
@@ -70,9 +70,10 @@ class ContentController extends BaseBean {
   def save(Content content, String[] key, String[] value) {
     def list = Lists.newArrayList()
     for (def i = 0; i < key.length; i++) {
-      def map = Maps.newHashMap()
-      map['key'] = key[i]
-      map['value'] = value[i]
+      def map = [
+          'key'  : key[i],
+          'value': value[i]
+      ]
       list.add(map)
     }
     content.jsonData = JSON.toJSONString(list)

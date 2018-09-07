@@ -12,10 +12,11 @@ import javax.servlet.http.HttpServletResponse
  * @date 2017/10/19
  */
 class DeniedResetTwoStepInterceptor implements HandlerInterceptor {
+
   @Override
   boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     if (Boolean.valueOf(request.session.getAttribute(BaseBean.AUTHENTIC).toString())) {
-      response.sendRedirect("/")
+      response.sendRedirect('/')
       return false
     }
     return true
@@ -23,11 +24,10 @@ class DeniedResetTwoStepInterceptor implements HandlerInterceptor {
 
   @Override
   void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-
   }
 
   @Override
   void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-
   }
+
 }

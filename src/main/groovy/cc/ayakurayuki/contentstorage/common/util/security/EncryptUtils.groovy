@@ -33,7 +33,7 @@ class EncryptUtils {
    */
   private static String ConvertToString(byte[] raw) {
     def stringBuffer = new StringBuffer()
-    for (byte b : raw) {
+    raw.each { b ->
       stringBuffer.append(HEX[(b >>> 4) & 0x0f])
       stringBuffer.append(HEX[b & 0x0f])
     }
@@ -48,8 +48,9 @@ class EncryptUtils {
    */
   static String MD5ForTenTimes(String message) {
     def result = message
-    for (int i = 0; i < 10; i++)
+    for (_ in 1..10) {
       result = ConvertToString(GetEncodeByte(result, MessageTypeEnum.MD5))
+    }
     return result
   }
 
@@ -71,8 +72,9 @@ class EncryptUtils {
    */
   static String SHA1ForTenTimes(String message) {
     String result = message
-    for (int i = 0; i < 10; i++)
+    for (_ in 1..10) {
       result = ConvertToString(GetEncodeByte(result, MessageTypeEnum.SHA1))
+    }
     return result
   }
 
@@ -94,8 +96,9 @@ class EncryptUtils {
    */
   static String SHA256ForTenTimes(String message) {
     String result = message
-    for (int i = 0; i < 10; i++)
+    for (_ in 1..10) {
       result = ConvertToString(GetEncodeByte(result, MessageTypeEnum.SHA256))
+    }
     return result
   }
 

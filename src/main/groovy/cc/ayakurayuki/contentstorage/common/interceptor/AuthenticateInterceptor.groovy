@@ -20,18 +20,16 @@ class AuthenticateInterceptor implements HandlerInterceptor {
     if (Boolean.valueOf(request.session.getAttribute(BaseBean.AUTHENTIC).toString())) {
       return true
     }
-    response.sendRedirect("/2FA")
+    response.sendRedirect('/2FA')
     return false
   }
 
   @Override
   void postHandle(HttpServletRequest request, HttpServletResponse response, Object o, ModelAndView modelAndView) throws Exception {
-
   }
 
   @Override
   void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object o, Exception e) throws Exception {
-
   }
 
 }
