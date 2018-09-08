@@ -7,14 +7,14 @@
 * MyBatis `ver 3.4.6`
 * SQLite JDBC `ver 3.23.1`
 * Groovy `ver 2.5.0`
-* JDK 10 `ver 10.0.1`
+* JDK 1.8 `ver 1.8.0_181`
 
 
 ## 特性 / Feature
-* 动态JSON内容，每个条目允许存储的条目数量是可变的
+* JSON化存储内容
 * 使用Google Authenticator两步验证
-* 本机使用，不需联网
-* 数据库中的JSON数据加密存储
+* 单机使用
+* 数据加密后持久化
 
 
 ## TODO
