@@ -55,11 +55,9 @@ class ContentService extends BaseBean {
    */
   int save(String id, String item, String jsonData) {
     def content = get(id)
-    def isInsert = false
     if (null == content) {
       content = new Content()
       content.id = IDUtils.UUID()
-      isInsert = true
     }
     if (StringUtils.isNotEmpty(item)) {
       content.item = item
@@ -67,13 +65,8 @@ class ContentService extends BaseBean {
     if (StringUtils.isNotEmpty(jsonData)) {
       content.jsonData = encodeJSON(jsonData)
     }
-    if (isInsert) {
-      def result = contentDAO.insert(content)
-      logger.info "Insert a new content [id: ${content.id}] successful. Result: ${result}".toString()
-    } else {
-      def result = contentDAO.update(content)
-      logger.info "Update content [id: ${content.id}] successful. Result: ${result}".toString()
-    }
+    def result = contentDAO.insert(content)
+    logger.info "Insert a new content [id: ${content.id}] successful. Result: ${result}".toString()
     return RESPONSE_RESULT.OK.code
   }
 

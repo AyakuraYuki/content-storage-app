@@ -9,6 +9,7 @@ import cc.ayakurayuki.contentstorage.module.settings.entity.EmergencyKey
 import cc.ayakurayuki.contentstorage.module.settings.entity.Settings
 import com.alibaba.fastjson.JSON
 import com.google.common.collect.Lists
+import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -27,32 +28,16 @@ class SettingsService extends BaseBean {
     settingsDAO.get(id)
   }
 
-  private def insert(Settings settings) {
-    settingsDAO.insert(settings)
-  }
-
-  def update(Settings settings) {
-    settingsDAO.update(settings)
+  def save(Settings settings) {
+    settingsDAO.save(settings)
   }
 
   def delete(Settings settings) {
     settingsDAO.delete(settings)
   }
 
-  /**
-   * 从数据库获取包含Google Authenticator特征码的Settings对象。
-   * @return 数据库中存在的对象，不存在则返回null。
-   */
-  private Settings getSecretSetting() {
-    settingsDAO.getByKey(SECRET)
-  }
-
-  /**
-   * 获取应急码Settings对象
-   * @return
-   */
-  private Settings getEmergencySetting() {
-    settingsDAO.getByKey(EMERGENCY)
+  private Settings getByKey(String key) {
+    settingsDAO.getByKey(key)
   }
 
   /**
@@ -60,25 +45,31 @@ class SettingsService extends BaseBean {
    * @return 特征码字符串
    */
   private String getSecretKeyFromDatabase() {
-    def settings = secretSetting
+    def settings = getByKey(SECRET)
     if (null == settings) {
       settings = new Settings()
       settings.id = IDUtils.UUID()
       settings.key = SECRET
       settings.value = GoogleAuthenticator.generateSecretKey()
-      insert(settings)
     } else {
       settings.value = GoogleAuthenticator.generateSecretKey()
-      update(settings)
     }
+    save(settings)
     return settings.value
   }
 
-  def validateAuthCode(def authCode) {
-    def code = Long.valueOf(authCode as String)
+  def validateAuthCode(String authCode) {
+    def emergencyCheck = validateEmergencyCode(authCode)
+    if (emergencyCheck) {
+      return emergencyCheck
+    }
+    if (!StringUtils.isNumeric(authCode)) {
+      return false
+    }
+    def code = Long.valueOf(authCode)
     def googleAuthenticator = new GoogleAuthenticator()
     googleAuthenticator.windowSize = 5
-    def settings = secretSetting
+    def settings = getByKey(SECRET)
     return googleAuthenticator.checkCode(settings.value, code)
   }
 
@@ -94,18 +85,34 @@ class SettingsService extends BaseBean {
       key.effective = true
       list.add(key)
     }
-    def settings = emergencySetting
+    def settings = getByKey(EMERGENCY)
     if (null == settings) {
       settings = new Settings()
       settings.id = IDUtils.UUID()
       settings.key = EMERGENCY
       settings.value = JSON.toJSONString(list)
-      insert(settings)
     } else {
       settings.value = JSON.toJSONString(list)
-      update(settings)
     }
+    save(settings)
     return list
+  }
+
+  boolean validateEmergencyCode(String code) {
+    def settings = getByKey(EMERGENCY)
+    List<EmergencyKey> list = JSON.parseArray(settings.value, EmergencyKey.class)
+    List<EmergencyKey> temp = []
+    def validate = false
+    for (key in list) {
+      if (StringUtils.equals(code, key.key) && key.effective) {
+        validate = true
+        key.effective = false
+      }
+      temp.add(key)
+    }
+    settings.value = JSON.toJSONString(temp)
+    save(settings)
+    return validate
   }
 
   String getQRCode(String conditionCode) {

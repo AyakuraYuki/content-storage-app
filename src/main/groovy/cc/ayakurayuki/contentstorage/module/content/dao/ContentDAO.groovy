@@ -18,8 +18,6 @@ interface ContentDAO {
 
   int insert(Content t)
 
-  int update(Content t)
-
   int delete(@Param('id') String id)
 
 }

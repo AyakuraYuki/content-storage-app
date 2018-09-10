@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.ayakurayuki.contentstorage.module.settings.dao.SettingsDAO">
 
   <select id="get" parameterType="java.lang.String"
@@ -17,30 +17,28 @@
     WHERE key = #{key};
   </select>
 
-  <insert id="insert" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
-    INSERT INTO settings (
-      id, `key`, value
-    )
-    VALUES (
-      #{id}, #{key}, #{value}
-    );
+  <insert id="save" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
+    INSERT
+    OR REPLACE INTO settings (id, `key`, value)
+    VALUES (#{id}, #{key}, #{value});
   </insert>
 
-  <update id="update" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
-    UPDATE settings
-    <set>
-      <if test="key != null">
-        `key` = #{key},
-      </if>
-      <if test="value != null">
-        value = #{value}
-      </if>
-    </set>
-    WHERE id = #{id};
-  </update>
+  <!--<update id="update" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">-->
+    <!--UPDATE settings-->
+    <!--<set>-->
+      <!--<if test="key != null">-->
+        <!--`key` = #{key},-->
+      <!--</if>-->
+      <!--<if test="value != null">-->
+        <!--value = #{value}-->
+      <!--</if>-->
+    <!--</set>-->
+    <!--WHERE id = #{id};-->
+  <!--</update>-->
 
   <delete id="delete" parameterType="cc.ayakurayuki.contentstorage.module.settings.entity.Settings">
-    DELETE FROM settings
+    DELETE
+    FROM settings
     WHERE id = #{id};
   </delete>
 

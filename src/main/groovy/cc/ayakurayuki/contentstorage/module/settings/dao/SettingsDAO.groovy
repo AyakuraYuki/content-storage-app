@@ -15,9 +15,7 @@ interface SettingsDAO {
 
   Settings getByKey(@Param('key') String key)
 
-  int insert(Settings t)
-
-  int update(Settings t)
+  int save(Settings t)
 
   int delete(Settings t)
 
