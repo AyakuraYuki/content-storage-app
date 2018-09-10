@@ -218,7 +218,7 @@
       </resource>
     </resources>
     <sourceDirectory>src/main/groovy</sourceDirectory>
-    <outputDirectory>out/classes</outputDirectory>
+    <outputDirectory>target/classes</outputDirectory>
     <testResources>
       <testResource>
         <directory>src/test/resource</directory>
@@ -229,7 +229,7 @@
       </testResource>
     </testResources>
     <testSourceDirectory>src/test/groovy</testSourceDirectory>
-    <testOutputDirectory>out/test-classes</testOutputDirectory>
+    <testOutputDirectory>target/test-classes</testOutputDirectory>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
