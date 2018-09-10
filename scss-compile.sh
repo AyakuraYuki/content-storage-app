@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-scss --style compressed src/main/resources/static/css/application.scss src/main/resources/static/css/application.css
+scss ./src/main/resources/static/css/application.scss:./src/main/resources/static/css/application.css --style compressed
+rm -rf ./.sass-cache/
