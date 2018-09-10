@@ -14,39 +14,45 @@ import javax.servlet.http.HttpServletRequest
  * Package: cc.ayakurayuki.contentstorage.module.settings.web <br/>
  */
 @Controller
+@RequestMapping(value = '/')
 class SettingsController extends BaseBean {
 
   @Autowired
   SettingsService settingsService
 
-  @RequestMapping("/2FA")
+  @RequestMapping('2FA')
   def twoStep() {
-    "2FA"
+    '2FA'
   }
 
-  @RequestMapping("/do2FA")
-  def do2FA(String authCode, HttpServletRequest request) {
+  @RequestMapping('access')
+  def access(String authCode, HttpServletRequest request) {
     def authentic = settingsService.validateAuthCode(authCode)
     request.session.setAttribute AUTHENTIC, authentic
     ROOT_PATH
   }
 
-  @RequestMapping("/register2FA")
+  @RequestMapping('register')
   def register2FA() {
-
-    "register2FA"
+    'register2FA'
   }
 
-  @RequestMapping("/doRegister2FA")
+  @RequestMapping('doRegister2FA')
   def doRegister2FA(String conditionCode, Model model) {
     model.addAttribute EMERGENCY, settingsService.generateEmergencyCode()
     model.addAttribute("QRCode", settingsService.getQRCode(conditionCode))
-    "registerResult"
+    'registerResult'
   }
 
-  @RequestMapping("/doReset2FA")
+  @RequestMapping('doReset2FA')
   def doReset2FA(String recoveryCode, Model model) {
 
+  }
+
+  @RequestMapping('exit')
+  def exit(HttpServletRequest request) {
+    request.session.setAttribute AUTHENTIC, Boolean.toString(false)
+    ROOT_PATH
   }
 
 }

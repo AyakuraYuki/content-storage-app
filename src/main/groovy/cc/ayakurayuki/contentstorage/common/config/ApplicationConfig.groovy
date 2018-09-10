@@ -19,8 +19,8 @@ class ApplicationConfig implements WebMvcConfigurer {
         .excludePathPatterns(
         "/error",
         "/2FA",
-        "/do2FA",
-        "/register2FA",
+        "/access",
+        "/register",
         "/doRegister2FA",
         "/doReset2FA",
         "/css/**",
@@ -29,8 +29,8 @@ class ApplicationConfig implements WebMvcConfigurer {
     registry.addInterceptor(new DeniedResetTwoStepInterceptor())
         .addPathPatterns(
         "/2FA",
-        "/do2FA",
-        "/register2FA",
+        "/access",
+        "/register",
         "/doRegister2FA",
         "/doReset2FA")
   }

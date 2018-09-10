@@ -5,7 +5,7 @@
 <div th:fragment="navbar">
   <div class="container">
     <nav class="navbar navbar-default">
-      <div class="container">
+      <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="#">Personal codex dashboard</a>
         </div>
@@ -14,6 +14,12 @@
           <ul class="nav navbar-nav">
             <li>
               <a th:href="@{/}"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a>
+            </li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a th:href="@{/exit}"><span class="glyphicon glyphicon-fire"></span>&nbsp;Exit</a>
             </li>
           </ul>
         </div>

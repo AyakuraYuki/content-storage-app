@@ -17,7 +17,7 @@ class AuthenticateInterceptor implements HandlerInterceptor {
 
   @Override
   boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
-    if (Boolean.valueOf(request.session.getAttribute(BaseBean.AUTHENTIC).toString())) {
+    if (Boolean.valueOf(String.valueOf(request.session.getAttribute(BaseBean.AUTHENTIC)))) {
       return true
     }
     response.sendRedirect('/2FA')

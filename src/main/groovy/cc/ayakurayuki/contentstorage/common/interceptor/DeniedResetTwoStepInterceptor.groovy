@@ -15,7 +15,7 @@ class DeniedResetTwoStepInterceptor implements HandlerInterceptor {
 
   @Override
   boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-    if (Boolean.valueOf(request.session.getAttribute(BaseBean.AUTHENTIC).toString())) {
+    if (Boolean.valueOf(String.valueOf(request.session.getAttribute(BaseBean.AUTHENTIC)))) {
       response.sendRedirect('/')
       return false
     }
