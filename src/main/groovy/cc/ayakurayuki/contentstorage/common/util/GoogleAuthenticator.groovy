@@ -12,7 +12,7 @@ import java.security.SecureRandom
 /**
  * Created by Ayakura Yuki on 2017/10/19.
  */
-class GoogleAuthenticator {
+final class GoogleAuthenticator {
 
   /**
    * 生成的key长度 Generate secret key length

@@ -8,7 +8,7 @@ import static java.lang.System.err
 /**
  * Created by Ayakura Yuki on 2017/7/5.
  */
-class EncryptUtils {
+final class EncryptUtils {
 
   private final static def HEX = '0123456789ABCDEF'.toCharArray()
 
