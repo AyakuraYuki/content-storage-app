@@ -22,3 +22,5 @@ target
 releases/
 .sass-cache/
 out/
+
+docker_shell.sh
