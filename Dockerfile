@@ -2,7 +2,7 @@ FROM frolvlad/alpine-oraclejdk8:slim
 MAINTAINER ayakurayuki AyakuraYuki@users.noreply.github.com
 
 ENV WORK_DIR=/data/content_storage_app/
-ENV JAR_FILE=target/content_storage_app-2.1.0-alpha-2.jar
+ENV JAR_FILE=target/content_storage_app-2.2.0.jar
 
 VOLUME /$WORK_DIR/data/
 
