@@ -36,7 +36,7 @@ class SettingsService extends BaseBean {
     settingsDAO.delete(settings)
   }
 
-  private Settings getByKey(String key) {
+  Settings getByKey(String key) {
     settingsDAO.getByKey(key)
   }
 
