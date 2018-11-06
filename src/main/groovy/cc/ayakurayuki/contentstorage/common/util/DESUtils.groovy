@@ -1,5 +1,6 @@
 package cc.ayakurayuki.contentstorage.common.util
 
+import cc.ayakurayuki.contentstorage.module.settings.entity.Settings
 import cc.ayakurayuki.contentstorage.module.settings.service.SettingsService
 import org.apache.commons.codec.binary.Base64
 import org.apache.commons.lang3.StringUtils
@@ -41,8 +42,11 @@ final class DESUtils {
     desUtils.settingsService = this.settingsService
     def desKey = desUtils.settingsService.getByKey('DES_KEY')
     if (desKey == null) {
-      desKey.key = 'DES_KEY'
-      desKey.value = "${IDUtils.UUID()}${IDUtils.UUID()}".toString()
+      desKey = [
+          id   : IDUtils.UUID(),
+          key  : 'DES_KEY',
+          value: "${IDUtils.UUID()}${IDUtils.UUID()}".toString()
+      ] as Settings
       desUtils.settingsService.save(desKey)
     }
     KEY = desKey.value
