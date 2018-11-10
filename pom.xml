@@ -57,6 +57,10 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
@@ -204,6 +208,11 @@
       <groupId>com.alibaba</groupId>
       <artifactId>fastjson</artifactId>
       <version>1.2.47</version>
+    </dependency>
+    <dependency>
+      <groupId>com.arronlong</groupId>
+      <artifactId>httpclientutil</artifactId>
+      <version>1.0.4</version>
     </dependency>
   </dependencies>
 
