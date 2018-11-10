@@ -1,5 +1,6 @@
 package cc.ayakurayuki.contentstorage.common.util
 
+import cc.ayakurayuki.contentstorage.common.base.BaseBean
 import cc.ayakurayuki.contentstorage.module.settings.entity.Settings
 import cc.ayakurayuki.contentstorage.module.settings.service.SettingsService
 import org.apache.commons.codec.binary.Base64
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 import javax.crypto.Cipher
 import javax.crypto.SecretKeyFactory
-import javax.crypto.spec.DESKeySpec
+import javax.crypto.spec.DESedeKeySpec
 import java.security.SecureRandom
 
 /**
@@ -24,6 +25,7 @@ final class DESUtils {
   private static DESUtils desUtils
 
   private final static String DES = "DES"
+  private final static String TRIPLE_DES = "DESede"
   public static String KEY
 
   static SecureRandom random
@@ -32,19 +34,19 @@ final class DESUtils {
 
   static {
     random = new SecureRandom()
-    keyFactory = SecretKeyFactory.getInstance(DES)
-    cipher = Cipher.getInstance(DES)
+    keyFactory = SecretKeyFactory.getInstance(TRIPLE_DES)
+    cipher = Cipher.getInstance(TRIPLE_DES)
   }
 
   @PostConstruct
   void init() {
     desUtils = this
     desUtils.settingsService = this.settingsService
-    def desKey = desUtils.settingsService.getByKey('DES_KEY')
+    def desKey = desUtils.settingsService.getByKey(BaseBean.DES_KEY)
     if (desKey == null) {
       desKey = [
           id   : IDUtils.UUID(),
-          key  : 'DES_KEY',
+          key  : BaseBean.DES_KEY,
           value: "${IDUtils.UUID()}${IDUtils.UUID()}".toString()
       ] as Settings
       desUtils.settingsService.save(desKey)
@@ -53,14 +55,14 @@ final class DESUtils {
   }
 
   private static byte[] encryptByte(byte[] data, byte[] key) {
-    def desKey = new DESKeySpec(key)
+    def desKey = new DESedeKeySpec(key)  // new DESKeySpec(key)
     def secretKey = keyFactory.generateSecret(desKey)
     cipher.init(Cipher.ENCRYPT_MODE, secretKey, random)
     cipher.doFinal(data)
   }
 
   private static byte[] decryptByte(byte[] data, byte[] key) {
-    def desKey = new DESKeySpec(key)
+    def desKey = new DESedeKeySpec(key)  // new DESKeySpec(key)
     def secretKey = keyFactory.generateSecret(desKey)
     cipher.init(Cipher.DECRYPT_MODE, secretKey, random)
     cipher.doFinal(data)

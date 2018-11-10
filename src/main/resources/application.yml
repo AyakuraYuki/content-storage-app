@@ -40,3 +40,16 @@ spring:
 logging:
   file: logs/csa.log
   path: logs
+
+
+management:
+  server:
+    port: 8889
+  endpoint:
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: ['shutdown']
+

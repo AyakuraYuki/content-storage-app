@@ -10,6 +10,7 @@ import cc.ayakurayuki.contentstorage.module.settings.entity.Settings
 import com.alibaba.fastjson.JSON
 import com.google.common.collect.Lists
 import org.apache.commons.lang3.StringUtils
+import org.apache.logging.log4j.LogManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -20,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service("SettingsService")
 @Transactional(readOnly = true)
 class SettingsService extends BaseBean {
+
+  final static def LOGGER = LogManager.logger
 
   @Autowired
   SettingsDAO settingsDAO
@@ -113,6 +116,18 @@ class SettingsService extends BaseBean {
     settings.value = JSON.toJSONString(temp)
     save(settings)
     return validate
+  }
+
+  boolean isAllEmergencyCodeUsed() {
+    def settings = getByKey(EMERGENCY)
+    List<EmergencyKey> list = JSON.parseArray(settings.value, EmergencyKey.class)
+    def count = 0
+    for (EmergencyKey key : list) {
+      if (key.effective) {
+        count++
+      }
+    }
+    return count == 0
   }
 
   String getQRCode(String conditionCode) {

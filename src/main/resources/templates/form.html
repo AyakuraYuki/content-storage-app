@@ -11,7 +11,7 @@
     <h3>Edit record</h3>
   </div>
   <div id="form-div">
-    <form id="form" th:action="@{/save}" method="post" class="form-group">
+    <form id="form" th:action="@{/content/save}" method="post" class="form-group">
       <input th:type="hidden" th:id="id" th:name="id" th:value="${content.id}"/>
       <input th:type="hidden" th:id="jsonData" th:name="jsonData" th:value="${content.jsonData}"/>
       <div class="input-group">

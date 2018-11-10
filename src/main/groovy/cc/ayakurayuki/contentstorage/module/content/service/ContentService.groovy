@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(readOnly = true)
 class ContentService extends BaseBean {
 
-  final static def logger = LogManager.logger
+  final static def LOGGER = LogManager.getLogger ContentService.class
 
   @Autowired
   ContentDAO contentDAO
@@ -66,7 +66,7 @@ class ContentService extends BaseBean {
       content.jsonData = encodeJSON(jsonData)
     }
     def result = contentDAO.insert(content)
-    logger.info "Insert a new content [id: ${content.id}] successful. Result: ${result}".toString()
+    LOGGER.info "Insert a new content [id: ${content.id}] successful. Result: ${result}".toString()
     return RESPONSE_RESULT.OK.code
   }
 
@@ -79,7 +79,7 @@ class ContentService extends BaseBean {
       return RESPONSE_RESULT.NULL.code
     }
     def result = contentDAO.delete(id)
-    logger.info "Delete content [id: $id] successful. Result: $result".toString()
+    LOGGER.info "Delete content [id: $id] successful. Result: $result".toString()
     return RESPONSE_RESULT.OK.code
   }
 

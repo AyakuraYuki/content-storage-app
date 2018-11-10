@@ -15,24 +15,24 @@ class ApplicationConfig implements WebMvcConfigurer {
   @Override
   void addInterceptors(InterceptorRegistry registry) {
     registry.addInterceptor(new AuthenticateInterceptor())
-        .addPathPatterns("/**")
+        .addPathPatterns(
+        [
+            '/content/**'
+        ])
         .excludePathPatterns(
-        "/error",
-        "/2FA",
-        "/access",
-        "/register",
-        "/doRegister2FA",
-        "/doReset2FA",
-        "/css/**",
-        "/js/**",
-        "/font/**")
+        [
+
+        ])
     registry.addInterceptor(new DeniedResetTwoStepInterceptor())
         .addPathPatterns(
-        "/2FA",
-        "/access",
-        "/register",
-        "/doRegister2FA",
-        "/doReset2FA")
+        [
+            '/system/**'
+        ])
+        .excludePathPatterns(
+        [
+            '/system/exit',
+            '/system/shutdown'
+        ])
   }
 
 }

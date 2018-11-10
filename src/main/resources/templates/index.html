@@ -18,12 +18,12 @@
     <div class="col-md-2"></div>
     <div class="col-md-1">
       <div class="input-group">
-        <a th:href="@{/form}" class="btn btn-primary">Add item</a>
+        <a th:href="@{/content/form}" class="btn btn-primary">Add item</a>
       </div>
     </div>
     <div class="col-md-1"></div>
     <div class="col-md-6">
-      <form th:action="@{/search}" method="post">
+      <form th:action="@{/content/search}" method="post">
         <div class="input-group">
           <span class="input-group-addon" id="basic-addon1">Item</span>
           <input type="text" class="form-control" id="item" name="item" th:value="${item}"
@@ -49,8 +49,8 @@
       <tr align="center" th:each="element:${list}">
         <td th:text="*{element.item}" style="font-size: 17px;line-height: 35px;"></td>
         <td>
-          <a th:href="@{'/detail?id='+${element.id}}" class="btn btn-sm btn-info">Detail</a>
-          <a th:href="@{'/form?id='+${element.id}}" class="btn btn-sm btn-info">Edit</a>
+          <a th:href="@{'/content/detail?id='+${element.id}}" class="btn btn-sm btn-info">Detail</a>
+          <a th:href="@{'/content/form?id='+${element.id}}" class="btn btn-sm btn-info">Edit</a>
           <button th:onclick="'javascript:deleteConfirm(\''+*{element.id}+'\')'" type="button" data-toggle="modal"
                   data-target="#delete" class="btn btn-sm btn-warning">
             Delete
@@ -94,7 +94,7 @@
   function TODODelete() {
     var id = $('#deleteID').val();
     $.ajax({
-      url: "/delete?id=" + id,
+      url: "/content/delete?id=" + id,
       type: "GET",
       success: function () {
         $('#delete').modal('hide');

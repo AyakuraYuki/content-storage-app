@@ -1,6 +1,5 @@
 package cc.ayakurayuki.contentstorage.common.interceptor
 
-import cc.ayakurayuki.contentstorage.common.base.BaseBean
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.ModelAndView
 
@@ -8,20 +7,16 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 /**
- * User authenticate interceptor
  *
  * @author ayakurayuki
- * @date 2017/10/19
+ * @date 2018/11/10-16:32
  */
-class AuthenticateInterceptor implements HandlerInterceptor {
+class URLInterceptor implements HandlerInterceptor {
 
   @Override
   boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
-    if (Boolean.valueOf(String.valueOf(request.session.getAttribute(BaseBean.AUTHENTIC)))) {
-      return true
-    }
-    response.sendRedirect('/system/2FA')
-    return false
+    println request.requestURL
+    return true
   }
 
   @Override

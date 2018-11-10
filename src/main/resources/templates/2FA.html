@@ -6,14 +6,14 @@
 <div class="container">
   <div th:include="common/page-header::header(
     'Content Storage App',
-    'I need to confirm your identity before your access.<br/>'
+    'I need to confirm your identity before accessing.<br/>'
     + 'Please enter the code from Google Authenticator on your phone.')" align="center"></div>
 
   <div id="auth-div" class="row">
     <div class="col-md-4"></div>
     <div class="col-md-4">
       <div>
-        <form th:action="@{/access}" method="post">
+        <form th:action="@{/system/access}" method="post">
           <div class="input-group">
             <span class="input-group-addon">Code</span>
             <input type="text" class="form-control" id="authCode" name="authCode" aria-describedby="basic-addon1"
@@ -33,7 +33,7 @@
     <div class="col-md-6">
       <h4 align="center">First time use? Or just lost your Google Authenticator app?</h4>
       <br/>
-      <a th:href="@{/register}" class="btn btn-info center-block">Here to setup your Two-Step Authentication.</a>
+      <a th:href="@{/system/register}" class="btn btn-info center-block">Here to setup your Two-Step Authentication.</a>
     </div>
     <div class="col-md-3"></div>
   </div>

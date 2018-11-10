@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam
  * Created by Ayakura Yuki on 2017/9/30.
  */
 @Controller
+@RequestMapping(value = '/content')
 class ContentController extends BaseBean {
 
   @Autowired
@@ -41,7 +42,7 @@ class ContentController extends BaseBean {
     return content
   }
 
-  @RequestMapping(['/', '/index'])
+  @RequestMapping(['/', 'index'])
   def home(Model model) {
     model.addAttribute 'list', contentService.search(null)
     'index'
