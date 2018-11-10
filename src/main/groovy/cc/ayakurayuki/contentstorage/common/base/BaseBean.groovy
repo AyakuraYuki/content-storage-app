@@ -16,14 +16,26 @@ class BaseBean {
 
   final static def ROOT_PATH = 'redirect:/content/'
 
-  enum RESPONSE_RESULT {
+  enum ResponseCode {
     NULL(-1000),
     ERROR(-1),
     OK(0)
 
     int code
 
-    RESPONSE_RESULT(int code) {
+    ResponseCode(int code) {
+      this.code = code
+    }
+  }
+
+  enum ErrorCode {
+    AUTH_FAILED(-10000),
+    ALL_EMERGENCY_CODE_USED(-10001),
+    OTHERS(-500)
+
+    final int code
+
+    ErrorCode(int code) {
       this.code = code
     }
   }
