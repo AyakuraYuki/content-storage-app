@@ -1,5 +1,7 @@
 package cc.ayakurayuki.contentstorage.common.exception
 
+import cc.ayakurayuki.contentstorage.common.base.BaseBean
+
 /**
  *
  * @author ayakurayuki
@@ -8,7 +10,7 @@ package cc.ayakurayuki.contentstorage.common.exception
 class CSAAuthException extends CSAException {
 
   CSAAuthException(String message) {
-    super(ReturnCode.AUTH_FAILED.code, message)
+    super(BaseBean.ErrorCode.AUTH_FAILED.code, message)
   }
 
   CSAAuthException(int status, String message) {

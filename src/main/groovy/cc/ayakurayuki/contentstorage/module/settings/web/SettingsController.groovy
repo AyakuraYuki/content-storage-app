@@ -3,7 +3,6 @@ package cc.ayakurayuki.contentstorage.module.settings.web
 import cc.ayakurayuki.contentstorage.common.base.BaseBean
 import cc.ayakurayuki.contentstorage.common.exception.CSAAuthException
 import cc.ayakurayuki.contentstorage.common.exception.CSAStatusCodeException
-import cc.ayakurayuki.contentstorage.common.exception.ReturnCode
 import cc.ayakurayuki.contentstorage.module.settings.service.SettingsService
 import com.arronlong.httpclientutil.HttpClientUtil
 import com.arronlong.httpclientutil.common.HttpConfig
@@ -58,7 +57,7 @@ class SettingsController extends BaseBean {
   @RequestMapping('doReset2FA')
   def doReset2FA(String recoveryCode, Model model) {
     if (settingsService.isAllEmergencyCodeUsed()) {
-      throw new CSAStatusCodeException(ReturnCode.ALL_EMERGENCY_CODE_USED.code, 'All emergency code has been used!')
+      throw new CSAStatusCodeException(ErrorCode.ALL_EMERGENCY_CODE_USED.code, 'All emergency code has been used!')
     }
     if (settingsService.validateEmergencyCode(recoveryCode)) {
       return 'register2FA'

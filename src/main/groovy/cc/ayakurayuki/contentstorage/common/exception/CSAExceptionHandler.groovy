@@ -26,7 +26,7 @@ class CSAExceptionHandler extends BaseBean {
       view.status = e.status
       view.message = e.localizedMessage
     } else {
-      view.status = ReturnCode.OTHERS.code
+      view.status = ErrorCode.OTHERS.code
       view.message = e.localizedMessage
     }
     model.addAttribute('view', view)

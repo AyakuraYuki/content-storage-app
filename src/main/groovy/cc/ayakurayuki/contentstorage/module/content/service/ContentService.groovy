@@ -67,7 +67,7 @@ class ContentService extends BaseBean {
     }
     def result = contentDAO.insert(content)
     LOGGER.info "Insert a new content [id: ${content.id}] successful. Result: ${result}".toString()
-    return RESPONSE_RESULT.OK.code
+    return ResponseCode.OK.code
   }
 
   /**
@@ -76,11 +76,11 @@ class ContentService extends BaseBean {
    */
   int delete(String id) {
     if (null == get(id)) {
-      return RESPONSE_RESULT.NULL.code
+      return ResponseCode.NULL.code
     }
     def result = contentDAO.delete(id)
     LOGGER.info "Delete content [id: $id] successful. Result: $result".toString()
-    return RESPONSE_RESULT.OK.code
+    return ResponseCode.OK.code
   }
 
 }

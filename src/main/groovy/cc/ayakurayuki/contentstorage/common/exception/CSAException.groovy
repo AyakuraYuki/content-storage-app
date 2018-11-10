@@ -1,7 +1,6 @@
 package cc.ayakurayuki.contentstorage.common.exception
 
 /**
- *
  * @author ayakurayuki
  * @date 2018/11/10-16:15
  */
