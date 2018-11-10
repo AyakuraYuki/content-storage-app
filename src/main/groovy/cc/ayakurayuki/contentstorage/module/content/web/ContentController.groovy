@@ -1,6 +1,6 @@
 package cc.ayakurayuki.contentstorage.module.content.web
 
-import cc.ayakurayuki.contentstorage.common.base.BaseBean
+import cc.ayakurayuki.contentstorage.common.base.Base
 import cc.ayakurayuki.contentstorage.module.content.entity.Content
 import cc.ayakurayuki.contentstorage.module.content.service.ContentService
 import com.alibaba.fastjson.JSON
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam
  */
 @Controller
 @RequestMapping(value = '/content')
-class ContentController extends BaseBean {
+class ContentController extends Base {
 
   @Autowired
   ContentService contentService

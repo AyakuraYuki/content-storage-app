@@ -6,7 +6,7 @@ import cc.ayakurayuki.contentstorage.common.util.DESUtils
  * Created by ayakurayuki on 2018/1/16-11:21. <br/>
  * Package: cc.ayakurayuki.contentstorage.common.base <br/>
  */
-class BaseBean {
+class Base {
 
   final static def STRING_EMPTY = ''
   final static def SECRET = 'secret'
@@ -31,6 +31,8 @@ class BaseBean {
   enum ErrorCode {
     AUTH_FAILED(-10000),
     ALL_EMERGENCY_CODE_USED(-10001),
+    DES_DECRYPT_ERROR(-10002),
+    DES_ENCRYPT_ERROR(-10003),
     OTHERS(-500)
 
     final int code

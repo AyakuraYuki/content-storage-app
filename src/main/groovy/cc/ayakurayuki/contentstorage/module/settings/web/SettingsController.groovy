@@ -1,8 +1,8 @@
 package cc.ayakurayuki.contentstorage.module.settings.web
 
-import cc.ayakurayuki.contentstorage.common.base.BaseBean
-import cc.ayakurayuki.contentstorage.common.exception.CSAAuthException
-import cc.ayakurayuki.contentstorage.common.exception.CSAStatusCodeException
+import cc.ayakurayuki.contentstorage.common.base.Base
+import cc.ayakurayuki.contentstorage.common.exception.AuthException
+import cc.ayakurayuki.contentstorage.common.exception.StatusCodeException
 import cc.ayakurayuki.contentstorage.module.settings.service.SettingsService
 import com.arronlong.httpclientutil.HttpClientUtil
 import com.arronlong.httpclientutil.common.HttpConfig
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest
  */
 @Controller
 @RequestMapping(value = '/system')
-class SettingsController extends BaseBean {
+class SettingsController extends Base {
 
   final static def LOGGER = LogManager.getLogger SettingsService.class
 
@@ -36,7 +36,7 @@ class SettingsController extends BaseBean {
       request.session.setAttribute AUTHENTIC, Boolean.TRUE
       return ROOT_PATH
     }
-    throw new CSAAuthException('Verify code error!')
+    throw new AuthException('Verify code error!')
   }
 
   @RequestMapping('register')
@@ -57,12 +57,12 @@ class SettingsController extends BaseBean {
   @RequestMapping('doReset2FA')
   def doReset2FA(String recoveryCode, Model model) {
     if (settingsService.isAllEmergencyCodeUsed()) {
-      throw new CSAStatusCodeException(ErrorCode.ALL_EMERGENCY_CODE_USED.code, 'All emergency code has been used!')
+      throw new StatusCodeException(ErrorCode.ALL_EMERGENCY_CODE_USED.code, 'All emergency code has been used!')
     }
     if (settingsService.validateEmergencyCode(recoveryCode)) {
       return 'register2FA'
     }
-    throw new CSAAuthException('Recovery code error!')
+    throw new AuthException('Recovery code error!')
   }
 
   @RequestMapping('exit')

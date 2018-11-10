@@ -1,6 +1,6 @@
 package cc.ayakurayuki.contentstorage.module.settings.web
 
-import cc.ayakurayuki.contentstorage.common.base.BaseBean
+import cc.ayakurayuki.contentstorage.common.base.Base
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
 
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping
  * @date 2018/11/10-16:39
  */
 @Controller
-class IndexController extends BaseBean {
+class IndexController extends Base {
 
   @RequestMapping('/')
   def root() {

@@ -1,6 +1,6 @@
 package cc.ayakurayuki.contentstorage.module.content.service
 
-import cc.ayakurayuki.contentstorage.common.base.BaseBean
+import cc.ayakurayuki.contentstorage.common.base.Base
 import cc.ayakurayuki.contentstorage.common.util.IDUtils
 import cc.ayakurayuki.contentstorage.module.content.dao.ContentDAO
 import cc.ayakurayuki.contentstorage.module.content.entity.Content
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Service("ContentService")
 @Transactional(readOnly = true)
-class ContentService extends BaseBean {
+class ContentService extends Base {
 
   final static def LOGGER = LogManager.getLogger ContentService.class
 

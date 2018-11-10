@@ -1,6 +1,6 @@
 package cc.ayakurayuki.contentstorage.module.settings.service
 
-import cc.ayakurayuki.contentstorage.common.base.BaseBean
+import cc.ayakurayuki.contentstorage.common.base.Base
 import cc.ayakurayuki.contentstorage.common.util.GoogleAuthenticator
 import cc.ayakurayuki.contentstorage.common.util.IDUtils
 import cc.ayakurayuki.contentstorage.common.util.RandomUtils
@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Service("SettingsService")
 @Transactional(readOnly = true)
-class SettingsService extends BaseBean {
+class SettingsService extends Base {
 
   final static def LOGGER = LogManager.logger
 

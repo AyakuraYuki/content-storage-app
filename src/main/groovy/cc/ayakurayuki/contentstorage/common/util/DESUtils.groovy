@@ -1,10 +1,10 @@
 package cc.ayakurayuki.contentstorage.common.util
 
-import cc.ayakurayuki.contentstorage.common.base.BaseBean
+import cc.ayakurayuki.contentstorage.common.base.Base
+import cc.ayakurayuki.contentstorage.common.exception.DESException
 import cc.ayakurayuki.contentstorage.module.settings.entity.Settings
 import cc.ayakurayuki.contentstorage.module.settings.service.SettingsService
 import org.apache.commons.codec.binary.Base64
-import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -42,11 +42,11 @@ final class DESUtils {
   void init() {
     desUtils = this
     desUtils.settingsService = this.settingsService
-    def desKey = desUtils.settingsService.getByKey(BaseBean.DES_KEY)
+    def desKey = desUtils.settingsService.getByKey(Base.DES_KEY)
     if (desKey == null) {
       desKey = [
           id   : IDUtils.UUID(),
-          key  : BaseBean.DES_KEY,
+          key  : Base.DES_KEY,
           value: "${IDUtils.UUID()}${IDUtils.UUID()}".toString()
       ] as Settings
       desUtils.settingsService.save(desKey)
@@ -75,14 +75,17 @@ final class DESUtils {
    */
   static String encrypt(String data) {
     if (data == null) {
-      StringUtils.EMPTY
+      return Base.STRING_EMPTY
     }
     try {
       byte[] bytes = encryptByte(data.getBytes('UTF-8'), KEY.bytes)
-      new String(new Base64().encode(bytes))
+      return new String(new Base64().encode(bytes))
     }
     catch (Exception e) {
-      e.getMessage()
+      throw new DESException(
+          Base.ErrorCode.DES_ENCRYPT_ERROR.code,
+          "Encrypt error: ${e.localizedMessage} [${data}]".toString()
+      )
     }
   }
 
@@ -93,15 +96,18 @@ final class DESUtils {
    */
   static String decrypt(String data) {
     if (data == null) {
-      StringUtils.EMPTY
+      return Base.STRING_EMPTY
     }
     try {
       byte[] dataBuf = new Base64().decode(data.bytes)
       byte[] bytes = decryptByte(dataBuf, KEY.bytes)
-      new String(bytes, 'UTF-8')
+      return new String(bytes, 'UTF-8')
     }
     catch (Exception e) {
-      e.getMessage()
+      throw new DESException(
+          Base.ErrorCode.DES_DECRYPT_ERROR.code,
+          "Decrypt error: ${e.localizedMessage}".toString()
+      )
     }
   }
 
