@@ -15,23 +15,15 @@
 * 使用Google Authenticator两步验证
 * 单机使用
 * 数据加密后持久化
-
-
-## TODO
-* I18N
-
+* DB文件级唯一的DES Key
 
 ## 使用：用户
 
 如果您是普通用户，建议您从[Release](https://github.com/AyakuraYuki/content-storage-app/releases)下载
 
-Linux/macOS使用`Start Application.sh`，Windows使用`Start Application.bat`启动
+Linux/macOS使用`startup.sh`，Windows使用`startup.bat`启动
 
-浏览器访问地址为：
-```bash
-http://localhost:8888/
-```
-
+浏览器访问地址：`http://localhost:8888/`
 
 ## 使用：开发者
 
@@ -47,20 +39,14 @@ git clone https://github.com/AyakuraYuki/content-storage-app.git
 
 选择导入maven项目即可
 
-### 初始化SQL
-
-执行SQL代码文件，位置：`<path_to_project>/sql/initialization.sql`
-
 ### 修改配置文件
 
 将配置文件中的MySQL连接信息修改为您的SQLite连接信息，可修改属性如下：
 ```yaml
-url: jdbc:sqlite:<your_db_file_path>
-username:
-password:
+url: jdbc:sqlite:< _your_db_file_path_ || data/storage.db >
 ```
 
 ### 执行程序
 ```bash
-java -jar content-storage-app-<version>.jar
+(java -jar content-storage-app-<version>.jar &)
 ```
