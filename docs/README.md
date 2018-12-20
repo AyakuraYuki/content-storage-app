@@ -9,7 +9,6 @@
 * Groovy `ver 2.5.0`
 * JDK 1.8 `ver 1.8.0_181`
 
-
 ## 特性 / Feature
 * JSON化存储内容
 * 使用Google Authenticator两步验证
@@ -50,3 +49,8 @@ url: jdbc:sqlite:< _your_db_file_path_ || data/storage.db >
 ```bash
 (java -jar content-storage-app-<version>.jar &)
 ```
+
+## Special Thanks to
+
+![JetBrains_Logo](https://blog.ayakurayuki.cc/assets/img/jetbrains/variant-2_logos/jetbrains-variant-2.png =256x256)
+* [JetBrains: Developer Tools for Professionals and Teams](https://www.jetbrains.com/?from=content-storage-app)
