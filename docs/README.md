@@ -52,6 +52,13 @@ url: jdbc:sqlite:< _your_db_file_path_ || data/storage.db >
 
 ## Special Thanks to
 
-<div><img src="https://blog.ayakurayuki.cc/assets/img/jetbrains/variant-2_logos/jetbrains-variant-2.png" alt="JetBrains" width="256px"/></div>
+<div>
+  <img src="https://blog.ayakurayuki.cc/assets/img/jetbrains/variant-2_logos/jetbrains-variant-2.png" alt="JetBrains" width="256px"/>
+  <div>
+    <img src="https://blog.ayakurayuki.cc/assets/img/jetbrains/intellij-idea_logos/logo.png" alt="JetBrains" width="192px"/>
+    <img src="https://blog.ayakurayuki.cc/assets/img/jetbrains/webstorm_logos/logo.png" alt="JetBrains" width="192px"/>
+    <img src="https://blog.ayakurayuki.cc/assets/img/jetbrains/datagrip_logos/logo.png" alt="JetBrains" width="192px"/>
+  </div>
+</div>
 
 * [JetBrains: Developer Tools for Professionals and Teams](https://www.jetbrains.com/?from=content-storage-app)
