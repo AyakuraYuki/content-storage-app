@@ -52,5 +52,5 @@ url: jdbc:sqlite:< _your_db_file_path_ || data/storage.db >
 
 ## Special Thanks to
 
-![JetBrains_Logo](https://blog.ayakurayuki.cc/assets/img/jetbrains/variant-2_logos/jetbrains-variant-2.png)
+<div><img src="https://blog.ayakurayuki.cc/assets/img/jetbrains/variant-2_logos/jetbrains-variant-2.png" alt="JetBrains" width="256px" height="256px"/></div>
 * [JetBrains: Developer Tools for Professionals and Teams](https://www.jetbrains.com/?from=content-storage-app)
