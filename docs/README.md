@@ -6,7 +6,7 @@
 * Spring Boot `ver 2.0.2.RELEASE`
 * MyBatis `ver 3.4.6`
 * SQLite JDBC `ver 3.23.1`
-* Groovy `ver 2.5.0`
+* Groovy `ver 2.5.5`
 * JDK 1.8 `ver 1.8.0_181`
 
 ## 特性 / Feature
