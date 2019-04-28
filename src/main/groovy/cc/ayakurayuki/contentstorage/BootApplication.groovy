@@ -20,7 +20,7 @@ import javax.sql.DataSource
 class BootApplication {
 
   @Bean
-  @ConfigurationProperties("spring.datasource")
+  @ConfigurationProperties(prefix = "spring.datasource")
   DataSource getDataSource() {
     new BasicDataSource()
   }
