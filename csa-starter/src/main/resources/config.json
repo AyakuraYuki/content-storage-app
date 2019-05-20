@@ -1,0 +1,16 @@
+{
+
+  "server.port": 10514,
+
+  "redis.enable": false,
+  "redis.host": "127.0.0.1",
+  "redis.port": 6379,
+
+  "db.url": "jdbc:mysql://localhost:3306/db_local?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false",
+  "db.user": "root",
+  "db.pass": "yuki6261",
+  "db.driver": "com.mysql.cj.jdbc.Driver",
+  "db.minimumIdle": 2,
+  "db.maximumPoolSize": 10
+
+}
