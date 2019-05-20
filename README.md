@@ -16,6 +16,18 @@
 * 数据加密后持久化
 * DB文件级唯一的DES Key
 
+## 须知
+本程序由于DB存储是采用SQLite文件数据库，即使DES Key是文件级唯一的，本程序也不能保证数据的绝对安全。如果DB文件失窃或泄露，本程序将无法追回或销毁文件，所以是否使用还请慎重考虑。
+
+如果是以学习为目的使用本程序，请确保自己存储的内容不是个人最高机密信息（如账号密码、信用卡信息等）。
+
+## Attention
+This program using SQLite file database to store your data, although the DES key base on the database file, I CANNOT promise to you that your data is unconditioned secure.
+
+If you lose or leak your database file, this program CANNOT invalidate it, so make sure you know all of the risks before using this program.
+
+Make sure you are NOT storing high-level personal information, such as accounts and credit cards, for your studying of this program.
+
 ## 使用：用户
 
 如果您是普通用户，建议您从[Release](https://github.com/AyakuraYuki/content-storage-app/releases)下载
