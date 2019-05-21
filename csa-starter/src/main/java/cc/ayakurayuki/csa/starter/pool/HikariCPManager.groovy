@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory
  */
 class HikariCPManager implements ConnectionPoolManager {
 
-  private final def logger = LoggerFactory.getLogger(HikariCPManager.class)
+  private final def logger = LoggerFactory.getLogger HikariCPManager.class
   private volatile static HikariCPManager INSTANCE = null
   private JDBCClient client
 
@@ -33,6 +33,10 @@ class HikariCPManager implements ConnectionPoolManager {
     ]
     def cpConfig = new JsonObject(properties)
     this.client = JDBCClient.createShared Constants.vertx, cpConfig, 'content-storage-app'
+  }
+
+  static HikariCPManager getInstance() {
+    INSTANCE
   }
 
   static void init() {

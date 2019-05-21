@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory
  */
 class Launcher {
 
-  private static final def logger = LoggerFactory.getLogger(Launcher.class)
+  private static final def logger = LoggerFactory.getLogger Launcher.class
 
   static void main(args) {
     def start = System.currentTimeMillis()

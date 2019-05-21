@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory
  */
 class StarterVerticle extends AbstractVerticle {
 
-  private def logger = LoggerFactory.getLogger(this.getClass())
+  private def logger = LoggerFactory.getLogger this.getClass()
   private HttpServer server
   private Router router
 

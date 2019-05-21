@@ -1,5 +1,6 @@
 package cc.ayakurayuki.csa.starter.core.config
 
+
 import com.google.inject.Injector
 import io.vertx.core.Context
 import io.vertx.core.Vertx
@@ -13,12 +14,44 @@ import org.slf4j.LoggerFactory
  */
 class Constants {
 
-  private static final def logger = LoggerFactory.getLogger(Constants.class)
+  private static final def logger = LoggerFactory.getLogger Constants.class
 
   private static Vertx vertx
   private static Context context
   private static RedisClient redis
   public static Injector injector
+
+  public static final def EMPTY = ''
+  public static final def SECRET = 'secret'
+  public static final def EMERGENCY = 'emergency'
+  public static final def DES_KEY = 'desKey'
+  public static final def TOKEN = 'token'
+
+  enum ResponseCode {
+    NULL(-1000),
+    ERROR(-1),
+    OK(0)
+
+    int code
+
+    ResponseCode(int code) {
+      this.code = code
+    }
+  }
+
+  enum ErrorCode {
+    AUTH_FAILED(-10000),
+    ALL_EMERGENCY_CODE_USED(-10001),
+    DES_DECRYPT_ERROR(-10002),
+    DES_ENCRYPT_ERROR(-10003),
+    OTHERS(-500)
+
+    final int code
+
+    ErrorCode(int code) {
+      this.code = code
+    }
+  }
 
   static Vertx getVertx() {
     return vertx
