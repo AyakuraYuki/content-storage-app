@@ -3,6 +3,8 @@ package cc.ayakurayuki.csa.starter.core.config
 
 import com.google.inject.Injector
 import io.vertx.core.Context
+import io.vertx.core.Future
+import io.vertx.core.Handler
 import io.vertx.core.Vertx
 import io.vertx.redis.RedisClient
 import io.vertx.redis.RedisOptions
@@ -80,6 +82,18 @@ class Constants {
     } else {
       logger.info "Disabled redis client, skip the redis client initialization."
     }
+  }
+
+  static <T> Future<T> executeBlocking(Handler<Future<T>> blockingCodeHandler) {
+    Future<T> future = Future.future()
+    Constants.vertx.executeBlocking(blockingCodeHandler, { asyncResult ->
+      if (asyncResult.succeeded()) {
+        future.complete(asyncResult.result())
+      } else {
+        future.fail(asyncResult.cause())
+      }
+    })
+    return future
   }
 
 }

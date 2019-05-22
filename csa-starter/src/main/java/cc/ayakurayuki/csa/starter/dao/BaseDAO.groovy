@@ -42,6 +42,7 @@ class BaseDAO {
         } else {
           throw new RuntimeException(ar.cause())
         }
+        conn.close()
       }
     }
   }

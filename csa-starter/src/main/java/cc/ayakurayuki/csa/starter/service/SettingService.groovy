@@ -37,7 +37,7 @@ class SettingService extends BaseService {
 
   Future<Setting> getAt(String key) {
     Future.<JsonObject> future { f ->
-      settingDAO.getByKey key, f
+      settingDAO.getAt key, f
     }.compose { ar ->
       if (ar == null) {
         return Future.<Setting> succeededFuture(null)

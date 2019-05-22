@@ -5,6 +5,7 @@ import cc.ayakurayuki.csa.starter.core.config.Constants
 import cc.ayakurayuki.csa.starter.module.DAOModule
 import cc.ayakurayuki.csa.starter.module.ServiceModule
 import cc.ayakurayuki.csa.starter.pool.HikariCPManager
+import cc.ayakurayuki.csa.starter.util.DESUtils
 import com.google.inject.Guice
 import com.zandero.rest.RestRouter
 import io.vertx.core.AbstractVerticle

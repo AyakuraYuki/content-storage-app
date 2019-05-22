@@ -72,19 +72,17 @@ class ApiRest extends BaseRest {
   @Path(value = 'des')
   @Produces(MediaType.APPLICATION_JSON)
   Future<JsonResponse> des() {
-    def data = DESUtils.encrypt '23333'
-    def decrypted = DESUtils.decrypt data
-    def resultFuture = DESUtils.decryptFuture(data)
+    def result = [] as LinkedHashMap<String, Object>
+    def data = DESUtils.encryptFuture('233333')
         .compose { ar ->
-          Future.future { f ->
-            def result = [
-                'old': decrypted,
-                'new': ar
-            ]
-            f.complete result
-          }
+          result['encrypted'] = ar
+          DESUtils.decryptFuture(ar)
         }
-    response resultFuture
+        .compose { ar ->
+          result['decrypted'] = ar
+          Future.future { f -> f.complete result }
+        }
+    response data
   }
 
 }

@@ -66,7 +66,7 @@ class HikariCPManager implements ConnectionPoolManager {
 
   @Override
   void getConnection(Handler<SQLConnection> callback) {
-    logger.info "JDBC client: ${client}"
+//    logger.info "JDBC client: ${client}"
     client.getConnection({ ar ->
       if (ar.succeeded()) {
         callback.handle ar.result()

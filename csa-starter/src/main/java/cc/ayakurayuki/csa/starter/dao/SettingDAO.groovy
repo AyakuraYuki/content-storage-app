@@ -24,7 +24,7 @@ class SettingDAO extends BaseDAO {
     future.setHandler resultHandler
   }
 
-  void getByKey(String key, Handler<AsyncResult<JsonObject>> resultHandler) {
+  void getAt(String key, Handler<AsyncResult<JsonObject>> resultHandler) {
     def future = Future.<JsonObject> future()
     def sql = 'SELECT * FROM settings WHERE key = ?'
     def param = new JsonArray().add(key)

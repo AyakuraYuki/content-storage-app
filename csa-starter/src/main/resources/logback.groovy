@@ -12,7 +12,7 @@
 import java.nio.charset.Charset
 
 scan("10 minutes")
-def LOG_HOME = "/Users/ayakurayuki/logs/vertx-playground"
+def LOG_HOME = "logs/content-storage-app"
 
 appender("STDOUT", ConsoleAppender) {
   encoder(PatternLayoutEncoder) {
