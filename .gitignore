@@ -24,3 +24,4 @@ releases/
 out/
 
 docker_shell.sh
+*.db-journal
