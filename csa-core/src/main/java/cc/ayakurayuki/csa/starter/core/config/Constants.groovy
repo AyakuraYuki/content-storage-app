@@ -6,6 +6,7 @@ import io.vertx.core.Context
 import io.vertx.core.Future
 import io.vertx.core.Handler
 import io.vertx.core.Vertx
+import io.vertx.core.eventbus.EventBus
 import io.vertx.redis.RedisClient
 import io.vertx.redis.RedisOptions
 import org.slf4j.LoggerFactory
@@ -20,6 +21,7 @@ class Constants {
 
   private static Vertx vertx
   private static Context context
+  private static EventBus eventBus
   private static RedisClient redis
   public static Injector injector
 
@@ -63,6 +65,10 @@ class Constants {
     return context
   }
 
+  static EventBus getEventBus() {
+    return eventBus
+  }
+
   static RedisClient getRedis() {
     return redis
   }
@@ -70,6 +76,7 @@ class Constants {
   static def init(Context initContext) {
     vertx = initContext.owner()
     context = initContext
+    eventBus = vertx.eventBus()
 
     def config = Constants.context.config()
     def redisOptions = new RedisOptions()

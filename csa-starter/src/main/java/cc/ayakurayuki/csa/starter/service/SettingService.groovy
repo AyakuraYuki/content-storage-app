@@ -23,24 +23,24 @@ class SettingService extends BaseService {
     settingDAO = Constants.injector.getInstance SettingDAO.class
   }
 
-  Future<Setting> get(String id) {
-    Future.<JsonObject> future { f ->
-      settingDAO.get id, f
-    }.compose { ar ->
-      if (ar == null) {
-        return Future.<Setting> succeededFuture(null)
-      }
-      def json = ar.encodePrettily()
-      return Future.succeededFuture(Json.decodeValue(json, Setting.class))
-    }
-  }
+//  Future<Setting> get(String id) {
+//    Future.<JsonObject> future { f ->
+//      settingDAO.get id, f
+//    }.compose { ar ->
+//      if (ar == null) {
+//        return Future.<Setting> succeededFuture(null)
+//      }
+//      def json = ar.encodePrettily()
+//      return Future.succeededFuture(Json.decodeValue(json, Setting.class))
+//    }
+//  }
 
   Future<Setting> getAt(String key) {
     Future.<JsonObject> future { f ->
       settingDAO.getAt key, f
     }.compose { ar ->
       if (ar == null) {
-        return Future.<Setting> succeededFuture(null)
+        return Future.<Setting> succeededFuture()
       }
       def json = ar.encodePrettily()
       return Future.succeededFuture(Json.decodeValue(json, Setting.class))
@@ -70,10 +70,11 @@ class SettingService extends BaseService {
   Future<String> getSecretKey() {
     getAt(Constants.SECRET).compose { ar ->
       if (null == ar) {
-        def setting = new Setting()
-        setting.id = IDUtils.UUID()
-        setting.key = Constants.SECRET
-        setting.value = GoogleAuthenticator.generateSecretKey()
+        def setting = [
+            'id'   : IDUtils.UUID(),
+            'key'  : Constants.SECRET,
+            'value': GoogleAuthenticator.generateSecretKey()
+        ] as Setting
         save setting
         return Future.succeededFuture(setting.value)
       }

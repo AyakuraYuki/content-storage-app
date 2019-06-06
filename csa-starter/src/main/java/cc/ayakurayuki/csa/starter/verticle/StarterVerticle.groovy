@@ -1,17 +1,21 @@
 package cc.ayakurayuki.csa.starter.verticle
 
 import cc.ayakurayuki.csa.starter.api.ApiRest
+import cc.ayakurayuki.csa.starter.core.auth.TokenValidator
 import cc.ayakurayuki.csa.starter.core.config.Constants
+import cc.ayakurayuki.csa.starter.core.config.RestRouter
 import cc.ayakurayuki.csa.starter.module.DAOModule
 import cc.ayakurayuki.csa.starter.module.ServiceModule
 import cc.ayakurayuki.csa.starter.pool.HikariCPManager
-import cc.ayakurayuki.csa.starter.util.DESUtils
+import cc.ayakurayuki.csa.starter.service.SettingService
 import com.google.inject.Guice
-import com.zandero.rest.RestRouter
 import io.vertx.core.AbstractVerticle
+import io.vertx.core.Handler
 import io.vertx.core.http.HttpServer
 import io.vertx.ext.web.Router
+import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.BodyHandler
+import org.apache.commons.lang3.StringUtils
 import org.slf4j.LoggerFactory
 
 /**
@@ -52,11 +56,13 @@ class StarterVerticle extends AbstractVerticle {
         new ServiceModule()
     )
     HikariCPManager.init()
+//    EventBusManager.init()
   }
 
   private def router() {
     def _router = Router.router(vertx)
     _router.route().handler(BodyHandler.create())
+    _router.route().handler(authHandler)
     RestRouter.register(_router, ApiRest.class)
     this.router = _router
   }
@@ -72,6 +78,43 @@ class StarterVerticle extends AbstractVerticle {
         logger.error "Error! Server is going down cause ${r.cause().localizedMessage}"
       }
     })
+  }
+
+  private Handler<RoutingContext> authHandler = { context ->
+    def authUrlMap = RestRouter.authUrlMap
+    def request = context.request()
+    if (!authUrlMap.containsKey(request.path())) {
+      context.next()
+      return
+    }
+    def token = request.getFormAttribute('token')
+    if (token == null) {
+      context.user = new TokenValidator(token, -400, 'Require token!')
+      context.next()
+    } else {
+      Constants.injector.getInstance(SettingService.class)[Constants.TOKEN]
+          .setHandler { ar ->
+            if (ar.succeeded()) {
+              if (ar.result() == null) {
+                context.user = new TokenValidator(token, -500, 'Token expired.')
+              } else {
+                def storedToken = ar.result().value
+                if (StringUtils.isEmpty(storedToken)) {
+                  context.user = new TokenValidator(token, -500, 'Token expired.')
+                } else if (storedToken != token) {
+                  context.user = new TokenValidator(token, -400, 'Wrong token, access denied!')
+                } else {
+                  context.user = new TokenValidator(token, 0, '')
+                }
+              }
+            } else {
+              context.user = new TokenValidator(
+                  token, -500, "Found other exception that I cannot handle with cause: ${ar.cause().localizedMessage}"
+              )
+            }
+            context.next()
+          }
+    }
   }
 
 }

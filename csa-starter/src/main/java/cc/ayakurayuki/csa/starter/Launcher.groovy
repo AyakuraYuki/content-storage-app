@@ -23,7 +23,7 @@ class Launcher {
     def deploymentOptions = new DeploymentOptions()
     deploymentOptions.workerPoolSize = 10
     deploymentOptions.maxWorkerExecuteTime = 10000
-    deploymentOptions.instances = 2
+    deploymentOptions.instances = 1
     def inputStream = ClassLoader.getSystemResourceAsStream 'config.json'
     def configContent = inputStream.readLines().join(System.lineSeparator())
     def config = Buffer.buffer(configContent).toJsonObject()

@@ -8,6 +8,7 @@ import io.vertx.core.Future
 import org.apache.commons.codec.binary.Base64
 
 import javax.crypto.Cipher
+import javax.crypto.SecretKey
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.DESedeKeySpec
 import java.security.SecureRandom
@@ -46,21 +47,21 @@ final class DESUtils {
   }
 
   private static Future<byte[]> encryptByte(byte[] data, byte[] key) {
-    Constants.<byte[]> executeBlocking { f ->
-      def desKey = new DESedeKeySpec(key)
-      def secretKey = keyFactory.generateSecret desKey
-      cipher.init Cipher.ENCRYPT_MODE, secretKey, random
-      f.complete cipher.doFinal(data)
-    }
+    Future.<DESedeKeySpec> future { f -> f.complete new DESedeKeySpec(key) }
+        .compose { desKey -> Future.<SecretKey> succeededFuture keyFactory.generateSecret(desKey) }
+        .compose { secretKey ->
+          cipher.init Cipher.ENCRYPT_MODE, secretKey, random
+          Future.<byte[]> succeededFuture cipher.doFinal(data)
+        }
   }
 
   private static Future<byte[]> decryptByte(byte[] data, byte[] key) {
-    Constants.<byte[]> executeBlocking { f ->
-      def desKey = new DESedeKeySpec(key)
-      def secretKey = keyFactory.generateSecret desKey
-      cipher.init Cipher.DECRYPT_MODE, secretKey, random
-      f.complete cipher.doFinal(data)
-    }
+    Future.<DESedeKeySpec> future { f -> f.complete new DESedeKeySpec(key) }
+        .compose { desKey -> Future.<SecretKey> succeededFuture keyFactory.generateSecret(desKey) }
+        .compose { secretKey ->
+          cipher.init Cipher.DECRYPT_MODE, secretKey, random
+          Future.<byte[]> succeededFuture cipher.doFinal(data)
+        }
   }
 
   /**
@@ -75,11 +76,7 @@ final class DESUtils {
     key.compose { ar ->
       try {
         return encryptByte(data.getBytes('UTF-8'), ar.bytes)
-            .compose { ar2 ->
-              Future.<String> future { f ->
-                f.complete new String(new Base64().encode(ar2))
-              }
-            }
+            .compose { ar2 -> Future.<String> succeededFuture new String(new Base64().encode(ar2)) }
       } catch (Exception e) {
         return Future.<String> future { f -> f.fail e.localizedMessage }
       }
@@ -99,11 +96,7 @@ final class DESUtils {
       try {
         return Constants.<byte[]> executeBlocking { f -> f.complete new Base64().decode(data.bytes) }
             .compose { buf -> decryptByte buf, ar.bytes }
-            .compose { ar2 ->
-              Future.<String> future { f ->
-                f.complete new String(ar2, 'UTF-8')
-              }
-            }
+            .compose { ar2 -> Future.<String> succeededFuture new String(ar2, 'UTF-8') }
       } catch (Exception e) {
         return Future.<String> future { f -> f.fail e.localizedMessage }
       }
