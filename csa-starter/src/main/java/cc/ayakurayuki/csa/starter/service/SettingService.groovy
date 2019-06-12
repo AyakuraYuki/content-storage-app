@@ -23,18 +23,6 @@ class SettingService extends BaseService {
     settingDAO = Constants.injector.getInstance SettingDAO.class
   }
 
-//  Future<Setting> get(String id) {
-//    Future.<JsonObject> future { f ->
-//      settingDAO.get id, f
-//    }.compose { ar ->
-//      if (ar == null) {
-//        return Future.<Setting> succeededFuture(null)
-//      }
-//      def json = ar.encodePrettily()
-//      return Future.succeededFuture(Json.decodeValue(json, Setting.class))
-//    }
-//  }
-
   Future<Setting> getAt(String key) {
     Future.<JsonObject> future { f ->
       settingDAO.getAt key, f
