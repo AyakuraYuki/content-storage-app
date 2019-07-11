@@ -73,24 +73,6 @@ class Constants {
     return redis
   }
 
-  static def init(Context initContext) {
-    vertx = initContext.owner()
-    context = initContext
-    eventBus = vertx.eventBus()
-
-    def config = Constants.context.config()
-    def redisOptions = new RedisOptions()
-    redisOptions.host = config.getString 'redis.host', '127.0.0.1'
-    redisOptions.port = config.getInteger 'redis.port', 6379
-    def enableRedis = config.getBoolean 'redis.enable', false
-    if (enableRedis) {
-      redis = RedisClient.create Constants.vertx, redisOptions
-      logger.info "Redis client is ready to go."
-    } else {
-      logger.info "Disabled redis client, skip the redis client initialization."
-    }
-  }
-
   static <T> Future<T> executeBlocking(Handler<Future<T>> blockingCodeHandler) {
     Future<T> future = Future.future()
     Constants.vertx.executeBlocking(blockingCodeHandler, { asyncResult ->
@@ -101,6 +83,25 @@ class Constants {
       }
     })
     return future
+  }
+
+  static def init(Context initContext) {
+    vertx = initContext.owner()
+    context = initContext
+    eventBus = vertx.eventBus()
+
+    def config = Constants.context.config()
+    def redisOptions = new RedisOptions()
+    redisOptions.host = config.getString 'redis.host', '127.0.0.1'
+    redisOptions.port = config.getInteger 'redis.port', 6379
+    def enableRedis = config.getBoolean 'redis.enable', false
+    logger.info "Redis cache management: ${enableRedis ? 'enabled' : 'disabled'}"
+    if (enableRedis) {
+      redis = RedisClient.create Constants.vertx, redisOptions
+      logger.info "Redis client is ready to go."
+    } else {
+      logger.info "Disabled redis client, skip the redis client initialization."
+    }
   }
 
 }

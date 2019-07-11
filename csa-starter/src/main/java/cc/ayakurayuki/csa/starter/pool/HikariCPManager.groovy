@@ -40,7 +40,6 @@ class HikariCPManager implements ConnectionPoolManager {
   }
 
   static void init() {
-    long start = System.currentTimeMillis()
     if (INSTANCE != null) {
       throw new RuntimeException('HikariCPManager is already initialized, please DON\'T invoke init()!!!')
     }
@@ -49,8 +48,6 @@ class HikariCPManager implements ConnectionPoolManager {
       throw new RuntimeException('Constants must be initialized first!!!')
     }
     INSTANCE = new HikariCPManager(Constants.context)
-    def end = System.currentTimeMillis()
-    INSTANCE.logger.info "Done <${(end - start) / 1000}s>! HikariCP initialized."
   }
 
   static void close() {

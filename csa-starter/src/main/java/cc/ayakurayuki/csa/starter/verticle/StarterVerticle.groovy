@@ -33,8 +33,9 @@ class StarterVerticle extends AbstractVerticle {
 
   @Override
   void start() throws Exception {
-    super.start()
     start = System.currentTimeMillis()
+    logger.info "Starting ${config().getString('product.name', 'csa')} server version ${config().getString('product.version', '')}"
+    super.start()
     components()
     router()
     serve()
@@ -50,21 +51,30 @@ class StarterVerticle extends AbstractVerticle {
   }
 
   private def components() {
+    logger.info 'Loading context'
     Constants.init context
+    logger.info 'Loaded context'
     Constants.injector = Guice.createInjector(
         new DAOModule(),
         new ServiceModule()
     )
+    logger.info 'Loaded injector'
     HikariCPManager.init()
+    logger.info 'Loaded CP manager'
 //    EventBusManager.init()
   }
 
   private def router() {
+    logger.info 'Loading router'
     def _router = Router.router(vertx)
     _router.route().handler(BodyHandler.create())
     _router.route().handler(authHandler)
     RestRouter.register(_router, ApiRest.class)
     this.router = _router
+
+    def routedUriCount = this.router.routes.findAll({ r -> StringUtils.isNotEmpty(r.path) }).size()
+    def routedNoneUriCount = this.router.routes.findAll({ r -> StringUtils.isEmpty(r.path) }).size()
+    logger.info "Loaded $routedUriCount paths, $routedNoneUriCount handlers"
   }
 
   private def serve() {
@@ -73,7 +83,7 @@ class StarterVerticle extends AbstractVerticle {
     this.server.requestHandler(this.router).listen(port, { r ->
       if (r.succeeded()) {
         end = System.currentTimeMillis()
-        logger.info "Done <${(end - start) / 1000}s>! Server is now listening port $port."
+        logger.info "Done (${(end - start) / 1000}s)! Server is now listening to port $port."
       } else {
         logger.error "Error! Server is going down cause ${r.cause().localizedMessage}"
       }

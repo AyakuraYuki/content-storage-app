@@ -1,5 +1,8 @@
 {
 
+  "product.name": "content-storage-app",
+  "product.version": "3.0.0-preview",
+
   "server.port": 10514,
 
   "redis.enable": false,

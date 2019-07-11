@@ -16,7 +16,7 @@ def LOG_HOME = "logs/content-storage-app"
 
 appender("STDOUT", ConsoleAppender) {
   encoder(PatternLayoutEncoder) {
-    pattern = "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%-5level]-%logger{36}[%L]: %msg%n"
+    pattern = "%d{yyyy-MM-dd HH:mm:ss.SSS} [%-27thread] [%-5level] %-46logger{36} [%5L]: %msg%n"
   }
 }
 
@@ -35,6 +35,6 @@ appender("FILE", RollingFileAppender) {
   prudent = false
 }
 
-root(DEBUG, ["STDOUT"])
-logger("cc.ayakurayuki", DEBUG)
-logger("com.zaxxer.hikari.pool.HikariPool", INFO)
+root(INFO, ["STDOUT"])
+logger('cc.ayakurayuki', DEBUG)
+logger('com.zaxxer.hikari.pool.HikariPool', INFO)
