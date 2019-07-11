@@ -25,3 +25,5 @@ out/
 
 docker_shell.sh
 *.db-journal
+
+node_modules/
