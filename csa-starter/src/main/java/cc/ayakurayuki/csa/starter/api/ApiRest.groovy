@@ -1,6 +1,5 @@
 package cc.ayakurayuki.csa.starter.api
 
-import cc.ayakurayuki.csa.starter.core.annotation.Token
 import cc.ayakurayuki.csa.starter.core.config.Constants
 import cc.ayakurayuki.csa.starter.core.entity.JsonResponse
 import cc.ayakurayuki.csa.starter.core.entity.Setting
@@ -10,7 +9,9 @@ import cc.ayakurayuki.csa.starter.util.DESUtils
 import io.vertx.core.Future
 import org.apache.commons.lang3.StringUtils
 
-import javax.ws.rs.*
+import javax.ws.rs.GET
+import javax.ws.rs.Path
+import javax.ws.rs.Produces
 import javax.ws.rs.core.MediaType
 
 /**
@@ -64,20 +65,20 @@ class ApiRest extends BaseRest {
     response resultFuture
   }
 
-  @POST
-  @Path(value = '/secret')
-  @Produces(MediaType.APPLICATION_JSON)
-  @Token
-  Future<JsonResponse> secret(@FormParam('token') @DefaultValue('') String token) {
-    def resultFuture = settingService.secretKey
-        .compose({ ar ->
-          def result = [
-              'secret': ar
-          ]
-          Future.<LinkedHashMap<String, Object>> succeededFuture result
-        })
-    response resultFuture
-  }
+//  @POST
+//  @Path(value = '/secret')
+//  @Produces(MediaType.APPLICATION_JSON)
+//  @Token
+//  Future<JsonResponse> secret(@FormParam('token') @DefaultValue('') String token) {
+//    def resultFuture = settingService.secretKey
+//        .compose({ ar ->
+//          def result = [
+//              'secret': ar
+//          ]
+//          Future.<LinkedHashMap<String, Object>> succeededFuture result
+//        })
+//    response resultFuture
+//  }
 
   @GET
   @Path(value = '/des')

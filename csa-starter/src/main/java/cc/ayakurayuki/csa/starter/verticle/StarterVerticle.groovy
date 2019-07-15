@@ -51,7 +51,6 @@ class StarterVerticle extends AbstractVerticle {
   }
 
   private def components() {
-    logger.info 'Loading context'
     Constants.init context
     logger.info 'Loaded context'
     Constants.injector = Guice.createInjector(
@@ -61,7 +60,6 @@ class StarterVerticle extends AbstractVerticle {
     logger.info 'Loaded injector'
     HikariCPManager.init()
     logger.info 'Loaded CP manager'
-//    EventBusManager.init()
   }
 
   private def router() {
@@ -106,20 +104,20 @@ class StarterVerticle extends AbstractVerticle {
           .setHandler { ar ->
             if (ar.succeeded()) {
               if (ar.result() == null) {
-                context.user = new TokenValidator(token, -500, 'Token expired.')
+                context.user = new TokenValidator(token, Constants.ErrorCode.TOKEN_EXPIRED.code, 'Token expired.')
               } else {
                 def storedToken = ar.result().value
                 if (StringUtils.isEmpty(storedToken)) {
-                  context.user = new TokenValidator(token, -500, 'Token expired.')
+                  context.user = new TokenValidator(token, Constants.ErrorCode.TOKEN_EXPIRED.code, 'Token expired.')
                 } else if (storedToken != token) {
-                  context.user = new TokenValidator(token, -400, 'Wrong token, access denied!')
+                  context.user = new TokenValidator(token, Constants.ErrorCode.AUTH_FAILED.code, 'Wrong token, access denied!')
                 } else {
                   context.user = new TokenValidator(token, 0, '')
                 }
               }
             } else {
               context.user = new TokenValidator(
-                  token, -500, "Found other exception that I cannot handle with cause: ${ar.cause().localizedMessage}"
+                  token, Constants.ErrorCode.OTHERS.code, "Found other exception that I cannot handle with cause: ${ar.cause().localizedMessage}"
               )
             }
             context.next()

@@ -110,7 +110,7 @@ final class GoogleAuthenticator {
    *  the secret that was previously generated for this user
    * @return the URL for the QR code to scan
    */
-  static String getQRCodeURL(String user, String host, String secret) {
+  static String getQrCodeUrl(String user, String host, String secret) {
     return "http://www.google.com/chart?chs=200x200&chld=M%%7C0&cht=qr&chl=otpauth://totp/$user@$host?secret=$secret"
   }
 
@@ -123,7 +123,7 @@ final class GoogleAuthenticator {
    *  密钥
    * @return
    */
-  static String getQRCode(String user, String secret) {
+  static String getQrCode(String user, String secret) {
     return "otpauth://totp/$user?secret=$secret"
   }
 

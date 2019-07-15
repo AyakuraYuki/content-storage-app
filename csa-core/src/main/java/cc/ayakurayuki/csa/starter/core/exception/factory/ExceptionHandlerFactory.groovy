@@ -1,7 +1,11 @@
-package cc.ayakurayuki.csa.starter.core.exception
+package cc.ayakurayuki.csa.starter.core.exception.factory
 
-import cc.ayakurayuki.csa.starter.core.exception.ExceptionHandlerFactory
+import cc.ayakurayuki.csa.starter.core.exception.AuthException
+import cc.ayakurayuki.csa.starter.core.exception.StatusCodeException
+import cc.ayakurayuki.csa.starter.core.exception.factory.ExceptionHandlerFactory
 import cc.ayakurayuki.csa.starter.core.exception.handler.AuthExceptionHandler
+import cc.ayakurayuki.csa.starter.core.exception.handler.GenericExceptionHandler
+import cc.ayakurayuki.csa.starter.core.exception.handler.StatusCodeExceptionHandler
 import com.zandero.rest.context.ContextProviderFactory
 import com.zandero.rest.data.ClassFactory
 import com.zandero.rest.exception.*
@@ -24,6 +28,7 @@ class ExceptionHandlerFactory extends ClassFactory<ExceptionHandler> {
     defaultHandlers[WebApplicationException.class] = WebApplicationExceptionHandler.class
     defaultHandlers[Throwable.class] = GenericExceptionHandler.class
     defaultHandlers[AuthException.class] = AuthExceptionHandler.class
+    defaultHandlers[StatusCodeException.class] = StatusCodeExceptionHandler.class
   }
 
   @Override

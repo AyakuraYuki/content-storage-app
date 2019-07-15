@@ -11,30 +11,30 @@
 
 import java.nio.charset.Charset
 
-scan("10 minutes")
-def LOG_HOME = "logs/content-storage-app"
+scan '10 minutes'
+def LOG_HOME = 'logs/content-storage-app'
 
-appender("STDOUT", ConsoleAppender) {
+appender('STDOUT', ConsoleAppender) {
   encoder(PatternLayoutEncoder) {
-    pattern = "%d{yyyy-MM-dd HH:mm:ss.SSS} [%-27thread] [%-5level] %-46logger{36} [%5L]: %msg%n"
+    pattern = '%d{yyyy-MM-dd HH:mm:ss.SSS} [%-27thread] [%-5level] %-46logger{36} [%5L]: %msg%n'
   }
 }
 
-appender("FILE", RollingFileAppender) {
+appender('FILE', RollingFileAppender) {
   rollingPolicy(SizeAndTimeBasedRollingPolicy) {
     fileNamePattern = "${LOG_HOME}/log.%d{yyyy-MM-dd}(%i).log"
-    maxFileSize = "100MB"
+    maxFileSize = '100MB'
     maxHistory = 60
-    totalSizeCap = "2GB"
+    totalSizeCap = '2GB'
   }
   encoder(PatternLayoutEncoder) {
-    charset = Charset.forName("utf-8")
-    pattern = "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%p][%c][%M][%L]-> %m%n"
+    charset = Charset.forName 'utf-8'
+    pattern = '%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%p][%c][%M][%L]-> %m%n'
   }
   append = true
   prudent = false
 }
 
-root(INFO, ["STDOUT"])
-logger('cc.ayakurayuki', DEBUG)
-logger('com.zaxxer.hikari.pool.HikariPool', INFO)
+root DEBUG, ['STDOUT']
+logger 'cc.ayakurayuki', DEBUG
+logger 'com.zaxxer.hikari.pool.HikariPool', INFO

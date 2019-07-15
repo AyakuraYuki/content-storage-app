@@ -20,7 +20,7 @@ class AuthExceptionHandler implements ExceptionHandler<AuthException> {
   void write(AuthException result, HttpServerRequest request, HttpServerResponse response) throws Throwable {
     response.putHeader 'content-type', MediaType.APPLICATION_JSON
     response.chunked = true
-    response.statusCode = Response.Status.UNAUTHORIZED.statusCode
+    response.statusCode = Response.Status.OK.statusCode
     def json = new JsonResponse(result.status, result.message, null)
     response.end Json.encodePrettily(json)
   }

@@ -2,12 +2,14 @@ package cc.ayakurayuki.csa.starter.service
 
 import cc.ayakurayuki.csa.starter.core.config.Constants
 import cc.ayakurayuki.csa.starter.core.entity.Setting
+import cc.ayakurayuki.csa.starter.core.exception.StatusCodeException
 import cc.ayakurayuki.csa.starter.core.util.GoogleAuthenticator
 import cc.ayakurayuki.csa.starter.core.util.IDUtils
 import cc.ayakurayuki.csa.starter.dao.SettingDAO
 import io.vertx.core.Future
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonObject
+import org.apache.commons.lang3.StringUtils
 import org.slf4j.LoggerFactory
 
 /**
@@ -23,6 +25,20 @@ class SettingService extends BaseService {
     settingDAO = Constants.injector.getInstance SettingDAO.class
   }
 
+  /**
+   * Get setting by using key name.<br>
+   *
+   * This function supports the following usage:<br>
+   *
+   * <ul>
+   *   <li><pre>this["keyName"]</pre></li>
+   *   <li><pre>settingService["keyName"]</pre></li>
+   *   <li><pre>settingService.getAt("keyName")</pre></li>
+   * </ul>
+   *
+   * @param key
+   * @return
+   */
   Future<Setting> getAt(String key) {
     Future.<JsonObject> future { f ->
       settingDAO.getAt key, f
@@ -55,9 +71,13 @@ class SettingService extends BaseService {
     }
   }
 
-  Future<String> getSecretKey() {
-    getAt(Constants.SECRET).compose { ar ->
-      if (null == ar) {
+  /**
+   * To initialize the Google 2FA.
+   * @return
+   */
+  private Future<String> getSecretKey(boolean isReset) {
+    this[Constants.SECRET].compose { ar ->
+      if (isReset || null == ar) {
         def setting = [
             'id'   : IDUtils.UUID(),
             'key'  : Constants.SECRET,
@@ -69,5 +89,35 @@ class SettingService extends BaseService {
       return Future.succeededFuture(ar.value)
     }
   }
+
+  /**
+   * To get 2FA QR code.
+   * @param conditionCode condition code
+   * @param isReset reset 2FA or not
+   * @return
+   */
+  Future<String> getQrCode(String conditionCode, boolean isReset) {
+    getSecretKey(isReset).compose { key ->
+      Future.succeededFuture(GoogleAuthenticator.getQrCode(conditionCode, key))
+    }
+  }
+
+  Future<Boolean> validateAuthCode(String authCode) {
+    if (!StringUtils.isNumeric(authCode)) {
+      return Future.succeededFuture(false)
+    }
+    def code = Long.valueOf authCode
+    def authenticator = new GoogleAuthenticator()
+    // This is an optional config, the default value is 3 (seconds).
+    authenticator.windowSize = 5
+    return this[Constants.SECRET].compose { ar ->
+      if (null == ar) {
+        throw new StatusCodeException(Constants.ErrorCode.TOTP_HAS_NOT_BEEN_INITIALIZED, 'Your 2FA has not been initialized.')
+      }
+      return Future.succeededFuture(authenticator.checkCode(ar.value, code))
+    }
+  }
+
+
 
 }

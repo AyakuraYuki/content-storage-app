@@ -3,7 +3,7 @@ package cc.ayakurayuki.csa.starter.core.config;
 import cc.ayakurayuki.csa.starter.core.annotation.Token;
 import cc.ayakurayuki.csa.starter.core.auth.TokenValidator;
 import cc.ayakurayuki.csa.starter.core.exception.AuthException;
-import cc.ayakurayuki.csa.starter.core.exception.ExceptionHandlerFactory;
+import cc.ayakurayuki.csa.starter.core.exception.factory.ExceptionHandlerFactory;
 import com.zandero.rest.AnnotationProcessor;
 import com.zandero.rest.context.ContextProvider;
 import com.zandero.rest.context.ContextProviderFactory;
