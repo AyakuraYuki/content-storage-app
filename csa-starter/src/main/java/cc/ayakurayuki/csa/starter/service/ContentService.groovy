@@ -3,7 +3,6 @@ package cc.ayakurayuki.csa.starter.service
 import cc.ayakurayuki.csa.starter.core.config.Constants
 import cc.ayakurayuki.csa.starter.core.entity.Content
 import cc.ayakurayuki.csa.starter.dao.ContentDao
-import cc.ayakurayuki.csa.starter.util.DESUtils
 import io.vertx.core.Future
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonObject
@@ -26,11 +25,7 @@ class ContentService extends BaseService {
     Future.<List<JsonObject>> future { f ->
       contentDao.search keyword, f
     }.compose { ar ->
-      def list = ar.collect { object ->
-        def content = Json.decodeValue object.encode(), Content.class
-        content.jsonData = DESUtils.decrypt(content.jsonData)
-        return content
-      }
+      def list = ar.collect { object -> Json.decodeValue object.encode(), Content.class }
       Future.succeededFuture list
     }
   }
