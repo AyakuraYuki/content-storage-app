@@ -2,6 +2,7 @@ package cc.ayakurayuki.csa.starter.util
 
 import cc.ayakurayuki.csa.starter.core.config.Constants
 import cc.ayakurayuki.csa.starter.core.entity.Setting
+import cc.ayakurayuki.csa.starter.core.exception.StatusCodeException
 import cc.ayakurayuki.csa.starter.core.util.IDUtils
 import cc.ayakurayuki.csa.starter.service.SettingService
 import io.vertx.core.Future
@@ -102,5 +103,60 @@ final class DESUtils {
       }
     }
   }
+
+  // region Traditional encrypt and decrypt
+
+  private static byte[] encryptByteOld(byte[] data, byte[] key) {
+    def desKey = new DESedeKeySpec(key)  // new DESKeySpec(key)
+    def secretKey = keyFactory.generateSecret desKey
+    cipher.init Cipher.ENCRYPT_MODE, secretKey, random
+    cipher.doFinal data
+  }
+
+  private static byte[] decryptByteOld(byte[] data, byte[] key) {
+    def desKey = new DESedeKeySpec(key)  // new DESKeySpec(key)
+    def secretKey = keyFactory.generateSecret desKey
+    cipher.init Cipher.DECRYPT_MODE, secretKey, random
+    cipher.doFinal data
+  }
+
+  /**
+   * 加密数据
+   * @param data 原始数据
+   * @return 加密密文
+   */
+  static String encrypt(String data) {
+    if (data == null) {
+      return Constants.EMPTY
+    }
+    try {
+      byte[] bytes = encryptByteOld data.getBytes('UTF-8'), key.result().bytes
+      return new String(new Base64().encode(bytes))
+    }
+    catch (Exception e) {
+      throw new StatusCodeException(Constants.ErrorCode.DES_ENCRYPT_ERROR.code, "Encrypt error: ${e.localizedMessage} [${data}]".toString())
+    }
+  }
+
+  /**
+   * 解密密文
+   * @param data 密文数据
+   * @return 解密输出
+   */
+  static String decrypt(String data) {
+    if (data == null) {
+      return Constants.EMPTY
+    }
+    try {
+      byte[] dataBuf = new Base64().decode(data.bytes)
+      byte[] bytes = decryptByteOld dataBuf, key.result().bytes
+      return new String(bytes, 'UTF-8')
+    }
+    catch (Exception e) {
+      throw new StatusCodeException(Constants.ErrorCode.DES_DECRYPT_ERROR.code, "Decrypt error: ${e.localizedMessage}".toString())
+    }
+  }
+
+  // endregion
 
 }

@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory
  *
  * @author ayakurayuki* @date 2019/05/20-18:04
  */
-class BaseDAO {
+class BaseDao {
 
-  private static final def logger = LoggerFactory.getLogger BaseDAO.class
+  private static final def logger = LoggerFactory.getLogger BaseDao.class
   private static ConnectionPoolManager hikariCPM = HikariCPManager.getInstance()
 
   /**

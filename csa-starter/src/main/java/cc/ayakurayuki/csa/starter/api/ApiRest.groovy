@@ -4,6 +4,7 @@ import cc.ayakurayuki.csa.starter.core.config.Constants
 import cc.ayakurayuki.csa.starter.core.entity.JsonResponse
 import cc.ayakurayuki.csa.starter.core.entity.Setting
 import cc.ayakurayuki.csa.starter.core.util.IDUtils
+import cc.ayakurayuki.csa.starter.service.ContentService
 import cc.ayakurayuki.csa.starter.service.SettingService
 import cc.ayakurayuki.csa.starter.util.DESUtils
 import io.vertx.core.Future
@@ -12,6 +13,7 @@ import org.apache.commons.lang3.StringUtils
 import javax.ws.rs.GET
 import javax.ws.rs.Path
 import javax.ws.rs.Produces
+import javax.ws.rs.QueryParam
 import javax.ws.rs.core.MediaType
 
 /**
@@ -21,9 +23,11 @@ import javax.ws.rs.core.MediaType
 class ApiRest extends BaseRest {
 
   private SettingService settingService
+  private ContentService contentService
 
   ApiRest() {
     settingService = Constants.injector.getInstance SettingService.class
+    contentService = Constants.injector.getInstance ContentService.class
   }
 
   @GET
@@ -92,6 +96,22 @@ class ApiRest extends BaseRest {
         }
         .compose { ar ->
           result['decrypted'] = ar
+          Future.<LinkedHashMap<String, Object>> succeededFuture result
+        }
+    response data
+  }
+
+  @GET
+  @Path(value = '/search')
+  @Produces(MediaType.APPLICATION_JSON)
+  Future<JsonResponse> search(
+      @QueryParam('keyword') String keyword
+  ) {
+    keyword = StringUtils.defaultIfEmpty keyword, ''
+    def result = [] as LinkedHashMap<String, Object>
+    def data = contentService.search(keyword)
+        .compose { ar ->
+          result['list'] = ar
           Future.<LinkedHashMap<String, Object>> succeededFuture result
         }
     response data

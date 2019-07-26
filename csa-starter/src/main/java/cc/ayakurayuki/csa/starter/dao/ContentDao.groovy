@@ -13,13 +13,20 @@ import org.slf4j.LoggerFactory
  * Content DAO
  * @author ayakurayuki* @date 2019/05/21-09:53
  */
-class ContentDAO extends BaseDAO {
+class ContentDao extends BaseDao {
 
-  private static final def logger = LoggerFactory.getLogger SettingDAO.class
+  private static final def logger = LoggerFactory.getLogger SettingDao.class
 
   void get(String id, Handler<AsyncResult<JsonObject>> resultHandler) {
     def future = Future.<JsonObject> future()
-    query 'SELECT * FROM content WHERE id = ?', new JsonArray().add(id), { ar ->
+
+    final def sql = '''\
+SELECT * 
+  FROM content 
+ WHERE id = ?'''
+    final def params = new JsonArray().add(id)
+
+    query sql, params, { ar ->
       future.complete ar.size() > 0 ? ar.get(0) : null
     }
     future.setHandler resultHandler
@@ -27,7 +34,13 @@ class ContentDAO extends BaseDAO {
 
   void list(Handler<AsyncResult<List<JsonObject>>> resultHandler) {
     def future = Future.<List<JsonObject>> future()
-    query 'SELECT * FROM content ORDER BY item ASC', { ar ->
+
+    final def sql = '''\
+SELECT * 
+  FROM content 
+ ORDER BY item ASC'''
+
+    query sql, { ar ->
       future.complete ar.size() > 0 ? ar : new ArrayList<JsonObject>()
     }
     future.setHandler resultHandler
@@ -35,7 +48,18 @@ class ContentDAO extends BaseDAO {
 
   void search(String item, Handler<AsyncResult<List<JsonObject>>> resultHandler) {
     def future = Future.<List<JsonObject>> future()
-    query "SELECT * FROM content ${StringUtils.isNotEmpty(item) ? 'WHERE item LIKE \'%\' || ? || \'%\'' : ''} ORDER BY item ASC", new JsonArray().add(item), { ar ->
+
+    final def params = new JsonArray()
+    final def sql = """\
+SELECT *
+  FROM content
+${StringUtils.isNotEmpty(item) ? " WHERE item LIKE '%' || ? || '%'" : ''}
+ ORDER BY item ASC"""
+    if (StringUtils.isNotEmpty(item)) {
+      params.add(item)
+    }
+
+    query sql.toString(), params, { ar ->
       future.complete ar.size() > 0 ? ar : new ArrayList<JsonObject>()
     }
     future.setHandler resultHandler
@@ -43,7 +67,16 @@ class ContentDAO extends BaseDAO {
 
   void save(Content content, Handler<AsyncResult<Integer>> resultHandler) {
     def future = Future.<Integer> future()
-    update 'INSERT OR REPLACE INTO content (id, item, jsonData) VALUES (?, ?, ?)', new JsonArray().add(content.id).add(content.item).add(content.jsonData), { ar ->
+
+    final def sql = '''\
+INSERT OR REPLACE INTO content (id, item, jsonData) 
+VALUES (?, ?, ?)'''
+    final def params = new JsonArray()
+        .add(content.id)
+        .add(content.item)
+        .add(content.jsonData)
+
+    update sql, params, { ar ->
       future.complete ar
     }
     future.setHandler resultHandler
@@ -51,7 +84,13 @@ class ContentDAO extends BaseDAO {
 
   void delete(String id, Handler<AsyncResult<Integer>> resultHandler) {
     def future = Future.<Integer> future()
-    update 'DELETE FROM content WHERE id = ?', new JsonArray().add(id), { ar ->
+
+    final def sql = '''\
+DELETE FROM content 
+ WHERE id = ?'''
+    final def params = new JsonArray().add(id)
+
+    update sql, params, { ar ->
       future.complete ar
     }
     future.setHandler resultHandler

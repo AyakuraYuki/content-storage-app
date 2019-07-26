@@ -4,7 +4,7 @@ import cc.ayakurayuki.csa.starter.api.ApiRest
 import cc.ayakurayuki.csa.starter.core.auth.TokenValidator
 import cc.ayakurayuki.csa.starter.core.config.Constants
 import cc.ayakurayuki.csa.starter.core.config.RestRouter
-import cc.ayakurayuki.csa.starter.module.DAOModule
+import cc.ayakurayuki.csa.starter.module.DaoModule
 import cc.ayakurayuki.csa.starter.module.ServiceModule
 import cc.ayakurayuki.csa.starter.pool.HikariCPManager
 import cc.ayakurayuki.csa.starter.service.SettingService
@@ -31,10 +31,15 @@ class StarterVerticle extends AbstractVerticle {
   private def start
   private def end
 
+
   @Override
   void start() throws Exception {
     start = System.currentTimeMillis()
-    logger.info "Starting ${config().getString('product.name', 'csa')} server version ${config().getString('product.version', '')}"
+
+    final def productName = config().getString('product.name', 'csa')
+    final def productVersion = config().getString('product.version', '')
+    logger.info "Starting $productName server version $productVersion"
+
     super.start()
     components()
     router()
@@ -46,15 +51,21 @@ class StarterVerticle extends AbstractVerticle {
     super.stop()
     HikariCPManager.close()
     server?.close({ r ->
-      logger.info "Server ${r.succeeded() ? 'closed.' : "still running cause ${r.cause().localizedMessage}"}"
+      if (r.succeeded()) {
+        logger.info 'Server closed.'
+      } else {
+        logger.info "Cause [${r.cause().localizedMessage}], Server is now going down."
+      }
     })
   }
+
 
   private def components() {
     Constants.init context
     logger.info 'Loaded context'
+    // Inject beans
     Constants.injector = Guice.createInjector(
-        new DAOModule(),
+        new DaoModule(),
         new ServiceModule()
     )
     logger.info 'Loaded injector'

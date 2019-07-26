@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory
  * Setting DAO
  * @author ayakurayuki* @date 2019/05/20-18:13
  */
-class SettingDAO extends BaseDAO {
+class SettingDao extends BaseDao {
 
-  private final def logger = LoggerFactory.getLogger SettingDAO.class
+  private final def logger = LoggerFactory.getLogger SettingDao.class
 
   void get(String id, Handler<AsyncResult<JsonObject>> resultHandler) {
     def future = Future.<JsonObject> future()

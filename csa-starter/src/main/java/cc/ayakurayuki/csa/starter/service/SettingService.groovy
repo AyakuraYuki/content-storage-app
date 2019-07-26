@@ -5,7 +5,7 @@ import cc.ayakurayuki.csa.starter.core.entity.Setting
 import cc.ayakurayuki.csa.starter.core.exception.StatusCodeException
 import cc.ayakurayuki.csa.starter.core.util.GoogleAuthenticator
 import cc.ayakurayuki.csa.starter.core.util.IDUtils
-import cc.ayakurayuki.csa.starter.dao.SettingDAO
+import cc.ayakurayuki.csa.starter.dao.SettingDao
 import io.vertx.core.Future
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonObject
@@ -19,10 +19,10 @@ import org.slf4j.LoggerFactory
 class SettingService extends BaseService {
 
   private def logger = LoggerFactory.getLogger getClass()
-  private SettingDAO settingDAO
+  private SettingDao settingDao
 
   SettingService() {
-    settingDAO = Constants.injector.getInstance SettingDAO.class
+    settingDao = Constants.injector.getInstance SettingDao.class
   }
 
   /**
@@ -41,7 +41,7 @@ class SettingService extends BaseService {
    */
   Future<Setting> getAt(String key) {
     Future.<JsonObject> future { f ->
-      settingDAO.getAt key, f
+      settingDao.getAt key, f
     }.compose { ar ->
       if (ar == null) {
         return Future.<Setting> succeededFuture()
@@ -53,7 +53,7 @@ class SettingService extends BaseService {
 
   Future<Integer> save(Setting setting) {
     Future.<Integer> future { f ->
-      settingDAO.save setting, f
+      settingDao.save setting, f
     } .compose { ar ->
       return Future.succeededFuture(ar)
     }
@@ -61,7 +61,7 @@ class SettingService extends BaseService {
 
   Future<Object> delete(String key) {
     Future.<Integer> future { f ->
-      settingDAO.delete key, f
+      settingDao.delete key, f
     }.compose { ar ->
       if (ar > 0) {
         return Future.succeededFuture(ar)
