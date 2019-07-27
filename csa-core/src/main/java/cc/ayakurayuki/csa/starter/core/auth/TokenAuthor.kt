@@ -7,7 +7,7 @@ import io.vertx.core.json.JsonObject
 import io.vertx.ext.auth.AbstractUser
 import io.vertx.ext.auth.AuthProvider
 
-class TokenValidator(private val token: String, val errCode: Int, val errMsg: String) : AbstractUser() {
+class TokenAuthor(private val token: String? = "", val errCode: Int, val errMsg: String? = "") : AbstractUser() {
 
   override fun doIsPermitted(permission: String?, resultHandler: Handler<AsyncResult<Boolean>>?) {
     resultHandler?.handle(Future.succeededFuture(errCode == 0))

@@ -30,6 +30,7 @@ class Constants {
   public static final def EMERGENCY = 'emergency'
   public static final def DES_KEY = 'desKey'
   public static final def TOKEN = 'token'
+  public static final def TOKEN_EXPIRE_TIME = 'tokenExpireTime'
 
   enum ResponseCode {
     NULL(-1000),

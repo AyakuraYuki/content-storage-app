@@ -9,6 +9,7 @@ import io.vertx.core.http.HttpServerResponse
 import io.vertx.core.json.Json
 
 import javax.ws.rs.core.MediaType
+import javax.ws.rs.core.Response
 
 /**
  *
@@ -24,6 +25,7 @@ class GenericExceptionHandler implements ExceptionHandler<Throwable> {
     }
     response.putHeader 'content-type', MediaType.APPLICATION_JSON
     response.chunked = true
+    response.setStatusCode Response.Status.OK.statusCode
     def json = new JsonResponse(Constants.ErrorCode.OTHERS.code, message, null)
     response.end Json.encodePrettily(json)
   }

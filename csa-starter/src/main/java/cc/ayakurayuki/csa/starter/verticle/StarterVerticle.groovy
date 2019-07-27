@@ -1,7 +1,8 @@
 package cc.ayakurayuki.csa.starter.verticle
 
 import cc.ayakurayuki.csa.starter.api.ApiRest
-import cc.ayakurayuki.csa.starter.core.auth.TokenValidator
+import cc.ayakurayuki.csa.starter.api.ContentRest
+import cc.ayakurayuki.csa.starter.core.auth.TokenAuthor
 import cc.ayakurayuki.csa.starter.core.config.Constants
 import cc.ayakurayuki.csa.starter.core.config.RestRouter
 import cc.ayakurayuki.csa.starter.core.entity.Setting
@@ -82,6 +83,7 @@ class StarterVerticle extends AbstractVerticle {
     _router.route().handler(BodyHandler.create())
     _router.route().handler(authHandler)
     RestRouter.register(_router, ApiRest.class)
+    RestRouter.register(_router, ContentRest.class)
     this.router = _router
 
     def routedUriCount = this.router.routes.findAll({ r -> StringUtils.isNotEmpty(r.path) }).size()
@@ -126,33 +128,62 @@ class StarterVerticle extends AbstractVerticle {
       context.next()
       return
     }
+
     def token = request.getFormAttribute('token')
     if (token == null) {
-      context.user = new TokenValidator(token, -400, 'Require token!')
+      // Failed: require for token but not found
+      context.user = new TokenAuthor(token, Constants.ErrorCode.AUTH_FAILED.code, 'Require for token.')
       context.next()
     } else {
-      Constants.injector.getInstance(SettingService.class)[Constants.TOKEN]
-          .setHandler { ar ->
-            if (ar.succeeded()) {
-              if (ar.result() == null) {
-                context.user = new TokenValidator(token, Constants.ErrorCode.TOKEN_EXPIRED.code, 'Token expired.')
-              } else {
-                def storedToken = ar.result().value
-                if (StringUtils.isEmpty(storedToken)) {
-                  context.user = new TokenValidator(token, Constants.ErrorCode.TOKEN_EXPIRED.code, 'Token expired.')
-                } else if (storedToken != token) {
-                  context.user = new TokenValidator(token, Constants.ErrorCode.AUTH_FAILED.code, 'Wrong token, access denied!')
+      final def service = Constants.injector.getInstance SettingService.class
+
+      service[Constants.TOKEN_EXPIRE_TIME].setHandler { ex ->
+        if (ex.succeeded()) {
+          if (ex.result() != null) {
+            def expire = ex.result().value.toLong()
+            if (System.currentTimeMillis() <= expire) {
+
+              // => Keep going: the token isn't expire
+              service[Constants.TOKEN].setHandler { tk ->
+                if (tk.succeeded()) {
+                  if (tk.result() != null) {
+                    final def storedToken = tk.result().value
+                    if (StringUtils.isEmpty(storedToken)) {
+                      // - Failed: empty token
+                      context.user = new TokenAuthor(token, Constants.ErrorCode.TOKEN_EXPIRED.code, 'Token expired!')
+                    } else if (storedToken != token) {
+                      // - Failed: wrong token, token from the request isn't equal with the stored token
+                      context.user = new TokenAuthor(token, Constants.ErrorCode.AUTH_FAILED.code, 'Access denied! Where did you get this token?')
+                    } else {
+                      // + Succeed: access confirmed
+                      context.user = new TokenAuthor(token, 0, '')
+                    }
+                  } else {
+                    // - Failed: missing token
+                    context.user = new TokenAuthor(token, Constants.ErrorCode.TOKEN_EXPIRED.code, 'Token expired!')
+                  }
                 } else {
-                  context.user = new TokenValidator(token, 0, '')
+                  // - Failed: unexpected exception
+                  context.user = new TokenAuthor(token, Constants.ErrorCode.OTHERS.code, "Unexpected exception!!! ${ex.cause().localizedMessage}")
                 }
+                context.next() // This works in the inner future.
               }
+              return // When the inner future completed, it's no need to proceed.
+
             } else {
-              context.user = new TokenValidator(
-                  token, Constants.ErrorCode.OTHERS.code, "Found other exception that I cannot handle with cause: ${ar.cause().localizedMessage}"
-              )
+              // - Failed: token expired
+              context.user = new TokenAuthor(token, Constants.ErrorCode.TOKEN_EXPIRED.code, 'Token expired!')
             }
-            context.next()
+          } else {
+            // - Failed: token not found in server
+            context.user = new TokenAuthor(token, Constants.ErrorCode.TOKEN_EXPIRED.code, 'Token expired!')
           }
+        } else {
+          // - Failed: unhandled exception
+          context.user = new TokenAuthor(token, Constants.ErrorCode.OTHERS.code, "Found unhandled exception, cause: ${ex.cause().localizedMessage}")
+        }
+        context.next()
+      }
     }
   }
 

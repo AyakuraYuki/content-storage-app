@@ -1,7 +1,7 @@
 package cc.ayakurayuki.csa.starter.core.config;
 
 import cc.ayakurayuki.csa.starter.core.annotation.Token;
-import cc.ayakurayuki.csa.starter.core.auth.TokenValidator;
+import cc.ayakurayuki.csa.starter.core.auth.TokenAuthor;
 import cc.ayakurayuki.csa.starter.core.exception.AuthException;
 import cc.ayakurayuki.csa.starter.core.exception.factory.ExceptionHandlerFactory;
 import com.zandero.rest.AnnotationProcessor;
@@ -441,13 +441,19 @@ public class RestRouter {
       if (allowed) {
         context.next();
       } else {
-        if (user instanceof TokenValidator) {
-          TokenValidator tokenValidator = (TokenValidator) user;
-          handleException(new AuthException(tokenValidator.getErrCode(), tokenValidator.getErrMsg()),
-              context, definition);
+        if (user instanceof TokenAuthor) {
+          TokenAuthor tokenAuthor = (TokenAuthor) user;
+          handleException(
+              new AuthException(tokenAuthor.getErrCode(), tokenAuthor.getErrMsg()),
+              context,
+              definition
+          );
         } else {
-          handleException(new ExecuteException(Response.Status.UNAUTHORIZED.getStatusCode(), "HTTP 401 Unauthorized"),
-              context, definition);
+          handleException(
+              new ExecuteException(Response.Status.UNAUTHORIZED.getStatusCode(), "HTTP 401 Unauthorized"),
+              context,
+              definition
+          );
         }
       }
     };
@@ -464,9 +470,9 @@ public class RestRouter {
       return false; // no user present ... can't check
     }
 
-    if (user instanceof TokenValidator) {
-      TokenValidator tokenValidator = (TokenValidator) user;
-      return tokenValidator.getErrCode() == 0;
+    if (user instanceof TokenAuthor) {
+      TokenAuthor tokenAuthor = (TokenAuthor) user;
+      return tokenAuthor.getErrCode() == 0;
     }
 
     // check if given user is authorized for given role ...

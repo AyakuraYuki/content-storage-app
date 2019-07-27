@@ -2,18 +2,13 @@ package cc.ayakurayuki.csa.starter.api
 
 import cc.ayakurayuki.csa.starter.core.config.Constants
 import cc.ayakurayuki.csa.starter.core.entity.JsonResponse
-import cc.ayakurayuki.csa.starter.core.entity.Setting
-import cc.ayakurayuki.csa.starter.core.util.IdUtils
 import cc.ayakurayuki.csa.starter.service.ContentService
 import cc.ayakurayuki.csa.starter.service.SettingService
-import cc.ayakurayuki.csa.starter.util.DesUtils
 import io.vertx.core.Future
-import org.apache.commons.lang3.StringUtils
 
 import javax.ws.rs.GET
 import javax.ws.rs.Path
 import javax.ws.rs.Produces
-import javax.ws.rs.QueryParam
 import javax.ws.rs.core.MediaType
 
 /**
@@ -36,8 +31,8 @@ class ApiRest extends BaseRest {
   Future<JsonResponse> ping() {
     def data = Future.future { f ->
       def result = [
-          't': System.currentTimeMillis()
-      ]
+          'message': 'pong'
+      ] as LinkedHashMap<String, Object>
       f.complete result
     }
     response 0, 'pong', data
@@ -47,22 +42,9 @@ class ApiRest extends BaseRest {
   @Path(value = '/token')
   @Produces(MediaType.APPLICATION_JSON)
   Future<JsonResponse> token() {
-    def resultFuture = settingService[Constants.TOKEN]
-        .compose { ar ->
-          if (ar == null || StringUtils.isEmpty(ar.value)) {
-            def setting = [
-                'id'   : IdUtils.UUID(),
-                'key'  : Constants.TOKEN,
-                'value': IdUtils.UUID()
-            ] as Setting
-            return settingService.save(setting).compose { Void -> settingService[Constants.TOKEN] }
-          } else {
-            return Future.succeededFuture(ar)
-          }
-        }
-        .compose { ar ->
+    def resultFuture = settingService.token.compose { ar ->
           def result = [
-              'token': ar.value
+              'token': ar
           ]
           Future.<LinkedHashMap<String, Object>> succeededFuture result
         }
@@ -84,39 +66,23 @@ class ApiRest extends BaseRest {
 //    response resultFuture
 //  }
 
-  @GET
-  @Path(value = '/des')
-  @Produces(MediaType.APPLICATION_JSON)
-  Future<JsonResponse> des() {
-    def result = [] as LinkedHashMap<String, Object>
-    def data = DesUtils.encryptFuture('233333')
-        .compose { ar ->
-          result['encrypted'] = ar
-          result['encryptedByOld'] = DesUtils.encrypt('233333')
-          DesUtils.decryptFuture(ar)
-        }
-        .compose { ar ->
-          result['decrypted'] = ar
-          result['decryptedByOld'] = DesUtils.decrypt(DesUtils.encrypt('233333'))
-          Future.<LinkedHashMap<String, Object>> succeededFuture result
-        }
-    response data
-  }
-
-  @GET
-  @Path(value = '/search')
-  @Produces(MediaType.APPLICATION_JSON)
-  Future<JsonResponse> search(
-      @QueryParam('keyword') String keyword
-  ) {
-    keyword = StringUtils.defaultIfEmpty keyword, ''
-    def result = [] as LinkedHashMap<String, Object>
-    def data = contentService.search(keyword)
-        .compose { ar ->
-          result['list'] = ar
-          Future.<LinkedHashMap<String, Object>> succeededFuture result
-        }
-    response data
-  }
+//  @GET
+//  @Path(value = '/des')
+//  @Produces(MediaType.APPLICATION_JSON)
+//  Future<JsonResponse> des() {
+//    def result = [] as LinkedHashMap<String, Object>
+//    def data = DesUtils.encryptFuture('233333')
+//        .compose { ar ->
+//          result['encrypted'] = ar
+//          result['encryptedByOld'] = DesUtils.encrypt('233333')
+//          DesUtils.decryptFuture(ar)
+//        }
+//        .compose { ar ->
+//          result['decrypted'] = ar
+//          result['decryptedByOld'] = DesUtils.decrypt(DesUtils.encrypt('233333'))
+//          Future.<LinkedHashMap<String, Object>> succeededFuture result
+//        }
+//    response data
+//  }
 
 }

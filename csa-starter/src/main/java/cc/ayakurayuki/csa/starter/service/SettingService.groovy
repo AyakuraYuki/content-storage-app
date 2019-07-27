@@ -118,6 +118,26 @@ class SettingService extends BaseService {
     }
   }
 
-
+  Future<String> getToken() {
+    this[Constants.TOKEN_EXPIRE_TIME].compose { ex ->
+      if (ex == null || ex.value.toLong() < System.currentTimeMillis()) {
+        def token = [
+            'id'   : IdUtils.UUID(),
+            'key'  : Constants.TOKEN,
+            'value': IdUtils.UUID()
+        ] as Setting
+        def expire = [
+            'id'   : IdUtils.UUID(),
+            'key'  : Constants.TOKEN_EXPIRE_TIME,
+            'value': System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000
+        ] as Setting
+        return save(expire)
+            .compose { Void -> save(token) }
+            .compose { Void -> Future.succeededFuture token.value }
+      } else {
+        return this[Constants.TOKEN].compose { token -> Future.succeededFuture token.value }
+      }
+    }
+  }
 
 }
