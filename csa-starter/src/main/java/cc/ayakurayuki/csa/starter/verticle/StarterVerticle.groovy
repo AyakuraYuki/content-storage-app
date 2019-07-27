@@ -4,6 +4,8 @@ import cc.ayakurayuki.csa.starter.api.ApiRest
 import cc.ayakurayuki.csa.starter.core.auth.TokenValidator
 import cc.ayakurayuki.csa.starter.core.config.Constants
 import cc.ayakurayuki.csa.starter.core.config.RestRouter
+import cc.ayakurayuki.csa.starter.core.entity.Setting
+import cc.ayakurayuki.csa.starter.core.util.IdUtils
 import cc.ayakurayuki.csa.starter.module.DaoModule
 import cc.ayakurayuki.csa.starter.module.ServiceModule
 import cc.ayakurayuki.csa.starter.pool.HikariCPManager
@@ -43,6 +45,7 @@ class StarterVerticle extends AbstractVerticle {
     super.start()
     components()
     router()
+    application()
     serve()
   }
 
@@ -86,6 +89,22 @@ class StarterVerticle extends AbstractVerticle {
     logger.info "Loaded $routedUriCount paths, $routedNoneUriCount handlers"
   }
 
+  private def application() {
+    // Generate DES key for the first time starting the server ...
+    def service = Constants.injector.getInstance SettingService.class
+    service[Constants.DES_KEY].setHandler { ar ->
+      if (ar.succeeded() && ar.result() == null) {
+        def desKey = [
+            id   : IdUtils.UUID(),
+            key  : Constants.DES_KEY,
+            value: "${IdUtils.UUID()}${IdUtils.UUID()}".toString()
+        ] as Setting
+        service.save desKey
+        logger.info 'Generated DES key'
+      }
+    }
+  }
+
   private def serve() {
     this.server = vertx.createHttpServer()
     def port = config().getInteger('server.port', 8888)
@@ -98,6 +117,7 @@ class StarterVerticle extends AbstractVerticle {
       }
     })
   }
+
 
   private Handler<RoutingContext> authHandler = { context ->
     def authUrlMap = RestRouter.authUrlMap

@@ -4,7 +4,7 @@ import cc.ayakurayuki.csa.starter.core.config.Constants
 import cc.ayakurayuki.csa.starter.core.entity.Setting
 import cc.ayakurayuki.csa.starter.core.exception.StatusCodeException
 import cc.ayakurayuki.csa.starter.core.util.GoogleAuthenticator
-import cc.ayakurayuki.csa.starter.core.util.IDUtils
+import cc.ayakurayuki.csa.starter.core.util.IdUtils
 import cc.ayakurayuki.csa.starter.dao.SettingDao
 import io.vertx.core.Future
 import io.vertx.core.json.Json
@@ -79,7 +79,7 @@ class SettingService extends BaseService {
     this[Constants.SECRET].compose { ar ->
       if (isReset || null == ar) {
         def setting = [
-            'id'   : IDUtils.UUID(),
+            'id'   : IdUtils.UUID(),
             'key'  : Constants.SECRET,
             'value': GoogleAuthenticator.generateSecretKey()
         ] as Setting

@@ -3,10 +3,10 @@ package cc.ayakurayuki.csa.starter.api
 import cc.ayakurayuki.csa.starter.core.config.Constants
 import cc.ayakurayuki.csa.starter.core.entity.JsonResponse
 import cc.ayakurayuki.csa.starter.core.entity.Setting
-import cc.ayakurayuki.csa.starter.core.util.IDUtils
+import cc.ayakurayuki.csa.starter.core.util.IdUtils
 import cc.ayakurayuki.csa.starter.service.ContentService
 import cc.ayakurayuki.csa.starter.service.SettingService
-import cc.ayakurayuki.csa.starter.util.DESUtils
+import cc.ayakurayuki.csa.starter.util.DesUtils
 import io.vertx.core.Future
 import org.apache.commons.lang3.StringUtils
 
@@ -51,9 +51,9 @@ class ApiRest extends BaseRest {
         .compose { ar ->
           if (ar == null || StringUtils.isEmpty(ar.value)) {
             def setting = [
-                'id'   : IDUtils.UUID(),
+                'id'   : IdUtils.UUID(),
                 'key'  : Constants.TOKEN,
-                'value': IDUtils.UUID()
+                'value': IdUtils.UUID()
             ] as Setting
             return settingService.save(setting).compose { Void -> settingService[Constants.TOKEN] }
           } else {
@@ -89,13 +89,15 @@ class ApiRest extends BaseRest {
   @Produces(MediaType.APPLICATION_JSON)
   Future<JsonResponse> des() {
     def result = [] as LinkedHashMap<String, Object>
-    def data = DESUtils.encryptFuture('233333')
+    def data = DesUtils.encryptFuture('233333')
         .compose { ar ->
           result['encrypted'] = ar
-          DESUtils.decryptFuture(ar)
+          result['encryptedByOld'] = DesUtils.encrypt('233333')
+          DesUtils.decryptFuture(ar)
         }
         .compose { ar ->
           result['decrypted'] = ar
+          result['decryptedByOld'] = DesUtils.decrypt(DesUtils.encrypt('233333'))
           Future.<LinkedHashMap<String, Object>> succeededFuture result
         }
     response data

@@ -1,11 +1,10 @@
 package cc.ayakurayuki.csa.starter.util
 
 import cc.ayakurayuki.csa.starter.core.config.Constants
-import cc.ayakurayuki.csa.starter.core.entity.Setting
 import cc.ayakurayuki.csa.starter.core.exception.StatusCodeException
-import cc.ayakurayuki.csa.starter.core.util.IDUtils
 import cc.ayakurayuki.csa.starter.service.SettingService
 import io.vertx.core.Future
+import io.vertx.core.json.JsonObject
 import org.apache.commons.codec.binary.Base64
 
 import javax.crypto.Cipher
@@ -13,12 +12,13 @@ import javax.crypto.SecretKey
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.DESedeKeySpec
 import java.security.SecureRandom
+import java.sql.DriverManager
 
 /**
  *
  * @author ayakurayuki* @date 2019/05/21-10:48
  */
-final class DESUtils {
+final class DesUtils {
 
   private static final String TRIPLE_DES = "DESede"
   private static final SecureRandom random = new SecureRandom()
@@ -31,20 +31,29 @@ final class DESUtils {
     if (settingService == null) {
       settingService = Constants.injector.getInstance SettingService.class
     }
-    settingService[Constants.DES_KEY]
-        .compose { ar ->
-          if (ar != null) {
-            return Future.succeededFuture(ar.value)
-          } else {
-            def desKey = [
-                id   : IDUtils.UUID(),
-                key  : Constants.DES_KEY,
-                value: "${IDUtils.UUID()}${IDUtils.UUID()}".toString()
-            ] as Setting
-            settingService.save desKey
-            return Future.succeededFuture(desKey.value)
-          }
-        }
+    settingService[Constants.DES_KEY].compose { ar -> Future.succeededFuture ar.value }
+  }
+
+  private static String keyFromJDBC() {
+    try {
+      JsonObject config = Constants.context.config()
+      Class.forName config.getString('db.driver', 'org.sqlite.JDBC')
+      def url = config.getString 'db.url', 'jdbc:sqlite:data/storage.db'
+      def conn = DriverManager.getConnection url
+      final def sql = 'SELECT * FROM settings WHERE key = ?'
+      def stat = conn.prepareStatement sql
+      stat.setObject 1, Constants.DES_KEY
+      def result = stat.executeQuery()
+      if (result.next()) {
+        final def value = result.getString 'value'
+        result.close()
+        stat.close()
+        conn.close()
+        return value
+      }
+    } catch (Exception e) {
+      throw new StatusCodeException(Constants.ErrorCode.OTHERS, e.localizedMessage)
+    }
   }
 
   private static Future<byte[]> encryptByte(byte[] data, byte[] key) {
@@ -103,5 +112,60 @@ final class DESUtils {
       }
     }
   }
+
+  // region Traditional encrypt and decrypt
+
+  private static byte[] encryptByteOld(byte[] data, byte[] key) {
+    def desKey = new DESedeKeySpec(key)  // new DESKeySpec(key)
+    def secretKey = keyFactory.generateSecret desKey
+    cipher.init Cipher.ENCRYPT_MODE, secretKey, random
+    cipher.doFinal data
+  }
+
+  private static byte[] decryptByteOld(byte[] data, byte[] key) {
+    def desKey = new DESedeKeySpec(key)  // new DESKeySpec(key)
+    def secretKey = keyFactory.generateSecret desKey
+    cipher.init Cipher.DECRYPT_MODE, secretKey, random
+    cipher.doFinal data
+  }
+
+  /**
+   * 加密数据
+   * @param data 原始数据
+   * @return 加密密文
+   */
+  static String encrypt(String data) {
+    if (data == null) {
+      return Constants.EMPTY
+    }
+    try {
+      byte[] bytes = encryptByteOld data.getBytes('UTF-8'), keyFromJDBC().bytes
+      return new String(new Base64().encode(bytes))
+    }
+    catch (Exception e) {
+      throw new StatusCodeException(Constants.ErrorCode.DES_ENCRYPT_ERROR.code, "Encrypt error: ${e.localizedMessage} [${data}]".toString())
+    }
+  }
+
+  /**
+   * 解密密文
+   * @param data 密文数据
+   * @return 解密输出
+   */
+  static String decrypt(String data) {
+    if (data == null) {
+      return Constants.EMPTY
+    }
+    try {
+      byte[] dataBuf = new Base64().decode(data.bytes)
+      byte[] bytes = decryptByteOld dataBuf, keyFromJDBC().bytes
+      return new String(bytes, 'UTF-8')
+    }
+    catch (Exception e) {
+      throw new StatusCodeException(Constants.ErrorCode.DES_DECRYPT_ERROR.code, "Decrypt error: ${e.localizedMessage}".toString())
+    }
+  }
+
+  // endregion
 
 }

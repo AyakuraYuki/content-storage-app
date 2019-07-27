@@ -18,7 +18,7 @@ final class RandomUtils {
   private static final def KEY_NODE_WITHOUT_NUMBERS = "${CHARACTERS}".toCharArray()
 
   static String getEmergencyKey() {
-    def baseData = IDUtils.UUID()
+    def baseData = IdUtils.UUID()
     def data = "blob ${baseData.length()}-${baseData}-${System.currentTimeMillis()}\0"
     def key = EncryptUtils.SHA1(data)
     return key.substring(0, 7).toUpperCase()

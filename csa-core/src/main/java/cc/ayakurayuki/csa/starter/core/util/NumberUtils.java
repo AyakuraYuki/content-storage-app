@@ -12,15 +12,29 @@ import java.util.Random;
 public class NumberUtils {
 
   /**
-   * 判断两个数是否相等
+   * Is a equals with b? / 判断两个数是否相等
    *
-   * @param num1 数1
-   * @param num2 数2
+   * @param a a number
+   * @param b another number
    *
-   * @return boolean
+   * @return equals ? true : false <br/>
+   *         To be clear that if both a and b are null, you'll get a {@code `true`}. <br/>
+   *         I can't give you a {@code `false`} because {@code `false == false`} is {@code `true`}. <br/>
+   *          <br/>
+   *         需要解释的是，如果a和b都是null，你会得到一个{@code `true`}的返回结果。 <br/>
+   *         毕竟{@code `false == false`}永远都是{@code `true`}，就算是Java也是这么返回的，你不能指望我返回一个{@code `false`}。
    */
-  public static boolean equals(long num1, int num2) {
-    return num1 == num2;
+  public static boolean equals(Number a, Number b) {
+    if (isNull(a) && isNull(b)) {
+      return true;
+    }
+    if (isNull(a)) {
+      return false;
+    }
+    if (isNull(b)) {
+      return false;
+    }
+    return a.equals(b);
   }
 
   /**
@@ -45,22 +59,9 @@ public class NumberUtils {
     return num != null;
   }
 
-  /**
-   * 返回整数值，为null返回默认整数值
-   *
-   * @param num        整型对象
-   * @param defaultNum 默认整数值
-   *
-   * @return 整数值
-   */
-  public static int defaultInt(Integer num, int defaultNum) {
-    if (num == null) {
-      return defaultNum;
-    }
-    return num;
-  }
+  // region return default if null
 
-  public static double defaultDouble(Double num, double defaultNum) {
+  public static int defaultInteger(Integer num, int defaultNum) {
     if (num == null) {
       return defaultNum;
     }
@@ -74,46 +75,40 @@ public class NumberUtils {
     return num;
   }
 
+  public static double defaultDouble(Double num, double defaultNum) {
+    if (num == null) {
+      return defaultNum;
+    }
+    return num;
+  }
+
+  // endregion
+
   /**
-   * 获取百分比.
+   * Get percent. / 获取百分比.
    *
-   * @param current 分子
-   * @param total   分母
+   * @param numerator   分子
+   * @param denominator 分母
    *
-   * @return 百分比
+   * @return Percent
    */
-  public static int percent(double current, double total) {
-    double avg = current / total;
+  public static int percent(double numerator, double denominator) {
+    double avg = numerator / denominator;
     return (int) (avg * 100);
   }
 
   /**
    * 获取百分比的值
    *
-   * @param number 分子
-   * @param total  分母
-   * @param digits 保留的小数位
+   * @param numerator   分子
+   * @param denominator 分母
+   * @param decimal     保留的小数位
    *
    * @return 12.44
    */
-  public static float percentAndKeepDecimal(double number, double total, int digits) {
-    double val = number / total;
-    return (float) (Math.round(val * Math.pow(10, digits) * 100) / Math.pow(10, digits));
-  }
-
-  /**
-   * 每秒平均值.
-   *
-   * @param count 总数
-   * @param time  秒数
-   *
-   * @return 平均值
-   */
-  public static long perSecondAvg(long count, long time) {
-    if (time <= 0) {
-      return 0;
-    }
-    return count * 1000 / time;
+  public static double percentAndKeepDecimal(double numerator, double denominator, int decimal) {
+    double val = numerator / denominator;
+    return Math.round(val * Math.pow(10, decimal) * 100) / Math.pow(10, decimal);
   }
 
   /**
@@ -450,7 +445,6 @@ public class NumberUtils {
    */
   public static float scale(float num, int n) {
     float scale = (float) Math.pow(10, n);
-    // System.out.println("scale:" + scale);
     return ((int) (num * scale)) / scale;
   }
 
@@ -460,6 +454,7 @@ public class NumberUtils {
   }
 
   // region Rate
+
   public static double getRateDouble(double numerator, double denominator, boolean requestPercentage) {
     BigDecimal numeratorBD = new BigDecimal(String.valueOf(numerator));
     BigDecimal denominatorBD = new BigDecimal(String.valueOf(denominator));
@@ -481,6 +476,7 @@ public class NumberUtils {
   public static int getRateInteger(int numerator, int denominator, boolean requestPercentage) {
     return (int) getRateDouble(numerator, denominator, requestPercentage);
   }
+
   // endregion
 
 }
