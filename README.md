@@ -5,7 +5,7 @@
 ## 环境 / Environment
 * Vert.X `ver 3.7.0`
 * SQLite JDBC `ver 3.23.1`
-* Groovy `ver 2.5.6`
+* Groovy `ver 2.5.8`
 * Kotlin `ver 1.3.21`
 * JDK 1.8 `ver 1.8.0_181`
 
