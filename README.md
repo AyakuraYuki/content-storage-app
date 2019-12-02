@@ -59,6 +59,14 @@ git clone https://github.com/AyakuraYuki/content-storage-app.git
 url: jdbc:sqlite:< _your_db_file_path_ || data/storage.db >
 ```
 
+### 调试注意
+
+因代码main入口用了Groovy文件，直接从IDE运行会提示`错误: 找不到或无法加载主类`，需要先编译之后才能运行。
+
+```bash
+mvn clean; mvn compile
+```
+
 ### 执行程序
 ```bash
 (java -jar content-storage-app-<version>.jar &)

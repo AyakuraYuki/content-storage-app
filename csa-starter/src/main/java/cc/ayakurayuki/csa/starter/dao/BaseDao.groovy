@@ -22,7 +22,8 @@ class BaseDao {
    * @param sql 查询语句
    * @param callback 查询结束后的回调方法
    */
-  static void query(String sql, Handler<List<JsonObject>> callback) {
+  static void query(String sql,
+                    Handler<List<JsonObject>> callback) {
     query sql, null, callback
   }
 
@@ -33,7 +34,8 @@ class BaseDao {
    * @param params 查询参数
    * @param callback 查询结束后的回调方法
    */
-  static void query(String sql, JsonArray params, Handler<List<JsonObject>> callback) {
+  static void query(String sql, JsonArray params,
+                    Handler<List<JsonObject>> callback) {
     hikariCPM.getConnection { conn ->
       conn.queryWithParams sql, params, { ar ->
         if (ar.succeeded()) {
@@ -54,7 +56,8 @@ class BaseDao {
    * @param params SQL参数
    * @param callback 执行结束的回调方法，内容是影响的数据库行数
    */
-  static void update(String sql, JsonArray params, Handler<Integer> callback) {
+  static void update(String sql, JsonArray params,
+                     Handler<Integer> callback) {
     executeGeneral sql, params, false, callback
   }
 
@@ -65,7 +68,8 @@ class BaseDao {
    * @param params SQL参数
    * @param callback 执行结束的回调方法，内容是自增的新ID
    */
-  static void insertGetNewId(String sql, JsonArray params, Handler<Integer> callback) {
+  static void insertGetNewId(String sql, JsonArray params,
+                             Handler<Integer> callback) {
     executeGeneral sql, params, true, callback
   }
 

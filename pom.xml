@@ -90,6 +90,7 @@
         <artifactId>vertx-auth-common</artifactId>
         <version>${vertx.version}</version>
       </dependency>
+
       <dependency>
         <groupId>com.zaxxer</groupId>
         <artifactId>HikariCP</artifactId>
@@ -105,6 +106,7 @@
         <artifactId>sqlite-jdbc</artifactId>
         <version>${sqlite-jdbc.version}</version>
       </dependency>
+
     </dependencies>
   </dependencyManagement>
 
@@ -194,11 +196,11 @@
     </dependency>
 
     <!-- <editor-fold desc="日志"> -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>${slf4j.version}</version>
-    </dependency>
+    <!--    <dependency>-->
+    <!--      <groupId>org.slf4j</groupId>-->
+    <!--      <artifactId>slf4j-api</artifactId>-->
+    <!--      <version>${slf4j.version}</version>-->
+    <!--    </dependency>-->
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>

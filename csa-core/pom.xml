@@ -189,6 +189,29 @@
 
   <build>
     <finalName>${finalName}-core</finalName>
+
+    <sourceDirectory>src/main/java</sourceDirectory>
+
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.*</include>
+        </includes>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+
+      <resource>
+        <directory>..</directory>
+        <includes>
+          <include>README.md</include>
+          <include>LICENSE</include>
+        </includes>
+      </resource>
+    </resources>
+
     <plugins>
       <plugin>
         <groupId>org.jetbrains.kotlin</groupId>
@@ -226,6 +249,7 @@
           <jvmTarget>${java.version}</jvmTarget>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -261,6 +285,7 @@
           <showWarnings>true</showWarnings>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
@@ -291,18 +316,6 @@
         </executions>
       </plugin>
     </plugins>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <includes>
-          <include>**/*.*</include>
-        </includes>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
-    </resources>
   </build>
 
 </project>
