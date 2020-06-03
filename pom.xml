@@ -40,17 +40,17 @@
     <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
   </properties>
 
-  <repositories>
-    <repository>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-      <id>public</id>
-      <name>public</name>
-      <url>http://maven.aliyun.com/nexus/content/groups/public</url>
-    </repository>
-  </repositories>
+  <!--<repositories>-->
+  <!--  <repository>-->
+  <!--    <snapshots>-->
+  <!--      <enabled>true</enabled>-->
+  <!--      <updatePolicy>always</updatePolicy>-->
+  <!--    </snapshots>-->
+  <!--    <id>public</id>-->
+  <!--    <name>public</name>-->
+  <!--    <url>http://maven.aliyun.com/nexus/content/groups/public</url>-->
+  <!--  </repository>-->
+  <!--</repositories>-->
 
   <dependencyManagement>
     <dependencies>
