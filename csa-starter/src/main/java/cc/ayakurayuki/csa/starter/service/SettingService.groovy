@@ -54,7 +54,7 @@ class SettingService extends BaseService {
   Future<Integer> save(Setting setting) {
     Future.<Integer> future { f ->
       settingDao.save setting, f
-    } .compose { ar ->
+    }.compose { ar ->
       return Future.succeededFuture(ar)
     }
   }
@@ -121,6 +121,8 @@ class SettingService extends BaseService {
   Future<String> getToken() {
     this[Constants.TOKEN_EXPIRE_TIME].compose { ex ->
       if (ex == null || ex.value.toLong() < System.currentTimeMillis()) {
+        // Generate a new token and update token expire time.
+        // Because setting-key is unique in the `setting` table, the following code can correctly update old token.
         def token = [
             'id'   : IdUtils.UUID(),
             'key'  : Constants.TOKEN,
@@ -135,6 +137,7 @@ class SettingService extends BaseService {
             .compose { Void -> save(token) }
             .compose { Void -> Future.succeededFuture token.value }
       } else {
+        // Return the exist token.
         return this[Constants.TOKEN].compose { token -> Future.succeededFuture token.value }
       }
     }

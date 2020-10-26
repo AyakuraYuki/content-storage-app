@@ -25,10 +25,8 @@ class ContentRest extends BaseRest {
   @Path(value = '/search')
   @Produces(MediaType.APPLICATION_JSON)
   @Token
-  Future<JsonResponse> search(
-      @FormParam('keyword') @DefaultValue("") String keyword,
-      @FormParam('token') String token
-  ) {
+  Future<JsonResponse> search(@FormParam('keyword') @DefaultValue("") String keyword,
+                              @FormParam('token') String token) {
     def result = [] as LinkedHashMap<String, Object>
     def data = contentService.search(keyword)
         .compose { ar ->
