@@ -26,7 +26,7 @@
 
     <vertx.version>3.9.4</vertx.version>
     <hikaricp.version>2.7.2</hikaricp.version>
-    <mysql.version>8.0.16</mysql.version>
+    <mysql.version>8.0.28</mysql.version>
     <sqlite-jdbc.version>3.23.1</sqlite-jdbc.version>
     <slf4j.version>1.7.26</slf4j.version>
     <logback.version>1.1.11</logback.version>
